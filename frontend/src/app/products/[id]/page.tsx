@@ -1,0 +1,856 @@
+// // frontend/src/app/products/[id]/page.tsx
+
+// 'use client';
+
+// import { useState, useEffect } from 'react';
+// import { useParams, useRouter } from 'next/navigation';
+// import Image from 'next/image';
+// import Link from 'next/link';
+// import { motion } from 'framer-motion';
+// import { FiShoppingCart, FiHeart, FiShare2, FiCheck, FiArrowLeft } from 'react-icons/fi';
+// import { productApi } from '@/services/api';
+// import { useCartStore } from '@/store/cartStore';
+
+// export default function ProductDetailPage() {
+//   const params = useParams();
+//   const router = useRouter();
+//   const productId = parseInt(params.id as string);
+  
+//   const [product, setProduct] = useState<any>(null);
+//   const [loading, setLoading] = useState(true);
+//   const [error, setError] = useState<string | null>(null);
+//   const [quantity, setQuantity] = useState(1);
+//   const [isAddingToCart, setIsAddingToCart] = useState(false);
+  
+//   const addItem = useCartStore((state) => state.addItem);
+  
+//   // Fetch product details
+//   useEffect(() => {
+//     async function fetchProduct() {
+//       try {
+//         setLoading(true);
+//         const data = await productApi.getById(productId);
+//         setProduct(data);
+//       } catch (err) {
+//         setError('Product not found');
+//         console.error(err);
+//       } finally {
+//         setLoading(false);
+//       }
+//     }
+    
+//     if (productId) {
+//       fetchProduct();
+//     }
+//   }, [productId]);
+  
+//   // Add to cart handler
+//   const handleAddToCart = () => {
+//     if (!product) return;
+    
+//     setIsAddingToCart(true);
+    
+//     for (let i = 0; i < quantity; i++) {
+//       addItem({
+//         id: product.id,
+//         name: product.name,
+//         price: product.price,
+//         quantity: 1,
+//         image_url: product.image_url,
+//         category: product.category,
+//       });
+//     }
+    
+//     setTimeout(() => {
+//       setIsAddingToCart(false);
+//       router.push('/cart');
+//     }, 1000);
+//   };
+  
+//   if (loading) {
+//     return (
+//       <div className="min-h-screen flex items-center justify-center">
+//         <div className="spinner" />
+//       </div>
+//     );
+//   }
+  
+//   if (error || !product) {
+//     return (
+//       <div className="min-h-screen flex items-center justify-center px-4">
+//         <div className="text-center">
+//           <div className="text-6xl mb-4">😞</div>
+//           <h2 className="text-3xl font-bold mb-4">Product Not Found</h2>
+//           <p className="text-gray-600 mb-8">{error}</p>
+//           <Link href="/products">
+//             <button className="btn-primary">Browse All Products</button>
+//           </Link>
+//         </div>
+//       </div>
+//     );
+//   }
+  
+//   const specifications = product.specifications 
+//     ? JSON.parse(product.specifications) 
+//     : {};
+  
+//   return (
+//     <div className="min-h-screen py-12 px-4 bg-gray-50">
+//       <div className="max-w-7xl mx-auto">
+//         {/* Back Button */}
+//         <Link href="/products">
+//           <button className="flex items-center gap-2 text-gray-600 hover:text-primary-500 mb-8 transition-colors">
+//             <FiArrowLeft /> Back to Products
+//           </button>
+//         </Link>
+        
+//         <div className="grid lg:grid-cols-2 gap-12">
+//           {/* Product Images */}
+//           <motion.div
+//             initial={{ opacity: 0, x: -20 }}
+//             animate={{ opacity: 1, x: 0 }}
+//             className="space-y-4"
+//           >
+//             <div className="relative aspect-square rounded-2xl overflow-hidden bg-white shadow-lg">
+//               <Image
+//                 src={product.image_url || '/images/placeholder.jpg'}
+//                 alt={product.name}
+//                 fill
+//                 sizes="(max-width: 768px) 100vw, 50vw"
+//                 className="object-cover"
+//                 priority
+//               />
+              
+//               {/* Stock Badge */}
+//               {product.stock_quantity === 0 && (
+//                 <div className="absolute top-4 left-4 bg-red-500 text-white px-4 py-2 rounded-full font-semibold z-10">
+//                   Out of Stock
+//                 </div>
+//               )}
+//             </div>
+            
+//             {/* Thumbnail Gallery */}
+//             <div className="grid grid-cols-4 gap-4">
+//               {[1, 2, 3, 4].map((i) => (
+//                 <div
+//                   key={i}
+//                   className="relative aspect-square rounded-lg overflow-hidden bg-gray-200 cursor-pointer hover:opacity-75 transition-opacity"
+//                 >
+//                   <Image
+//                     src={product.image_url || '/images/placeholder.jpg'}
+//                     alt={`${product.name} view ${i}`}
+//                     fill
+//                     sizes="(max-width: 768px) 25vw, 12vw"
+//                     className="object-cover"
+//                   />
+//                 </div>
+//               ))}
+//             </div>
+//           </motion.div>
+          
+//           {/* Product Info */}
+//           <motion.div
+//             initial={{ opacity: 0, x: 20 }}
+//             animate={{ opacity: 1, x: 0 }}
+//           >
+//             {/* Category Badge */}
+//             <div className="inline-block bg-primary-100 text-primary-700 px-4 py-1 rounded-full text-sm font-semibold mb-4 capitalize">
+//               {product.category.replace('_', ' ')}
+//             </div>
+            
+//             <h1 className="text-4xl font-bold mb-4">{product.name}</h1>
+            
+//             {/* Price */}
+//             <div className="flex items-baseline gap-4 mb-6">
+//               <span className="text-5xl font-bold text-primary-500">
+//                 ₹{product.price.toLocaleString('en-IN')}
+//               </span>
+//               <span className="text-gray-500 line-through text-xl">
+//                 ₹{(product.price * 1.2).toLocaleString('en-IN')}
+//               </span>
+//               <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-semibold">
+//                 Save 20%
+//               </span>
+//             </div>
+            
+//             {/* Stock Status */}
+//             <div className="flex items-center gap-2 mb-6">
+//               {product.stock_quantity > 0 ? (
+//                 <>
+//                   <FiCheck className="text-green-500" />
+//                   <span className="text-green-600 font-medium">In Stock</span>
+//                   {product.stock_quantity < 10 && (
+//                     <span className="text-red-500 text-sm">
+//                       (Only {product.stock_quantity} left!)
+//                     </span>
+//                   )}
+//                 </>
+//               ) : (
+//                 <span className="text-red-500 font-medium">Out of Stock</span>
+//               )}
+//             </div>
+            
+//             {/* Description */}
+//             <div className="mb-8">
+//               <h3 className="text-xl font-semibold mb-3">Description</h3>
+//               <p className="text-gray-600 leading-relaxed">
+//                 {product.description || 'No description available for this product.'}
+//               </p>
+//             </div>
+            
+//             {/* Specifications */}
+//             {Object.keys(specifications).length > 0 && (
+//               <div className="mb-8">
+//                 <h3 className="text-xl font-semibold mb-3">Specifications</h3>
+//                 <div className="bg-white rounded-xl p-6 space-y-3">
+//                   {Object.entries(specifications).map(([key, value]) => (
+//                     <div key={key} className="flex justify-between border-b pb-2">
+//                       <span className="text-gray-600 capitalize">
+//                         {key.replace('_', ' ')}:
+//                       </span>
+//                       <span className="font-medium">{value as string}</span>
+//                     </div>
+//                   ))}
+//                 </div>
+//               </div>
+//             )}
+            
+//             {/* Quantity Selector */}
+//             <div className="mb-6">
+//               <label className="block text-sm font-semibold mb-2">Quantity</label>
+//               <div className="flex items-center gap-3">
+//                 <button
+//                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
+//                   className="w-12 h-12 flex items-center justify-center border-2 border-gray-300 rounded-lg hover:border-primary-500 transition-colors text-xl font-bold"
+//                   disabled={product.stock_quantity === 0}
+//                 >
+//                   -
+//                 </button>
+//                 <input
+//                   type="number"
+//                   min="1"
+//                   max={product.stock_quantity}
+//                   value={quantity}
+//                   onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
+//                   className="w-20 h-12 text-center border-2 border-gray-300 rounded-lg focus:border-primary-500 focus:outline-none font-semibold text-lg"
+//                   disabled={product.stock_quantity === 0}
+//                 />
+//                 <button
+//                   onClick={() => setQuantity(Math.min(product.stock_quantity, quantity + 1))}
+//                   className="w-12 h-12 flex items-center justify-center border-2 border-gray-300 rounded-lg hover:border-primary-500 transition-colors text-xl font-bold"
+//                   disabled={product.stock_quantity === 0}
+//                 >
+//                   +
+//                 </button>
+//               </div>
+//             </div>
+            
+//             {/* Action Buttons */}
+//             <div className="flex gap-4 mb-6">
+//               <motion.button
+//                 whileHover={{ scale: 1.02 }}
+//                 whileTap={{ scale: 0.98 }}
+//                 onClick={handleAddToCart}
+//                 disabled={product.stock_quantity === 0 || isAddingToCart}
+//                 className="flex-1 btn-primary flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+//               >
+//                 {isAddingToCart ? (
+//                   <>
+//                     <div className="spinner w-5 h-5 border-2" />
+//                     Adding...
+//                   </>
+//                 ) : (
+//                   <>
+//                     <FiShoppingCart />
+//                     Add to Cart
+//                   </>
+//                 )}
+//               </motion.button>
+              
+//               <motion.button
+//                 whileHover={{ scale: 1.05 }}
+//                 whileTap={{ scale: 0.95 }}
+//                 className="w-12 h-12 flex items-center justify-center border-2 border-gray-300 rounded-lg hover:border-red-500 hover:text-red-500 transition-colors"
+//               >
+//                 <FiHeart size={20} />
+//               </motion.button>
+              
+//               <motion.button
+//                 whileHover={{ scale: 1.05 }}
+//                 whileTap={{ scale: 0.95 }}
+//                 className="w-12 h-12 flex items-center justify-center border-2 border-gray-300 rounded-lg hover:border-primary-500 hover:text-primary-500 transition-colors"
+//               >
+//                 <FiShare2 size={20} />
+//               </motion.button>
+//             </div>
+            
+//             {/* Trust Badges */}
+//             <div className="grid grid-cols-3 gap-4 p-6 bg-gray-100 rounded-xl">
+//               <div className="text-center">
+//                 <div className="text-3xl mb-2">🚚</div>
+//                 <p className="text-sm font-medium">Free Delivery</p>
+//               </div>
+//               <div className="text-center">
+//                 <div className="text-3xl mb-2">✅</div>
+//                 <p className="text-sm font-medium">Quality Assured</p>
+//               </div>
+//               <div className="text-center">
+//                 <div className="text-3xl mb-2">📞</div>
+//                 <p className="text-sm font-medium">24/7 Support</p>
+//               </div>
+//             </div>
+//           </motion.div>
+//         </div>
+
+//         {/* Have Questions Section - WITH BEAUTIFUL BACKGROUND */}
+//         <section className="relative py-16 px-4 mt-12 overflow-hidden rounded-3xl">
+//           {/* Animated Gradient Background */}
+//           <div className="absolute inset-0 bg-gradient-to-br from-cyan-50 via-blue-50 to-purple-50" />
+          
+//           {/* Animated Orbs */}
+//           <motion.div
+//             animate={{
+//               scale: [1, 1.2, 1],
+//               x: [0, 30, 0],
+//               y: [0, -20, 0],
+//             }}
+//             transition={{
+//               duration: 15,
+//               repeat: Infinity,
+//               ease: "easeInOut"
+//             }}
+//             className="absolute top-10 right-10 w-72 h-72 bg-cyan-300/30 rounded-full blur-3xl"
+//           />
+//           <motion.div
+//             animate={{
+//               scale: [1, 1.3, 1],
+//               x: [0, -30, 0],
+//               y: [0, 20, 0],
+//             }}
+//             transition={{
+//               duration: 18,
+//               repeat: Infinity,
+//               ease: "easeInOut"
+//             }}
+//             className="absolute bottom-10 left-10 w-80 h-80 bg-purple-300/30 rounded-full blur-3xl"
+//           />
+          
+//           {/* Decorative Pattern */}
+//           <div className="absolute inset-0 opacity-5">
+//             <div 
+//               style={{
+//                 backgroundImage: `
+//                   linear-gradient(to right, #06b6d4 1px, transparent 1px),
+//                   linear-gradient(to bottom, #06b6d4 1px, transparent 1px)
+//                 `,
+//                 backgroundSize: '40px 40px'
+//               }}
+//               className="w-full h-full"
+//             />
+//           </div>
+          
+//           <div className="max-w-4xl mx-auto text-center relative z-10">
+//             <motion.div
+//               initial={{ opacity: 0, y: 20 }}
+//               whileInView={{ opacity: 1, y: 0 }}
+//               viewport={{ once: true }}
+//             >
+//               {/* Icon */}
+//               <motion.div
+//                 animate={{
+//                   y: [0, -10, 0],
+//                 }}
+//                 transition={{
+//                   duration: 3,
+//                   repeat: Infinity,
+//                   ease: "easeInOut"
+//                 }}
+//                 className="text-7xl mb-6 filter drop-shadow-lg"
+//               >
+//                 💬
+//               </motion.div>
+
+//               {/* Title */}
+//               <h2 className="text-4xl md:text-5xl font-bold mb-4 text-gray-900">
+//                 Have Questions About This Product?
+//               </h2>
+              
+//               <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+//                 Our team is ready to help you with specifications and pricing
+//               </p>
+              
+//               {/* Action Buttons */}
+//               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+//                 {/* Contact Us Button */}
+//                 <Link href="/contact">
+//                   <motion.button
+//                     whileHover={{ scale: 1.05, y: -2 }}
+//                     whileTap={{ scale: 0.95 }}
+//                     className="bg-white text-gray-800 px-8 py-4 rounded-2xl font-bold text-lg shadow-xl hover:shadow-2xl transition-all flex items-center gap-3 border-2 border-gray-200 hover:border-cyan-500"
+//                   >
+//                     <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+//                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+//                     </svg>
+//                     Contact Us
+//                   </motion.button>
+//                 </Link>
+                
+//                 {/* WhatsApp Button */}
+//                 <a
+//                   href={`https://wa.me/919825247312?text=${encodeURIComponent(
+//                     `Hi! I'm interested in ${product.name}. Can you provide more details?`
+//                   )}`}
+//                   target="_blank"
+//                   rel="noopener noreferrer"
+//                 >
+//                   <motion.button
+//                     whileHover={{ scale: 1.05, y: -2 }}
+//                     whileTap={{ scale: 0.95 }}
+//                     className="bg-green-500 text-white px-8 py-4 rounded-2xl font-bold text-lg shadow-xl hover:shadow-2xl hover:bg-green-600 transition-all flex items-center gap-3"
+//                   >
+//                     <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+//                       <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+//                     </svg>
+//                     Chat on WhatsApp
+//                   </motion.button>
+//                 </a>
+//               </div>
+
+//               {/* Phone Number */}
+//               <motion.div
+//                 initial={{ opacity: 0 }}
+//                 animate={{ opacity: 1 }}
+//                 transition={{ delay: 0.3 }}
+//                 className="mt-6"
+//               >
+//                 <a href="tel:9825247312" className="text-gray-600 hover:text-cyan-600 transition-colors text-lg font-medium">
+//                   Or call us directly: <span className="font-bold">+91 98252 47312</span>
+//                 </a>
+//               </motion.div>
+//             </motion.div>
+//           </div>
+//         </section>
+//       </div>
+//     </div>
+//   );
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+
+// frontend/src/app/products/[id]/page.tsx
+
+'use client';
+
+import { useState, useEffect } from 'react';
+import { useParams } from 'next/navigation';
+import Image from 'next/image';
+import Link from 'next/link';
+import { motion } from 'framer-motion';
+import { FiHeart, FiShare2, FiCheck, FiArrowLeft, FiPhone, FiMail, FiMessageCircle } from 'react-icons/fi';
+import { productApi } from '@/services/api';
+
+export default function ProductDetailPage() {
+  const params = useParams();
+  const productId = parseInt(params.id as string);
+  
+  const [product, setProduct] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  
+  // Fetch product details
+  useEffect(() => {
+    async function fetchProduct() {
+      try {
+        setLoading(true);
+        const data = await productApi.getById(productId);
+        setProduct(data);
+      } catch (err) {
+        setError('Product not found');
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    
+    if (productId) {
+      fetchProduct();
+    }
+  }, [productId]);
+  
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-16 w-16 border-4 border-cyan-500 border-t-transparent" />
+      </div>
+    );
+  }
+  
+  if (error || !product) {
+    return (
+      <div className="min-h-screen flex items-center justify-center px-4">
+        <div className="text-center">
+          <div className="text-6xl mb-4">😞</div>
+          <h2 className="text-3xl font-bold mb-4">Product Not Found</h2>
+          <p className="text-gray-600 mb-8">{error}</p>
+          <Link href="/products">
+            <button className="btn-primary">Browse All Products</button>
+          </Link>
+        </div>
+      </div>
+    );
+  }
+  
+  const specifications = product.specifications 
+    ? JSON.parse(product.specifications) 
+    : {};
+  
+  return (
+    <div className="min-h-screen py-12 px-4 bg-gray-50">
+      <div className="max-w-7xl mx-auto">
+        {/* Back Button */}
+        <Link href="/products">
+          <button className="flex items-center gap-2 text-gray-600 hover:text-primary-500 mb-8 transition-colors">
+            <FiArrowLeft /> Back to Products
+          </button>
+        </Link>
+        
+        <div className="grid lg:grid-cols-2 gap-12">
+          {/* Product Images */}
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="space-y-4"
+          >
+            <div className="relative aspect-square rounded-2xl overflow-hidden bg-white shadow-lg">
+              <Image
+                src={product.image_url || '/images/placeholder.jpg'}
+                alt={product.name}
+                fill
+                sizes="(max-width: 768px) 100vw, 50vw"
+                className="object-contain p-6"
+                priority
+              />
+              
+              {/* Stock Badge */}
+              {product.stock_quantity === 0 && (
+                <div className="absolute top-4 left-4 bg-red-500 text-white px-4 py-2 rounded-full font-semibold z-10">
+                  Out of Stock
+                </div>
+              )}
+            </div>
+            
+            {/* Thumbnail Gallery */}
+            <div className="grid grid-cols-4 gap-4">
+              {[1, 2, 3, 4].map((i) => (
+                <div
+                  key={i}
+                  className="relative aspect-square rounded-lg overflow-hidden bg-gray-200 cursor-pointer hover:opacity-75 transition-opacity"
+                >
+                  <Image
+                    src={product.image_url || '/images/placeholder.jpg'}
+                    alt={`${product.name} view ${i}`}
+                    fill
+                    sizes="(max-width: 768px) 25vw, 12vw"
+                    className="object-cover"
+                  />
+                </div>
+              ))}
+            </div>
+          </motion.div>
+          
+          {/* Product Info */}
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+          >
+            {/* Category Badge */}
+            <div className="inline-block bg-primary-100 text-primary-700 px-4 py-1 rounded-full text-sm font-semibold mb-4 capitalize">
+              {product.category.replace('_', ' ')}
+            </div>
+            
+            <h1 className="text-4xl font-bold mb-4">{product.name}</h1>
+            
+            {/* Price */}
+            <div className="flex items-baseline gap-4 mb-6">
+              <span className="text-5xl font-bold text-primary-500">
+                ₹{product.price.toLocaleString('en-IN')}
+              </span>
+              <span className="text-gray-500 line-through text-xl">
+                ₹{(product.price * 1.2).toLocaleString('en-IN')}
+              </span>
+              <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-semibold">
+                Save 20%
+              </span>
+            </div>
+            
+            {/* Stock Status */}
+            <div className="flex items-center gap-2 mb-6">
+              {product.stock_quantity > 0 ? (
+                <>
+                  <FiCheck className="text-green-500" />
+                  <span className="text-green-600 font-medium">In Stock</span>
+                  {product.stock_quantity < 10 && (
+                    <span className="text-red-500 text-sm">
+                      (Only {product.stock_quantity} left!)
+                    </span>
+                  )}
+                </>
+              ) : (
+                <span className="text-red-500 font-medium">Out of Stock</span>
+              )}
+            </div>
+            
+            {/* Description */}
+            <div className="mb-8">
+              <h3 className="text-xl font-semibold mb-3">Description</h3>
+              <p className="text-gray-600 leading-relaxed">
+                {product.description || 'No description available for this product.'}
+              </p>
+            </div>
+            
+            {/* Specifications */}
+            {Object.keys(specifications).length > 0 && (
+              <div className="mb-8">
+                <h3 className="text-xl font-semibold mb-3">Specifications</h3>
+                <div className="bg-white rounded-xl p-6 space-y-3">
+                  {Object.entries(specifications).map(([key, value]) => (
+                    <div key={key} className="flex justify-between border-b pb-2">
+                      <span className="text-gray-600 capitalize">
+                        {key.replace('_', ' ')}:
+                      </span>
+                      <span className="font-medium">{value as string}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+            
+            {/* Contact/Inquiry Buttons */}
+            <div className="space-y-4 mb-6">
+              {/* WhatsApp Button */}
+              <a
+                href={`https://wa.me/919825247312?text=${encodeURIComponent(
+                  `Hi! I'm interested in ${product.name}. Can you provide more details?`
+                )}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block"
+              >
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="w-full bg-green-500 text-white py-4 rounded-xl font-bold text-lg hover:bg-green-600 transition-colors flex items-center justify-center gap-3 shadow-lg"
+                >
+                  <FiMessageCircle size={24} />
+                  Inquire on WhatsApp
+                </motion.button>
+              </a>
+              
+              <div className="grid grid-cols-2 gap-4">
+                {/* Call Button */}
+                <a href="tel:9825247312">
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="w-full bg-cyan-500 text-white py-3 rounded-xl font-semibold hover:bg-cyan-600 transition-colors flex items-center justify-center gap-2"
+                  >
+                    <FiPhone size={20} />
+                    Call Now
+                  </motion.button>
+                </a>
+                
+                {/* Email Button */}
+                <Link href="/contact">
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="w-full bg-primary-500 text-white py-3 rounded-xl font-semibold hover:bg-primary-600 transition-colors flex items-center justify-center gap-2"
+                  >
+                    <FiMail size={20} />
+                    Email Us
+                  </motion.button>
+                </Link>
+              </div>
+              
+              {/* Share & Wishlist */}
+              <div className="flex gap-4">
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="flex-1 border-2 border-gray-300 py-3 rounded-xl hover:border-red-500 hover:text-red-500 transition-colors flex items-center justify-center gap-2 font-medium"
+                >
+                  <FiHeart size={20} />
+                  Save
+                </motion.button>
+                
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="flex-1 border-2 border-gray-300 py-3 rounded-xl hover:border-primary-500 hover:text-primary-500 transition-colors flex items-center justify-center gap-2 font-medium"
+                >
+                  <FiShare2 size={20} />
+                  Share
+                </motion.button>
+              </div>
+            </div>
+            
+            {/* Trust Badges */}
+            <div className="grid grid-cols-3 gap-4 p-6 bg-gradient-to-r from-cyan-50 to-blue-50 rounded-xl">
+              <div className="text-center">
+                <div className="text-3xl mb-2">🚚</div>
+                <p className="text-sm font-medium">Free Delivery</p>
+              </div>
+              <div className="text-center">
+                <div className="text-3xl mb-2">✅</div>
+                <p className="text-sm font-medium">Quality Assured</p>
+              </div>
+              <div className="text-center">
+                <div className="text-3xl mb-2">📞</div>
+                <p className="text-sm font-medium">24/7 Support</p>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Have Questions Section - WITH BEAUTIFUL BACKGROUND */}
+        <section className="relative py-16 px-4 mt-12 overflow-hidden rounded-3xl">
+          {/* Animated Gradient Background */}
+          <div className="absolute inset-0 bg-gradient-to-br from-cyan-50 via-blue-50 to-purple-50" />
+          
+          {/* Animated Orbs */}
+          <motion.div
+            animate={{
+              scale: [1, 1.2, 1],
+              x: [0, 30, 0],
+              y: [0, -20, 0],
+            }}
+            transition={{
+              duration: 15,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+            className="absolute top-10 right-10 w-72 h-72 bg-cyan-300/30 rounded-full blur-3xl"
+          />
+          <motion.div
+            animate={{
+              scale: [1, 1.3, 1],
+              x: [0, -30, 0],
+              y: [0, 20, 0],
+            }}
+            transition={{
+              duration: 18,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+            className="absolute bottom-10 left-10 w-80 h-80 bg-purple-300/30 rounded-full blur-3xl"
+          />
+          
+          {/* Decorative Pattern */}
+          <div className="absolute inset-0 opacity-5">
+            <div 
+              style={{
+                backgroundImage: `
+                  linear-gradient(to right, #06b6d4 1px, transparent 1px),
+                  linear-gradient(to bottom, #06b6d4 1px, transparent 1px)
+                `,
+                backgroundSize: '40px 40px'
+              }}
+              className="w-full h-full"
+            />
+          </div>
+          
+          <div className="max-w-4xl mx-auto text-center relative z-10">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+            >
+              {/* Icon */}
+              <motion.div
+                animate={{
+                  y: [0, -10, 0],
+                }}
+                transition={{
+                  duration: 3,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+                className="text-7xl mb-6 filter drop-shadow-lg"
+              >
+                💬
+              </motion.div>
+
+              {/* Title */}
+              <h2 className="text-4xl md:text-5xl font-bold mb-4 text-gray-900">
+                Have Questions About This Product?
+              </h2>
+              
+              <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+                Our team is ready to help you with specifications and pricing
+              </p>
+              
+              {/* Action Buttons */}
+              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                {/* Contact Us Button */}
+                <Link href="/contact">
+                  <motion.button
+                    whileHover={{ scale: 1.05, y: -2 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="bg-white text-gray-800 px-8 py-4 rounded-2xl font-bold text-lg shadow-xl hover:shadow-2xl transition-all flex items-center gap-3 border-2 border-gray-200 hover:border-cyan-500"
+                  >
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                    Contact Us
+                  </motion.button>
+                </Link>
+                
+                {/* WhatsApp Button */}
+                <a
+                  href={`https://wa.me/919825247312?text=${encodeURIComponent(
+                    `Hi! I'm interested in ${product.name}. Can you provide more details?`
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <motion.button
+                    whileHover={{ scale: 1.05, y: -2 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="bg-green-500 text-white px-8 py-4 rounded-2xl font-bold text-lg shadow-xl hover:shadow-2xl hover:bg-green-600 transition-all flex items-center gap-3"
+                  >
+                    <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+                    </svg>
+                    Chat on WhatsApp
+                  </motion.button>
+                </a>
+              </div>
+
+              {/* Phone Number */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.3 }}
+                className="mt-6"
+              >
+                <a href="tel:9825247312" className="text-gray-600 hover:text-cyan-600 transition-colors text-lg font-medium">
+                  Or call us directly: <span className="font-bold">+91 98252 47312</span>
+                </a>
+              </motion.div>
+            </motion.div>
+          </div>
+        </section>
+      </div>
+    </div>
+  );
+}

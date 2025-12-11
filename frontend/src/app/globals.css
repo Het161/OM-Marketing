@@ -1,0 +1,157 @@
+/* frontend/src/app/globals.css */
+
+@import "tailwindcss";
+
+/* Custom CSS utilities and global styles */
+
+* {
+  border-color: rgb(229 231 235);
+}
+
+body {
+  @apply bg-white text-gray-900 antialiased;
+}
+
+/* Custom button styles with animations */
+.btn-primary {
+  @apply bg-[#008080] hover:bg-[#006666] text-white font-semibold 
+         py-3 px-6 rounded-lg transition-all duration-300 
+         transform hover:scale-105 hover:shadow-lg;
+}
+
+.btn-secondary {
+  @apply bg-[#ffa500] hover:bg-[#e69500] text-white font-semibold 
+         py-3 px-6 rounded-lg transition-all duration-300 
+         transform hover:scale-105 hover:shadow-lg;
+}
+
+.btn-outline {
+  @apply border-2 border-[#008080] text-[#008080] 
+         hover:bg-[#008080] hover:text-white font-semibold 
+         py-3 px-6 rounded-lg transition-all duration-300;
+}
+
+/* Card styles with hover effects */
+.card {
+  @apply bg-white rounded-xl shadow-md overflow-hidden 
+         transition-all duration-300 hover:shadow-2xl 
+         hover:-translate-y-2;
+}
+
+/* Gradient backgrounds */
+.gradient-primary {
+  @apply bg-gradient-to-r from-[#008080] to-[#004d4d];
+}
+
+.gradient-accent {
+  @apply bg-gradient-to-r from-[#ffa500] to-[#cc8400];
+}
+
+/* Custom scrollbar */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Text gradient effect */
+.text-gradient {
+  @apply bg-clip-text text-transparent bg-gradient-to-r 
+         from-[#008080] to-[#ffa500];
+}
+
+/* Glass morphism effect */
+.glass {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Loading spinner animation */
+.spinner {
+  border: 3px solid rgba(0, 128, 128, 0.1);
+  border-top-color: #008080;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Smooth page transitions */
+.page-transition {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Float animation */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* Slide up animation */
+@keyframes slideUp {
+  0% { transform: translateY(100px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+.animate-slide-up {
+  animation: slideUp 0.5s ease-out;
+}
+
+/* Scale in animation */
+@keyframes scaleIn {
+  0% { transform: scale(0.9); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.3s ease-out;
+}
+/* Add to frontend/src/app/globals.css */
+
+/* Smooth card transitions */
+.card {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card:hover {
+  transform: translateY(-4px);
+}
+
+/* Clean scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+
