@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { motion } from 'framer-motion'
 import ProductCard from '@/components/ProductCard'
@@ -49,7 +49,8 @@ const categories: Category[] = [
   }
 ]
 
-export default function ProductsPage() {
+// Separate component that uses useSearchParams
+function ProductsContent() {
   const searchParams = useSearchParams()
   const categoryFromUrl = searchParams.get('category')
   
@@ -73,7 +74,6 @@ export default function ProductsPage() {
     const fetchProducts = async () => {
       try {
         setLoading(true)
-        // ✅ FIX: Use environment variable instead of hardcoded localhost
         const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000'
         const response = await fetch(`${apiUrl}/api/products/`)
         
@@ -481,5 +481,18 @@ export default function ProductsPage() {
         </section>
       </div>
     </div>
+  )
+}
+
+// Main page component with Suspense wrapper
+export default function ProductsPage() {
+  return (
+    <Suspense fallback={
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-cyan-500"></div>
+      </div>
+    }>
+      <ProductsContent />
+    </Suspense>
   )
 }
