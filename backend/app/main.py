@@ -87,3 +87,50 @@ async def seed_db_endpoint():
     Call this endpoint once to populate Render database.
     """
     return seed_database()
+
+# ADMIN: Fix category names from plural to singular
+@app.post("/admin/fix-categories")
+async def fix_categories():
+    """Update category names from plural to singular for frontend compatibility"""
+    from app.database import SessionLocal
+    from app.models import Product
+    from sqlalchemy import func
+    
+    db = SessionLocal()
+    try:
+        # Map old plural names to new singular names
+        updates = [
+            ("weighing_scales", "weighing_scale"),
+            ("note_counters", "note_counter"),
+            ("mobile_accessories", "mobile_accessory")
+        ]
+        
+        total_updated = 0
+        results = []
+        
+        for old_cat, new_cat in updates:
+            count = db.query(Product).filter(Product.category == old_cat).update(
+                {"category": new_cat},
+                synchronize_session=False
+            )
+            if count > 0:
+                results.append(f"{old_cat} → {new_cat}: {count} products")
+            total_updated += count
+        
+        db.commit()
+        
+        # Get current distribution
+        categories = db.query(Product.category, func.count(Product.id)).group_by(Product.category).all()
+        
+        return {
+            "status": "success",
+            "total_updated": total_updated,
+            "updates": results,
+            "current_categories": [{"name": cat, "count": count} for cat, count in categories]
+        }
+        
+    except Exception as e:
+        db.rollback()
+        return {"status": "error", "message": str(e)}
+    finally:
+        db.close()
