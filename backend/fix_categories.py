@@ -1,40 +1,38 @@
-# backend/fix_categories.py
-
 from app.database import SessionLocal
 from app.models import Product
+from sqlalchemy import func
 
 db = SessionLocal()
 
-# Categorize all products into 3 main categories
-category_mapping = {
-    # WEIGHING SCALES (all scales go here)
-    1: "weighing_scale",   # UNIQUE Tebal Top Scale
-    2: "weighing_scale",   # Platform Scale 400×400mm
-    3: "weighing_scale",   # OCS Crane Scale
-    4: "weighing_scale",   # Mini Weighing Scale
-    5: "weighing_scale",   # MS Chekar Platform
-    6: "weighing_scale",   # 600×600mm Platform Scale
-    8: "weighing_scale",   # Explosion-Proof Indicator (weighing)
+try:
+    # Update all product categories from plural to singular
+    updates = [
+        ("weighing_scales", "weighing_scale"),
+        ("note_counters", "note_counter"),
+        ("mobile_accessories", "mobile_accessory")
+    ]
     
-    # NOTE COUNTERS
-    7: "note_counter",     # Note Counter
-}
-
-print("📂 Updating product categories to match homepage...\n")
-
-for product_id, category in category_mapping.items():
-    product = db.query(Product).filter(Product.id == product_id).first()
-    if product:
-        old_category = product.category
-        product.category = category
-        print(f"✅ {product.name[:50]}")
-        print(f"   {old_category} → {category}\n")
-
-db.commit()
-db.close()
-
-print("✨ Done! Categories now match homepage structure.")
-print("\nNow you have:")
-print("  • weighing_scale - All types of scales")
-print("  • note_counter - Note counting machines")
-print("  • accessories - Parts & components")
+    total_updated = 0
+    for old_cat, new_cat in updates:
+        result = db.query(Product).filter(Product.category == old_cat).update(
+            {"category": new_cat},
+            synchronize_session=False
+        )
+        print(f"✅ Updated {result} products: {old_cat} → {new_cat}")
+        total_updated += result
+    
+    db.commit()
+    
+    print(f"\n🎉 Total updated: {total_updated} products")
+    
+    # Show new category distribution
+    print("\n📊 New Category Distribution:")
+    categories = db.query(Product.category, func.count(Product.id)).group_by(Product.category).all()
+    for cat, count in categories:
+        print(f"  - {cat}: {count} products")
+        
+except Exception as e:
+    db.rollback()
+    print(f"❌ Error: {e}")
+finally:
+    db.close()
