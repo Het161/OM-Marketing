@@ -142,23 +142,20 @@
 
 
 
-
-
-
-
-
 # backend/app/main.py
 """
 FastAPI Application Entry Point
-This is the main entry point for the OM Marketing API
-Enhanced with better health checks and CORS for custom domain
+Enhanced with database health checks and better error handling
 """
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from datetime import datetime
+from sqlalchemy.orm import Session
+from sqlalchemy import text, func
 import os
-from .database import engine, Base
+
+from .database import engine, Base, get_db
 from .routes import products, orders, auth, contact
 
 # Create all database tables
@@ -171,7 +168,7 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# ✅ Enhanced CORS Configuration - Support both wildcard and custom domain
+# ✅ Enhanced CORS Configuration
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],  # Allow ALL origins (required for dynamic Vercel URLs)
@@ -216,41 +213,65 @@ async def root():
         "frontend": "https://ommarketing.co.in"
     }
 
-# ✅ Enhanced health check endpoint (for UptimeRobot monitoring)
+# ✅ Enhanced health check with database connection test
 @app.get("/health")
-async def health_check():
+async def health_check(db: Session = Depends(get_db)):
     """
-    Health check endpoint for monitoring services like UptimeRobot.
-    Returns server status and uptime information.
+    Health check endpoint that verifies database connection.
+    Used by UptimeRobot to keep Render service warm.
+    Returns product count to verify data integrity.
     """
+    try:
+        # Test database connection
+        db.execute(text("SELECT 1"))
+        db_status = "connected"
+        
+        # Get product count to verify data
+        from .models import Product
+        product_count = db.query(Product).count()
+        
+        # Detect database type
+        db_type = "PostgreSQL" if os.getenv('DATABASE_URL') else "SQLite"
+        
+    except Exception as e:
+        db_status = f"error: {str(e)}"
+        product_count = 0
+        db_type = "unknown"
+    
     return {
         "status": "healthy",
         "timestamp": datetime.utcnow().isoformat(),
         "service": "OM Marketing API",
         "version": "1.0.0",
+        "database": {
+            "status": db_status,
+            "type": db_type,
+            "products_count": product_count
+        },
         "message": "All systems operational ✅"
     }
 
-# ONE-TIME SEED ENDPOINT (Remove after use!)
+# ✅ ONE-TIME SEED ENDPOINT
 from app.seed_data import seed_database
 
 @app.post("/admin/seed-database")
 async def seed_db_endpoint():
     """
     ONE-TIME USE: Seeds the database with initial products.
-    Call this endpoint once to populate Render database.
+    Call this endpoint once to populate the database.
+    Works for both SQLite (local) and PostgreSQL (Render).
     """
     return seed_database()
 
-# ADMIN: Fix category names from plural to singular
+# ✅ ADMIN: Fix category names
 @app.post("/admin/fix-categories")
-async def fix_categories():
-    """Update category names from plural to singular for frontend compatibility"""
-    from app.database import SessionLocal
-    from app.models import Product
-    from sqlalchemy import func
+async def fix_categories(db: Session = Depends(get_db)):
+    """
+    Update category names from plural to singular for frontend compatibility.
+    Example: weighing_scales → weighing_scale
+    """
+    from .models import Product
     
-    db = SessionLocal()
     try:
         # Map old plural names to new singular names
         updates = [
@@ -274,17 +295,25 @@ async def fix_categories():
         db.commit()
         
         # Get current distribution
-        categories = db.query(Product.category, func.count(Product.id)).group_by(Product.category).all()
+        categories = db.query(
+            Product.category, 
+            func.count(Product.id)
+        ).group_by(Product.category).all()
         
         return {
             "status": "success",
             "total_updated": total_updated,
             "updates": results,
-            "current_categories": [{"name": cat, "count": count} for cat, count in categories]
+            "current_categories": [
+                {"name": cat, "count": count} 
+                for cat, count in categories
+            ]
         }
         
     except Exception as e:
         db.rollback()
-        return {"status": "error", "message": str(e)}
-    finally:
-        db.close()
+        return {
+            "status": "error", 
+            "message": str(e)
+        }
+
