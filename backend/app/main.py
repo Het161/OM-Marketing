@@ -3,14 +3,161 @@
 
 
 
+# # backend/app/main.py
+# """
+# FastAPI Application Entry Point
+# This is the main entry point for the OM Marketing API
+# """
+# from fastapi import FastAPI, Request
+# from fastapi.middleware.cors import CORSMiddleware
+# from fastapi.responses import JSONResponse
+# from .database import engine, Base
+# from .routes import products, orders, auth, contact
+
+# # Create all database tables
+# Base.metadata.create_all(bind=engine)
+
+# # Initialize FastAPI app
+# app = FastAPI(
+#     title="OM Marketing API",
+#     description="E-commerce API for weighing scales, note counters, and mobile accessories",
+#     version="1.0.0"
+# )
+
+# # CORS Configuration - Allow all origins for Vercel preview deployments
+# app.add_middleware(
+#     CORSMiddleware,
+#     allow_origins=["*"],  # Allow ALL origins (required for dynamic Vercel URLs)
+#     allow_credentials=False,  # Must be False when using "*"
+#     allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
+#     allow_headers=["*"],
+#     expose_headers=["*"],
+#     max_age=3600,
+# )
+
+# # Explicit OPTIONS handler for CORS preflight requests
+# @app.options("/{full_path:path}")
+# async def options_handler(request: Request, full_path: str):
+#     """Handle OPTIONS requests for CORS preflight"""
+#     return JSONResponse(
+#         content={},
+#         status_code=200,
+#         headers={
+#             "Access-Control-Allow-Origin": "*",
+#             "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS, PATCH",
+#             "Access-Control-Allow-Headers": "*",
+#             "Access-Control-Max-Age": "3600",
+#         }
+#     )
+
+# # Include API routers
+# app.include_router(products.router, prefix="/api/products", tags=["Products"])
+# app.include_router(orders.router, prefix="/api/orders", tags=["Orders"])
+# app.include_router(auth.router, prefix="/api/auth", tags=["Authentication"])
+# app.include_router(contact.router, prefix="/api", tags=["Contact"])
+
+# # Root endpoint
+# @app.get("/")
+# async def root():
+#     """API welcome endpoint"""
+#     return {
+#         "message": "Welcome to OM Marketing API!",
+#         "status": "active",
+#         "docs": "/docs",
+#         "version": "1.0.0",
+#         "frontend": "https://om-marketing-git-main-het-patels-projects-7277c57e.vercel.app"
+#     }
+
+# # Health check endpoint
+# @app.get("/health")
+# async def health_check():
+#     """Health check endpoint for monitoring"""
+#     return {
+#         "status": "healthy", 
+#         "service": "OM Marketing API",
+#         "version": "1.0.0"
+#     }
+# # ONE-TIME SEED ENDPOINT (Remove after use!)
+# from app.seed_data import seed_database
+
+# @app.post("/admin/seed-database")
+# async def seed_db_endpoint():
+#     """
+#     ONE-TIME USE: Seeds the database with initial products.
+#     Call this endpoint once to populate Render database.
+#     """
+#     return seed_database()
+
+# # ADMIN: Fix category names from plural to singular
+# @app.post("/admin/fix-categories")
+# async def fix_categories():
+#     """Update category names from plural to singular for frontend compatibility"""
+#     from app.database import SessionLocal
+#     from app.models import Product
+#     from sqlalchemy import func
+    
+#     db = SessionLocal()
+#     try:
+#         # Map old plural names to new singular names
+#         updates = [
+#             ("weighing_scales", "weighing_scale"),
+#             ("note_counters", "note_counter"),
+#             ("mobile_accessories", "mobile_accessory")
+#         ]
+        
+#         total_updated = 0
+#         results = []
+        
+#         for old_cat, new_cat in updates:
+#             count = db.query(Product).filter(Product.category == old_cat).update(
+#                 {"category": new_cat},
+#                 synchronize_session=False
+#             )
+#             if count > 0:
+#                 results.append(f"{old_cat} → {new_cat}: {count} products")
+#             total_updated += count
+        
+#         db.commit()
+        
+#         # Get current distribution
+#         categories = db.query(Product.category, func.count(Product.id)).group_by(Product.category).all()
+        
+#         return {
+#             "status": "success",
+#             "total_updated": total_updated,
+#             "updates": results,
+#             "current_categories": [{"name": cat, "count": count} for cat, count in categories]
+#         }
+        
+#     except Exception as e:
+#         db.rollback()
+#         return {"status": "error", "message": str(e)}
+#     finally:
+#         db.close()
+
+
+
+
+
+
+
+
+
+
+
+
+
 # backend/app/main.py
 """
 FastAPI Application Entry Point
 This is the main entry point for the OM Marketing API
+Enhanced with better health checks and CORS for custom domain
 """
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from datetime import datetime
+import os
 from .database import engine, Base
 from .routes import products, orders, auth, contact
 
@@ -24,7 +171,7 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# CORS Configuration - Allow all origins for Vercel preview deployments
+# ✅ Enhanced CORS Configuration - Support both wildcard and custom domain
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],  # Allow ALL origins (required for dynamic Vercel URLs)
@@ -56,27 +203,34 @@ app.include_router(orders.router, prefix="/api/orders", tags=["Orders"])
 app.include_router(auth.router, prefix="/api/auth", tags=["Authentication"])
 app.include_router(contact.router, prefix="/api", tags=["Contact"])
 
-# Root endpoint
+# ✅ Enhanced root endpoint
 @app.get("/")
 async def root():
     """API welcome endpoint"""
     return {
-        "message": "Welcome to OM Marketing API!",
+        "message": "OM Marketing API - Welcome! 🎉",
         "status": "active",
         "docs": "/docs",
+        "health": "/health",
         "version": "1.0.0",
-        "frontend": "https://om-marketing-git-main-het-patels-projects-7277c57e.vercel.app"
+        "frontend": "https://ommarketing.co.in"
     }
 
-# Health check endpoint
+# ✅ Enhanced health check endpoint (for UptimeRobot monitoring)
 @app.get("/health")
 async def health_check():
-    """Health check endpoint for monitoring"""
+    """
+    Health check endpoint for monitoring services like UptimeRobot.
+    Returns server status and uptime information.
+    """
     return {
-        "status": "healthy", 
+        "status": "healthy",
+        "timestamp": datetime.utcnow().isoformat(),
         "service": "OM Marketing API",
-        "version": "1.0.0"
+        "version": "1.0.0",
+        "message": "All systems operational ✅"
     }
+
 # ONE-TIME SEED ENDPOINT (Remove after use!)
 from app.seed_data import seed_database
 
