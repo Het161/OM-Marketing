@@ -5,7 +5,7 @@ SEED_PRODUCTS = [
     # ========== WEIGHING SCALES ==========
     {
         "name": "Table Top Weighing Scale 10KG",
-        "category": "weighing_scales",
+        "category": "weighing_scale",
         "price": 2500.00,
         "description": "Compact digital table top weighing scale for retail and commercial use",
         "stock_quantity": 50,
@@ -14,7 +14,7 @@ SEED_PRODUCTS = [
     },
     {
         "name": "Digital Weighing Scale 20KG",
-        "category": "weighing_scales",
+        "category": "weighing_scale",
         "price": 3500.00,
         "description": "Precision digital scale with 20KG capacity for general purpose weighing",
         "stock_quantity": 45,
@@ -23,7 +23,7 @@ SEED_PRODUCTS = [
     },
     {
         "name": "Table Top Scale 30KG Standard",
-        "category": "weighing_scales",
+        "category": "weighing_scale",
         "price": 4000.00,
         "description": "Professional table top weighing scale with 30KG capacity",
         "stock_quantity": 60,
@@ -32,7 +32,7 @@ SEED_PRODUCTS = [
     },
     {
         "name": "Table Top Scale 30KG Handmade Premium",
-        "category": "weighing_scales",
+        "category": "weighing_scale",
         "price": 4500.00,
         "description": "Handcrafted premium quality 30KG weighing scale with superior build",
         "stock_quantity": 35,
@@ -41,7 +41,7 @@ SEED_PRODUCTS = [
     },
     {
         "name": "Platform Scale 300x300mm Chicken 50/100KG",
-        "category": "weighing_scales",
+        "category": "weighing_scale",
         "price": 5500.00,
         "description": "Stainless steel chicken platform scale for poultry and meat industry",
         "stock_quantity": 40,
@@ -50,7 +50,7 @@ SEED_PRODUCTS = [
     },
     {
         "name": "Platform Scale 400x400mm Chicken 100/200KG",
-        "category": "weighing_scales",
+        "category": "weighing_scale",
         "price": 6500.00,
         "description": "Heavy duty chicken platform scale with stainless steel platform",
         "stock_quantity": 35,
@@ -59,7 +59,7 @@ SEED_PRODUCTS = [
     },
     {
         "name": "Platform Scale 400x400mm Regular 100/200KG",
-        "category": "weighing_scales",
+        "category": "weighing_scale",
         "price": 7000.00,
         "description": "Industrial platform scale for general purpose weighing applications",
         "stock_quantity": 30,
@@ -68,7 +68,7 @@ SEED_PRODUCTS = [
     },
     {
         "name": "Platform Scale 500x500mm Chicken 100/200/300KG",
-        "category": "weighing_scales",
+        "category": "weighing_scale",
         "price": 7500.00,
         "description": "Large chicken platform scale for wholesale poultry operations",
         "stock_quantity": 28,
@@ -77,7 +77,7 @@ SEED_PRODUCTS = [
     },
     {
         "name": "Platform Scale 500x500mm Regular 100/200/300KG",
-        "category": "weighing_scales",
+        "category": "weighing_scale",
         "price": 8000.00,
         "description": "Heavy duty platform scale for industrial weighing requirements",
         "stock_quantity": 25,
@@ -86,7 +86,7 @@ SEED_PRODUCTS = [
     },
     {
         "name": "Platform Scale 600x600mm Chicken 100/200/300/500KG",
-        "category": "weighing_scales",
+        "category": "weighing_scale",
         "price": 8500.00,
         "description": "Extra large stainless steel chicken platform scale",
         "stock_quantity": 20,
@@ -95,7 +95,7 @@ SEED_PRODUCTS = [
     },
     {
         "name": "Platform Scale 600x600mm Regular 100/200/300/500KG",
-        "category": "weighing_scales",
+        "category": "weighing_scale",
         "price": 8900.00,
         "description": "Heavy duty industrial platform scale with large weighing area",
         "stock_quantity": 18,
@@ -104,7 +104,7 @@ SEED_PRODUCTS = [
     },
     {
         "name": "Platform Scale 750x750mm Regular 100/200/300/500KG",
-        "category": "weighing_scales",
+        "category": "weighing_scale",
         "price": 12500.00,
         "description": "Extra large industrial platform scale for heavy duty applications",
         "stock_quantity": 15,
@@ -115,7 +115,7 @@ SEED_PRODUCTS = [
     # ========== SPECIALIZED SCALES ==========
     {
         "name": "OCS Crane Scale 15 Ton Industrial",
-        "category": "weighing_scales",
+        "category": "weighing_scale",
         "price": 45000.00,
         "description": "Heavy duty crane scale for industrial weighing applications",
         "stock_quantity": 8,
@@ -124,7 +124,7 @@ SEED_PRODUCTS = [
     },
     {
         "name": "Floor Scale Heavy Duty Industrial",
-        "category": "weighing_scales",
+        "category": "weighing_scale",
         "price": 35000.00,
         "description": "Industrial floor scale for warehouse and logistics",
         "stock_quantity": 12,
@@ -133,7 +133,7 @@ SEED_PRODUCTS = [
     },
     {
         "name": "Jewelry Scale Precision 0.01g",
-        "category": "weighing_scales",
+        "category": "weighing_scale",
         "price": 1500.00,
         "description": "High precision scale for jewelry and gems",
         "stock_quantity": 40,
@@ -142,7 +142,7 @@ SEED_PRODUCTS = [
     },
     {
         "name": "PRC Electronic Scale Digital",
-        "category": "weighing_scales",
+        "category": "weighing_scale",
         "price": 3200.00,
         "description": "Multi-purpose electronic weighing scale",
         "stock_quantity": 35,
@@ -151,7 +151,7 @@ SEED_PRODUCTS = [
     },
     {
         "name": "Contech Weighing Scale Industrial",
-        "category": "weighing_scales",
+        "category": "weighing_scale",
         "price": 18500.00,
         "description": "Professional industrial weighing solution",
         "stock_quantity": 10,
@@ -162,7 +162,7 @@ SEED_PRODUCTS = [
     # ========== NOTE COUNTING MACHINES ==========
     {
         "name": "Note Counting Machine Basic",
-        "category": "note_counters",
+        "category": "note_counter",
         "price": 12000.00,
         "description": "High-speed currency counter with fake note detection",
         "stock_quantity": 25,
@@ -171,7 +171,7 @@ SEED_PRODUCTS = [
     },
     {
         "name": "Note Counter Advanced Multi-Currency",
-        "category": "note_counters",
+        "category": "note_counter",
         "price": 25000.00,
         "description": "Advanced note counter with multi-currency support and fake detection",
         "stock_quantity": 15,
@@ -180,7 +180,7 @@ SEED_PRODUCTS = [
     },
     {
         "name": "Professional Note Counting Machine",
-        "category": "note_counters",
+        "category": "note_counter",
         "price": 35000.00,
         "description": "Professional grade note counter for banks and financial institutions",
         "stock_quantity": 8,
@@ -191,7 +191,7 @@ SEED_PRODUCTS = [
     # ========== MOBILE ACCESSORIES ==========
     {
         "name": "Mobile Screen Protector Tempered Glass",
-        "category": "mobile_accessories",
+        "category": "mobile_accessory",
         "price": 199.00,
         "description": "Premium tempered glass screen protector with 9H hardness",
         "stock_quantity": 200,
@@ -200,7 +200,7 @@ SEED_PRODUCTS = [
     },
     {
         "name": "Fast Charging USB Cable Type-C",
-        "category": "mobile_accessories",
+        "category": "mobile_accessory",
         "price": 299.00,
         "description": "High-speed USB Type-C charging cable with fast charging support",
         "stock_quantity": 150,
@@ -209,7 +209,7 @@ SEED_PRODUCTS = [
     },
     {
         "name": "Wireless Bluetooth Earbuds TWS",
-        "category": "mobile_accessories",
+        "category": "mobile_accessory",
         "price": 1299.00,
         "description": "True wireless earbuds with charging case and long battery life",
         "stock_quantity": 60,
@@ -218,7 +218,7 @@ SEED_PRODUCTS = [
     },
     {
         "name": "Premium Phone Back Cover Shockproof",
-        "category": "mobile_accessories",
+        "category": "mobile_accessory",
         "price": 399.00,
         "description": "Shockproof phone back cover with raised edges for screen protection",
         "stock_quantity": 180,
@@ -227,7 +227,7 @@ SEED_PRODUCTS = [
     },
     {
         "name": "Magnetic Car Phone Holder 360°",
-        "category": "mobile_accessories",
+        "category": "mobile_accessory",
         "price": 599.00,
         "description": "360° rotating magnetic car phone mount for safe driving",
         "stock_quantity": 90,
@@ -236,7 +236,7 @@ SEED_PRODUCTS = [
     },
     {
         "name": "Power Bank 20000mAh Fast Charge",
-        "category": "mobile_accessories",
+        "category": "mobile_accessory",
         "price": 1999.00,
         "description": "High capacity power bank with dual USB ports and fast charging",
         "stock_quantity": 45,
