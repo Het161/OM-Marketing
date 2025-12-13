@@ -3,7 +3,7 @@
 // import { useState, useEffect, Suspense } from 'react'
 // import { useSearchParams } from 'next/navigation'
 // import { motion } from 'framer-motion'
-// import ProductCard from '@/components/ProductCard'
+// import Image from 'next/image'
 // import { Scale, Package, Wrench, Box } from 'lucide-react'
 // import Link from 'next/link'
 
@@ -145,7 +145,7 @@
 //             repeat: Infinity,
 //             ease: "easeInOut"
 //           }}
-//           className="absolute top-10 right-10 w-[600px] h-[600px] bg-gradient-to-br from-blue-200/40 to-cyan-300/40 rounded-full blur-3xl"
+//           className="absolute top-10 right-10 w-[400px] sm:w-[600px] h-[400px] sm:h-[600px] bg-gradient-to-br from-blue-200/40 to-cyan-300/40 rounded-full blur-3xl"
 //         />
         
 //         <motion.div
@@ -159,42 +159,32 @@
 //             repeat: Infinity,
 //             ease: "easeInOut"
 //           }}
-//           className="absolute bottom-10 left-10 w-[500px] h-[500px] bg-gradient-to-br from-purple-200/30 to-pink-300/30 rounded-full blur-3xl"
+//           className="absolute bottom-10 left-10 w-[350px] sm:w-[500px] h-[350px] sm:h-[500px] bg-gradient-to-br from-purple-200/30 to-pink-300/30 rounded-full blur-3xl"
 //         />
-        
-//         <div className="absolute inset-0 opacity-[0.03]">
-//           <div 
-//             style={{
-//               backgroundImage: `
-//                 linear-gradient(to right, #3b82f6 1px, transparent 1px),
-//                 linear-gradient(to bottom, #3b82f6 1px, transparent 1px)
-//               `,
-//               backgroundSize: '60px 60px'
-//             }}
-//             className="w-full h-full"
-//           />
-//         </div>
 //       </div>
 
 //       {/* Content */}
 //       <div className="relative z-10">
-//         {/* Header Section */}
-//         <section className="py-12 px-4 bg-white/60 backdrop-blur-md border-b border-white/50 shadow-sm">
-//           <div className="max-w-7xl mx-auto">
-//             <motion.div
-//               initial={{ opacity: 0, y: 20 }}
-//               animate={{ opacity: 1, y: 0 }}
-//             >
-//               <h1 className="text-4xl md:text-5xl font-bold mb-3 text-gray-900">
-//                 Our Products
-//               </h1>
-//               <p className="text-gray-700 text-lg">
+//         {/* Header Section - Mobile Optimized */}
+//         {/* Header Section - Mobile Optimized with navbar spacing */}
+// <section className="pt-20 sm:pt-24 pb-6 sm:pb-12 px-4 bg-white/60 backdrop-blur-md border-b border-white/50 shadow-sm">
+//   <div className="max-w-7xl mx-auto">
+//     <motion.div
+//       initial={{ opacity: 0, y: 20 }}
+//       animate={{ opacity: 1, y: 0 }}
+//     >
+//       <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-2 sm:mb-3 text-gray-900">
+//         Our Products
+//       </h1>
+//       {/* Rest of content... */}
+
+//               <p className="text-gray-700 text-sm sm:text-base lg:text-lg">
 //                 {selectedCategory 
 //                   ? `Showing ${categories.find(c => c.id === selectedCategory)?.name || 'Products'}`
 //                   : 'Browse our complete range of weighing solutions'
 //                 }
 //               </p>
-//               <p className="text-gray-600 mt-2">
+//               <p className="text-gray-600 mt-1 sm:mt-2 text-xs sm:text-sm">
 //                 {filteredProducts.length} product(s) found
 //               </p>
 //             </motion.div>
@@ -202,27 +192,24 @@
 //         </section>
 
 //         {/* Main Content */}
-//         <section className="py-12 px-4">
+//         <section className="py-6 sm:py-12 px-4">
 //           <div className="max-w-7xl mx-auto">
-//             <div className="grid lg:grid-cols-4 gap-8">
+//             <div className="grid lg:grid-cols-4 gap-4 sm:gap-8">
               
-//               {/* Sidebar - Categories */}
+//               {/* Sidebar - Hidden on Mobile, Drawer alternative recommended */}
 //               <motion.aside
 //                 initial={{ opacity: 0, x: -20 }}
 //                 animate={{ opacity: 1, x: 0 }}
-//                 className="lg:col-span-1"
+//                 className="hidden lg:block lg:col-span-1"
 //               >
 //                 <div className="sticky top-24 space-y-6">
                   
 //                   {/* Browse Categories */}
-//                   <div className="bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-white/50 p-6">
-//                     <h3 className="text-xl font-bold mb-4 flex items-center gap-2 text-gray-900">
-//                       <Box className="w-6 h-6 text-cyan-600" />
+//                   <div className="bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-white/50 p-4 sm:p-6">
+//                     <h3 className="text-lg sm:text-xl font-bold mb-4 flex items-center gap-2 text-gray-900">
+//                       <Box className="w-5 h-5 sm:w-6 sm:h-6 text-cyan-600" />
 //                       Browse Categories
 //                     </h3>
-//                     <p className="text-gray-600 text-sm mb-4">
-//                       Find the perfect weighing solution
-//                     </p>
                     
 //                     <div className="space-y-2">
 //                       {categories.map((category) => {
@@ -240,10 +227,10 @@
 //                             }`}
 //                           >
 //                             <div className={`p-2 rounded-lg ${isSelected ? 'bg-white/20' : category.color}`}>
-//                               <Icon className="w-5 h-5 text-white" />
+//                               <Icon className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
 //                             </div>
 //                             <div className="text-left flex-1">
-//                               <div className="font-semibold">{category.name}</div>
+//                               <div className="font-semibold text-sm sm:text-base">{category.name}</div>
 //                               <div className={`text-xs ${isSelected ? 'text-cyan-50' : 'text-gray-500'}`}>
 //                                 {category.description}
 //                               </div>
@@ -256,15 +243,15 @@
 //                     {/* View All Products Button */}
 //                     <button
 //                       onClick={() => setSelectedCategory(null)}
-//                       className="w-full mt-4 bg-gradient-to-r from-cyan-500 to-blue-500 text-white py-3 rounded-xl font-semibold hover:shadow-xl transition-all"
+//                       className="w-full mt-4 bg-gradient-to-r from-cyan-500 to-blue-500 text-white py-2.5 sm:py-3 rounded-xl font-semibold hover:shadow-xl transition-all text-sm sm:text-base"
 //                     >
 //                       View All Products →
 //                     </button>
 //                   </div>
 
 //                   {/* Price Range Filter */}
-//                   <div className="bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-white/50 p-6">
-//                     <h4 className="font-semibold text-gray-700 mb-4">Price Range</h4>
+//                   <div className="bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-white/50 p-4 sm:p-6">
+//                     <h4 className="font-semibold text-gray-700 mb-4 text-sm sm:text-base">Price Range</h4>
 //                     <div className="space-y-4">
 //                       <input
 //                         type="range"
@@ -275,7 +262,7 @@
 //                         onChange={(e) => setPriceRange([0, Number(e.target.value)])}
 //                         className="w-full accent-cyan-500"
 //                       />
-//                       <div className="flex items-center justify-between text-sm">
+//                       <div className="flex items-center justify-between text-xs sm:text-sm">
 //                         <span className="font-medium text-gray-700">₹{priceRange[0].toLocaleString('en-IN')}</span>
 //                         <span className="font-medium text-gray-700">₹{priceRange[1].toLocaleString('en-IN')}</span>
 //                       </div>
@@ -283,81 +270,142 @@
 //                   </div>
 
 //                   {/* Sort By */}
-//                   <div className="bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-white/50 p-6">
-//                     <h4 className="font-semibold text-gray-700 mb-4">Sort By</h4>
+//                   <div className="bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-white/50 p-4 sm:p-6">
+//                     <h4 className="font-semibold text-gray-700 mb-4 text-sm sm:text-base">Sort By</h4>
 //                     <select
 //                       value={sortBy}
 //                       onChange={(e) => setSortBy(e.target.value)}
-//                       className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 bg-white/90 text-gray-700"
+//                       className="w-full p-2.5 sm:p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 bg-white/90 text-gray-700 text-sm sm:text-base"
 //                     >
 //                       <option value="featured">Featured</option>
 //                       <option value="price_low">Price: Low to High</option>
 //                       <option value="price_high">Price: High to Low</option>
 //                     </select>
 //                   </div>
-
-//                   {/* Clear Filters */}
-//                   {selectedCategory && (
-//                     <button
-//                       onClick={() => {
-//                         setSelectedCategory(null)
-//                         setPriceRange([0, 100000])
-//                         setSortBy('featured')
-//                       }}
-//                       className="w-full bg-red-500 text-white py-3 rounded-xl hover:bg-red-600 transition-colors font-semibold"
-//                     >
-//                       Clear Filters
-//                     </button>
-//                   )}
 //                 </div>
 //               </motion.aside>
 
-//               {/* Products Grid */}
+//               {/* Mobile Filters - Shown only on mobile */}
+//               <div className="lg:hidden col-span-full">
+//                 <div className="bg-white/90 backdrop-blur-md rounded-xl shadow-md p-4 mb-4">
+//                   <div className="flex flex-col sm:flex-row gap-3">
+//                     {/* Category Filter */}
+//                     <select
+//                       value={selectedCategory || ''}
+//                       onChange={(e) => setSelectedCategory(e.target.value || null)}
+//                       className="flex-1 p-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 text-sm"
+//                     >
+//                       <option value="">All Categories</option>
+//                       {categories.map((cat) => (
+//                         <option key={cat.id} value={cat.id}>{cat.name}</option>
+//                       ))}
+//                     </select>
+
+//                     {/* Sort */}
+//                     <select
+//                       value={sortBy}
+//                       onChange={(e) => setSortBy(e.target.value)}
+//                       className="flex-1 p-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 text-sm"
+//                     >
+//                       <option value="featured">Featured</option>
+//                       <option value="price_low">Price: Low to High</option>
+//                       <option value="price_high">Price: High to Low</option>
+//                     </select>
+//                   </div>
+//                 </div>
+//               </div>
+
+//               {/* Products Grid - Mobile Optimized */}
 //               <div className="lg:col-span-3">
 //                 {loading ? (
 //                   <div className="flex justify-center items-center h-64">
-//                     <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-cyan-500"></div>
+//                     <div className="animate-spin rounded-full h-12 w-12 sm:h-16 sm:w-16 border-t-4 border-cyan-500"></div>
 //                   </div>
 //                 ) : error ? (
 //                   <div className="text-center text-red-500 py-12 bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-white/50">
-//                     <p className="text-xl font-semibold">{error}</p>
+//                     <p className="text-lg sm:text-xl font-semibold px-4">{error}</p>
 //                     <button
 //                       onClick={() => window.location.reload()}
-//                       className="mt-4 bg-cyan-500 text-white px-6 py-3 rounded-lg hover:bg-cyan-600 transition-colors"
+//                       className="mt-4 bg-cyan-500 text-white px-6 py-2.5 sm:py-3 rounded-lg hover:bg-cyan-600 transition-colors text-sm sm:text-base"
 //                     >
 //                       Retry
 //                     </button>
 //                   </div>
 //                 ) : filteredProducts.length === 0 ? (
-//                   <motion.div
-//                     initial={{ opacity: 0, scale: 0.95 }}
-//                     animate={{ opacity: 1, scale: 1 }}
-//                     className="text-center py-16 bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-white/50"
-//                   >
-//                     <Box className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-//                     <h3 className="text-2xl font-bold mb-2 text-gray-900">No Products Found</h3>
-//                     <p className="text-gray-600 mb-6">Try adjusting your filters</p>
+//                   <div className="text-center py-12 sm:py-16 bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-white/50 px-4">
+//                     <Box className="w-12 h-12 sm:w-16 sm:h-16 text-gray-300 mx-auto mb-4" />
+//                     <h3 className="text-xl sm:text-2xl font-bold mb-2 text-gray-900">No Products Found</h3>
+//                     <p className="text-gray-600 mb-6 text-sm sm:text-base">Try adjusting your filters</p>
 //                     <button
 //                       onClick={() => {
 //                         setSelectedCategory(null)
 //                         setPriceRange([0, 100000])
 //                         setSortBy('featured')
 //                       }}
-//                       className="bg-cyan-500 text-white px-6 py-3 rounded-lg hover:bg-cyan-600 transition-colors"
+//                       className="bg-cyan-500 text-white px-6 py-2.5 sm:py-3 rounded-lg hover:bg-cyan-600 transition-colors text-sm sm:text-base"
 //                     >
 //                       Clear All Filters
 //                     </button>
-//                   </motion.div>
+//                   </div>
 //                 ) : (
-//                   <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
+//                   /* Mobile-Responsive Product Grid */
+//                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6">
 //                     {filteredProducts.map((product, index) => (
 //                       <motion.div
 //                         key={product.id}
 //                         initial={{ opacity: 0, y: 20 }}
 //                         animate={{ opacity: 1, y: 0 }}
 //                         transition={{ delay: index * 0.05 }}
+//                         className="bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col overflow-hidden"
 //                       >
-//                         <ProductCard {...product} priority={index < 3} />
+//                         {/* Product Image */}
+//                         <div className="relative h-48 sm:h-56 bg-gray-100">
+//                           <Image
+//                             src={product.image_url || '/images/placeholder.jpg'}
+//                             alt={product.name}
+//                             fill
+//                             className="object-contain p-4"
+//                             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+//                             priority={index < 3}
+//                           />
+//                         </div>
+
+//                         {/* Product Info */}
+//                         <div className="p-3 sm:p-4 flex-1 flex flex-col">
+//                           {/* Category Badge */}
+//                           <span className="inline-block px-2 py-1 text-xs font-semibold text-cyan-600 bg-cyan-50 rounded-full mb-2 w-fit">
+//                             {product.category.replace('_', ' ').toUpperCase()}
+//                           </span>
+
+//                           {/* Product Name - Fixed Overflow */}
+//                           <h3 className="text-sm sm:text-base font-semibold text-gray-800 mb-2 line-clamp-2 min-h-[2.5rem]">
+//                             {product.name}
+//                           </h3>
+
+//                           {/* Product Description - Mobile Hidden, Tablet+ Visible */}
+//                           <p className="hidden sm:block text-xs sm:text-sm text-gray-600 mb-3 line-clamp-2">
+//                             {product.description}
+//                           </p>
+
+//                           {/* Price and Stock */}
+//                           <div className="mt-auto space-y-2">
+//                             <div className="flex items-center justify-between">
+//                               <span className="text-lg sm:text-xl font-bold text-cyan-600">
+//                                 ₹{product.price.toLocaleString('en-IN')}
+//                               </span>
+//                               <span className="text-xs sm:text-sm text-gray-500">
+//                                 Stock: {product.stock_quantity}
+//                               </span>
+//                             </div>
+
+//                             {/* View Details Button */}
+//                             <Link href={`/products/${product.id}`}>
+//                               <button className="w-full bg-cyan-600 hover:bg-cyan-700 text-white font-semibold py-2 sm:py-2.5 px-4 rounded-lg transition-colors duration-200 text-sm sm:text-base">
+//                                 View Details
+//                               </button>
+//                             </Link>
+//                           </div>
+//                         </div>
 //                       </motion.div>
 //                     ))}
 //                   </div>
@@ -367,116 +415,37 @@
 //           </div>
 //         </section>
 
-//         {/* Call to Action Section */}
-//         <section className="py-16 px-4 mt-12">
+//         {/* Call to Action Section - Mobile Optimized */}
+//         <section className="py-12 sm:py-16 px-4 mt-8 sm:mt-12">
 //           <div className="max-w-7xl mx-auto">
-//             <motion.div
-//               initial={{ opacity: 0, y: 20 }}
-//               whileInView={{ opacity: 1, y: 0 }}
-//               viewport={{ once: true }}
-//               className="relative bg-gradient-to-br from-teal-600 via-cyan-600 to-blue-700 rounded-3xl p-12 text-center shadow-2xl overflow-hidden"
-//             >
-//               <motion.div
-//                 animate={{
-//                   scale: [1, 1.2, 1],
-//                   rotate: [0, 90, 0],
-//                 }}
-//                 transition={{
-//                   duration: 10,
-//                   repeat: Infinity,
-//                   ease: "easeInOut"
-//                 }}
-//                 className="absolute top-0 right-0 w-72 h-72 bg-white/10 rounded-full blur-3xl"
-//               />
-//               <motion.div
-//                 animate={{
-//                   scale: [1, 1.3, 1],
-//                   rotate: [0, -90, 0],
-//                 }}
-//                 transition={{
-//                   duration: 12,
-//                   repeat: Infinity,
-//                   ease: "easeInOut"
-//                 }}
-//                 className="absolute bottom-0 left-0 w-56 h-56 bg-white/10 rounded-full blur-3xl"
-//               />
-              
+//             <div className="relative bg-gradient-to-br from-teal-600 via-cyan-600 to-blue-700 rounded-2xl sm:rounded-3xl p-8 sm:p-12 text-center shadow-2xl overflow-hidden">
 //               <div className="relative z-10">
-//                 <motion.div
-//                   animate={{
-//                     y: [0, -10, 0],
-//                   }}
-//                   transition={{
-//                     duration: 3,
-//                     repeat: Infinity,
-//                     ease: "easeInOut"
-//                   }}
-//                   className="text-7xl mb-6 filter drop-shadow-2xl"
-//                 >
+//                 <div className="text-5xl sm:text-7xl mb-4 sm:mb-6">
 //                   📦
-//                 </motion.div>
-
-//                 <h2 className="text-4xl md:text-5xl font-black text-white mb-4" style={{
-//                   textShadow: '0 4px 30px rgba(0,0,0,0.5), 0 0 60px rgba(0,0,0,0.3)'
-//                 }}>
+//                 </div>
+//                 <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-white mb-3 sm:mb-4 px-4">
 //                   Can't Find What You Need?
 //                 </h2>
                 
-//                 <p className="text-xl md:text-2xl text-white font-medium mb-10 max-w-2xl mx-auto" style={{
-//                   textShadow: '0 2px 20px rgba(0,0,0,0.4)'
-//                 }}>
+//                 <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white font-medium mb-6 sm:mb-10 max-w-2xl mx-auto px-4">
 //                   Contact us for custom orders and bulk pricing
 //                 </p>
                 
-//                 <div className="flex gap-4 justify-center flex-wrap">
+//                 <div className="flex gap-3 sm:gap-4 justify-center flex-wrap px-4">
 //                   <Link href="/contact">
-//                     <motion.button
-//                       whileHover={{ scale: 1.05, y: -3 }}
-//                       whileTap={{ scale: 0.95 }}
-//                       className="bg-white text-teal-700 px-10 py-4 rounded-full font-bold text-lg shadow-2xl hover:shadow-white/40 transition-all flex items-center gap-3"
-//                     >
-//                       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-//                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-//                       </svg>
+//                     <button className="bg-white text-teal-700 px-6 sm:px-10 py-3 sm:py-4 rounded-full font-bold text-sm sm:text-lg shadow-2xl hover:shadow-white/40 transition-all">
 //                       Contact Us
-//                     </motion.button>
+//                     </button>
 //                   </Link>
                   
 //                   <a href="tel:9825247312">
-//                     <motion.button
-//                       whileHover={{ scale: 1.05, y: -3 }}
-//                       whileTap={{ scale: 0.95 }}
-//                       className="bg-white/20 backdrop-blur-md border-2 border-white text-white px-10 py-4 rounded-full font-bold text-lg hover:bg-white hover:text-teal-700 transition-all shadow-2xl flex items-center gap-3"
-//                     >
-//                       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-//                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-//                       </svg>
-//                       Call: 98252 47312
-//                     </motion.button>
+//                     <button className="bg-white/20 backdrop-blur-md border-2 border-white text-white px-6 sm:px-10 py-3 sm:py-4 rounded-full font-bold text-sm sm:text-lg hover:bg-white hover:text-teal-700 transition-all shadow-2xl">
+//                       Call Us
+//                     </button>
 //                   </a>
 //                 </div>
-
-//                 <motion.div
-//                   initial={{ opacity: 0, y: 20 }}
-//                   animate={{ opacity: 1, y: 0 }}
-//                   transition={{ delay: 0.3 }}
-//                   className="mt-6"
-//                 >
-//                   <a href="https://wa.me/919825247312?text=Hi%2C%20I'm%20interested%20in%20your%20products" target="_blank" rel="noopener noreferrer">
-//                     <motion.button
-//                       whileHover={{ scale: 1.05 }}
-//                       whileTap={{ scale: 0.95 }}
-//                       className="bg-green-500 text-white px-8 py-3 rounded-full font-bold shadow-xl hover:bg-green-600 transition-all inline-flex items-center gap-2"
-//                     >
-//                       <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-//                         <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
-//                       </svg>
-//                       Chat on WhatsApp
-//                     </motion.button>
-//                   </a>
-//                 </motion.div>
 //               </div>
-//             </motion.div>
+//             </div>
 //           </div>
 //         </section>
 //       </div>
@@ -489,13 +458,24 @@
 //   return (
 //     <Suspense fallback={
 //       <div className="flex justify-center items-center min-h-screen">
-//         <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-cyan-500"></div>
+//         <div className="animate-spin rounded-full h-12 w-12 sm:h-16 sm:w-16 border-t-4 border-cyan-500"></div>
 //       </div>
 //     }>
 //       <ProductsContent />
 //     </Suspense>
 //   )
 // }
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -525,6 +505,7 @@ import { motion } from 'framer-motion'
 import Image from 'next/image'
 import { Scale, Package, Wrench, Box } from 'lucide-react'
 import Link from 'next/link'
+import { productApi } from '@/services/api' // ✅ Added
 
 interface Product {
   id: number
@@ -560,8 +541,8 @@ const categories: Category[] = [
     color: 'bg-green-500'
   },
   {
-    id: 'accessories',
-    name: 'Accessories',
+    id: 'mobile_accessory', // ✅ Fixed from 'accessories'
+    name: 'Mobile Accessories',
     description: 'Parts & components',
     icon: Wrench,
     color: 'bg-purple-500'
@@ -580,6 +561,7 @@ function ProductsContent() {
   const [sortBy, setSortBy] = useState<string>('featured')
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [retrying, setRetrying] = useState(false) // ✅ Added
 
   // Set category from URL on mount
   useEffect(() => {
@@ -588,38 +570,51 @@ function ProductsContent() {
     }
   }, [categoryFromUrl])
 
-  // Fetch products
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        setLoading(true)
-        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000'
-        const response = await fetch(`${apiUrl}/api/products/`)
-        
-        if (!response.ok) {
-          throw new Error(`Failed to fetch products: ${response.status}`)
-        }
-        
-        const data = await response.json()
-        setProducts(data)
-        setFilteredProducts(data)
-      } catch (err) {
-        setError('Failed to load products. Please try again later.')
-        console.error('Error fetching products:', err)
-      } finally {
-        setLoading(false)
-      }
+  // ✅ Enhanced fetch with retry logic
+  const fetchProducts = async () => {
+    try {
+      setLoading(true)
+      setError(null)
+      
+      // ✅ Use productApi with built-in retry logic
+      const data = await productApi.getAll({
+        category: selectedCategory && selectedCategory !== 'all' ? selectedCategory : undefined,
+      })
+      
+      setProducts(data)
+      setFilteredProducts(data)
+    } catch (err) {
+      setError('Unable to load products. The server may be starting up...')
+      console.error('Error fetching products:', err)
+    } finally {
+      setLoading(false)
     }
+  }
 
+  // Fetch products on mount
+  useEffect(() => {
     fetchProducts()
-  }, [])
+  }, []) // ✅ Only on mount
+
+  // ✅ Auto-retry if initial load fails
+  useEffect(() => {
+    if (error && !retrying && products.length === 0) {
+      setRetrying(true)
+      const timer = setTimeout(() => {
+        console.log('Auto-retrying product fetch...')
+        fetchProducts().finally(() => setRetrying(false))
+      }, 3000)
+      
+      return () => clearTimeout(timer)
+    }
+  }, [error, retrying, products.length])
 
   // Filter products when category, price, or sort changes
   useEffect(() => {
     let filtered = products
 
     // Filter by category
-    if (selectedCategory) {
+    if (selectedCategory && selectedCategory !== 'all') {
       filtered = filtered.filter(p => p.category === selectedCategory)
     }
 
@@ -684,19 +679,16 @@ function ProductsContent() {
 
       {/* Content */}
       <div className="relative z-10">
-        {/* Header Section - Mobile Optimized */}
         {/* Header Section - Mobile Optimized with navbar spacing */}
-<section className="pt-20 sm:pt-24 pb-6 sm:pb-12 px-4 bg-white/60 backdrop-blur-md border-b border-white/50 shadow-sm">
-  <div className="max-w-7xl mx-auto">
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-    >
-      <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-2 sm:mb-3 text-gray-900">
-        Our Products
-      </h1>
-      {/* Rest of content... */}
-
+        <section className="pt-20 sm:pt-24 pb-6 sm:pb-12 px-4 bg-white/60 backdrop-blur-md border-b border-white/50 shadow-sm">
+          <div className="max-w-7xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+            >
+              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-2 sm:mb-3 text-gray-900">
+                Our Products
+              </h1>
               <p className="text-gray-700 text-sm sm:text-base lg:text-lg">
                 {selectedCategory 
                   ? `Showing ${categories.find(c => c.id === selectedCategory)?.name || 'Products'}`
@@ -715,7 +707,7 @@ function ProductsContent() {
           <div className="max-w-7xl mx-auto">
             <div className="grid lg:grid-cols-4 gap-4 sm:gap-8">
               
-              {/* Sidebar - Hidden on Mobile, Drawer alternative recommended */}
+              {/* Sidebar - Hidden on Mobile */}
               <motion.aside
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -837,18 +829,33 @@ function ProductsContent() {
               {/* Products Grid - Mobile Optimized */}
               <div className="lg:col-span-3">
                 {loading ? (
+                  // ✅ Enhanced loading state
                   <div className="flex justify-center items-center h-64">
-                    <div className="animate-spin rounded-full h-12 w-12 sm:h-16 sm:w-16 border-t-4 border-cyan-500"></div>
+                    <div className="text-center">
+                      <div className="animate-spin rounded-full h-12 w-12 sm:h-16 sm:w-16 border-t-4 border-cyan-500 mx-auto mb-4"></div>
+                      <p className="text-gray-600 text-sm sm:text-base">Loading products...</p>
+                      {retrying && (
+                        <p className="text-cyan-600 text-xs sm:text-sm mt-2">
+                          Server is waking up, please wait...
+                        </p>
+                      )}
+                    </div>
                   </div>
-                ) : error ? (
-                  <div className="text-center text-red-500 py-12 bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-white/50">
-                    <p className="text-lg sm:text-xl font-semibold px-4">{error}</p>
+                ) : error && products.length === 0 ? (
+                  // ✅ Enhanced error state
+                  <div className="text-center py-12 sm:py-16 bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-white/50 px-4">
+                    <div className="text-6xl mb-4">⏳</div>
+                    <h3 className="text-xl sm:text-2xl font-bold mb-2 text-gray-900">Server is Starting Up</h3>
+                    <p className="text-gray-600 mb-6 text-sm sm:text-base">{error}</p>
                     <button
-                      onClick={() => window.location.reload()}
-                      className="mt-4 bg-cyan-500 text-white px-6 py-2.5 sm:py-3 rounded-lg hover:bg-cyan-600 transition-colors text-sm sm:text-base"
+                      onClick={() => fetchProducts()}
+                      className="bg-cyan-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-cyan-700 transition-colors text-sm sm:text-base"
                     >
-                      Retry
+                      Retry Now
                     </button>
+                    <p className="text-xs sm:text-sm text-gray-500 mt-4">
+                      This usually takes 30-60 seconds on first load
+                    </p>
                   </div>
                 ) : filteredProducts.length === 0 ? (
                   <div className="text-center py-12 sm:py-16 bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-white/50 px-4">
@@ -896,7 +903,7 @@ function ProductsContent() {
                             {product.category.replace('_', ' ').toUpperCase()}
                           </span>
 
-                          {/* Product Name - Fixed Overflow */}
+                          {/* Product Name */}
                           <h3 className="text-sm sm:text-base font-semibold text-gray-800 mb-2 line-clamp-2 min-h-[2.5rem]">
                             {product.name}
                           </h3>
