@@ -1,0 +1,164 @@
+[
+  {
+    "name": "UNIQUE Tebal Top Scale 10/20/30kg - 240x290mm",
+    "category": "weighing_scale",
+    "description": "High-precision digital tebal top weighing scale with stainless steel platform. Perfect for retail shops, kitchens, and small businesses.",
+    "price": 4000.0,
+    "stock_quantity": 25,
+    "image_url": "/images/30kg-tebal-scale.jpg",
+    "specifications": "{\"capacity\": \"10/20/30kg\", \"platform_size\": \"240x290mm\", \"accuracy\": \"\\u00b15g\", \"display\": \"LED\", \"power\": \"Rechargeable battery\", \"brand\": \"UNIQUE\"}"
+  },
+  {
+    "name": "Platform Scale 400x400mm - 200kg Capacity",
+    "category": "weighing_scale",
+    "description": "Heavy-duty platform scale ideal for warehouses, industries, and heavy goods weighing. Comes with digital indicator.",
+    "price": 6500.0,
+    "stock_quantity": 10,
+    "image_url": "/images/platform-scale.jpg",
+    "specifications": "{\"capacity\": \"200kg\", \"platform_size\": \"400x400mm\", \"accuracy\": \"\\u00b120g\", \"display\": \"Digital LED display\", \"material\": \"Mild Steel platform\", \"power\": \"AC/DC\"}"
+  },
+  {
+    "name": "OCS Crane Scale 15 Ton Industrial Grade",
+    "category": "weighing_scale",
+    "description": "Professional crane scale for industrial use. Features overload protection and remote display.",
+    "price": 45000.0,
+    "stock_quantity": 5,
+    "image_url": "/images/crane-scale.jpeg",
+    "specifications": "{\"capacity\": \"15 Ton (15000kg)\", \"accuracy_class\": \"III\", \"power\": \"DC 6V\", \"graduation\": \"5kg\", \"model\": \"OCS-15T\", \"features\": \"Remote display, Overload protection\"}"
+  },
+  {
+    "name": "Mini Weighing Scale 10/20kg MS Series",
+    "category": "weighing_scale",
+    "description": "Compact and portable weighing scale perfect for small shops, jewelry stores, and retail counters.",
+    "price": 3500.0,
+    "stock_quantity": 50,
+    "image_url": "/images/Mini-20KG.jpeg",
+    "specifications": "{\"capacity\": \"10/20kg\", \"platform_size\": \"230x310mm\", \"accuracy\": \"\\u00b12g\", \"display\": \"LCD\", \"power\": \"Rechargeable\", \"brand\": \"UNIQUE\"}"
+  },
+  {
+    "name": "MS Chekar Platform 500x500mm - 500kg",
+    "category": "weighing_scale",
+    "description": "Heavy-duty MS Chekar platform scale with non-slip surface. Ideal for industrial weighing applications.",
+    "price": 7500.0,
+    "stock_quantity": 8,
+    "image_url": "/images/chekar-platform.jpeg",
+    "specifications": "{\"capacity\": \"500kg\", \"platform_size\": \"500x500mm\", \"accuracy\": \"\\u00b150g\", \"platform_type\": \"MS Chekar (Anti-slip)\", \"display\": \"Digital indicator\", \"power\": \"AC adapter\"}"
+  },
+  {
+    "name": "600x600mm Platform Scale 100/200/300/500kg",
+    "category": "weighing_scale",
+    "description": "Versatile stainless steel platform scale available in multiple capacities. Suitable for various commercial applications.",
+    "price": 8500.0,
+    "stock_quantity": 12,
+    "image_url": "/images/600-600mm-ss-Regular.jpg",
+    "specifications": "{\"capacity\": \"100/200/300/500kg\", \"platform_size\": \"600x600mm\", \"material\": \"Stainless Steel\", \"accuracy\": \"\\u00b120g\", \"display\": \"LED digital\", \"power\": \"AC/DC\"}"
+  },
+  {
+    "name": "INFRES SuperTech-IN Banknote Counter",
+    "category": "note_counter",
+    "description": "High-speed automatic currency note counting machine with counterfeit detection. Perfect for banks, retail stores, and cash-heavy businesses.",
+    "price": 8500.0,
+    "stock_quantity": 15,
+    "image_url": "/images/note-counter.jpg",
+    "specifications": "{\"speed\": \"1000 notes/minute\", \"display\": \"LED display\", \"features\": \"UV detection, Magnetic detection, Auto start/stop\", \"hopper_capacity\": \"200 notes\", \"brand\": \"INFRES SuperTech-IN\"}"
+  },
+  {
+    "name": "300x300mm Platform Scale 50/100kg - UNIQUE",
+    "category": "weighing_scale",
+    "description": "Specialized platform weighing scale with digital display. Ideal for industrial and commercial use. Features: Stainless steel platform, Digital LCD display, Portable design with legs, Accurate weight measurement up to 100kg.",
+    "price": 5500.0,
+    "stock_quantity": 15,
+    "image_url": "/images/300*300mm-Chicken-ss.jpeg",
+    "specifications": null
+  },
+  {
+    "name": "Jewellery Gold Testing Scale - CALTRON SCALEX",
+    "category": "weighing_scale",
+    "description": "High-precision digital jewellery scale for gold testing and weighing. Features dual display system with accuracy certification. Perfect for jewellers, gold shops, and precision weighing applications. ISO 9001:2008 certified company product.",
+    "price": 12500.0,
+    "stock_quantity": 15,
+    "image_url": "/images/Jewellery.jpeg",
+    "specifications": "{\"capacity\": \"200g\", \"accuracy\": \"0.001g\", \"display\": \"Dual LED Display\", \"certification\": \"ISO 9001:2008\", \"material\": \"Stainless Steel + Acrylic\", \"power\": \"AC Adapter\", \"application\": \"Gold Testing, Jewellery Weighing\"}"
+  },
+  {
+    "name": "Heavy-Duty Industrial Weighing Meter - Explosion Proof",
+    "category": "weighing_scale",
+    "description": "Industrial-grade explosion-proof weighing meter with digital LED display. Features robust cast iron construction with weatherproof enclosure. Ideal for hazardous environments, chemical plants, and heavy industrial applications. Multi-function buttons for tare, zero, and unit conversion.",
+    "price": 18500.0,
+    "stock_quantity": 8,
+    "image_url": "/images/Heavy-meter1.jpeg",
+    "specifications": "{\"display\": \"LED Digital Display\", \"construction\": \"Cast Iron Explosion Proof\", \"protection\": \"IP67 Weatherproof\", \"functions\": \"Tare, Zero, Hold, Unit Conversion\", \"power\": \"AC/DC Dual Power\", \"cable\": \"Heavy Duty Armored Cable\", \"mounting\": \"Wall/Panel Mount\", \"environment\": \"Hazardous Area Certified\", \"temperature_range\": \"-10\u00b0C to 50\u00b0C\", \"warranty\": \"2 Years\"}"
+  },
+  {
+    "name": "ABS Mini Weighing Scale 10/20kg - UNIQUE Green Display",
+    "category": "weighing_scale",
+    "description": "Compact ABS body mini weighing scale with bright green LED display. Perfect for shops, grocery stores, and small businesses. Features dual capacity options (10kg/20kg), lightweight portable design with easy-to-clean surface. ISO 9001:2015 certified company product.",
+    "price": 3000.0,
+    "stock_quantity": 25,
+    "image_url": "/images/ABS.jpeg",
+    "specifications": "{\"capacity\": \"10kg / 20kg\", \"accuracy\": \"\u00b12g\", \"display\": \"Green LED Digital\", \"material\": \"ABS Plastic Body\", \"platform_size\": \"230mm x 300mm\", \"power\": \"AC Adapter / Rechargeable Battery\", \"functions\": \"Tare, Zero, Unit Conversion\", \"weight\": \"2.5kg\", \"certification\": \"ISO 9001:2015\", \"warranty\": \"1 Year\"}"
+  },
+  {
+    "name": "CONTECH Precision Jewellery Scale - Digital Balance 0.001g",
+    "category": "weighing_scale",
+    "description": "Premium precision weighing scale by CONTECH, specially designed for jewellery applications. Features ultra-high accuracy with 0.001g precision and bright green LED display. Perfect for gold, silver, diamonds, and precious stone weighing. Equipped with multiple function keys for tare, calibration, and unit conversion. Ideal for jewellers, gold traders, and laboratories.",
+    "price": 25000.0,
+    "stock_quantity": 12,
+    "image_url": "/images/Contech.jpeg",
+    "specifications": "{\"precision\": \"0.001g (1mg)\", \"max_capacity\": \"500g / 1000g\", \"display\": \"Green LED - 5 Digit\", \"platform\": \"Circular Stainless Steel\", \"functions\": \"Tare, Zero, Calibration, Unit Conversion\", \"units\": \"g, ct, oz, gn, dwt\", \"power\": \"AC Adapter / Battery\", \"response_time\": \"2 seconds\", \"calibration\": \"External Calibration\", \"application\": \"Jewellery, Gold, Diamond, Laboratory\", \"warranty\": \"1 Year\"}"
+  },
+  {
+    "name": "Industrial Floor Scale with Roller Platform 1-3 Ton Capacity",
+    "category": "weighing_scale",
+    "description": "Heavy-duty industrial floor scale with roller platform design for easy loading/unloading of drums, barrels, and pallets. Features robust MS construction with anti-slip rollers and digital indicator. Perfect for warehouses, factories, chemical plants, and logistics centers. Ramp design allows smooth material handling.",
+    "price": 35000.0,
+    "stock_quantity": 5,
+    "image_url": "/images/Floor-Scale.jpeg",
+    "specifications": "{\"capacity\": \"1 Ton / 2 Ton / 3 Ton\", \"platform_type\": \"Roller Platform - MS Construction\", \"platform_size\": \"1200mm x 1200mm\", \"roller_bars\": \"MS Roller Bars - Anti-slip\", \"accuracy\": \"500g / 1kg\", \"indicator\": \"Digital LED Display\", \"load_cell\": \"4 x High Precision Load Cells\", \"power\": \"AC 220V / Rechargeable Battery\", \"construction\": \"Heavy Duty MS Frame\", \"ramp\": \"Included for easy access\", \"applications\": \"Drums, Barrels, Pallets, Heavy Materials\", \"warranty\": \"2 Years\"}"
+  },
+  {
+    "name": "UNIQUE Professional PRC Computing Scale 30kg - Dual Display",
+    "category": "weighing_scale",
+    "description": "High-quality handmade price computing scale with exceptional accuracy and reliability. Features two large green LED displays - one facing customer and one for operator. Advanced price computing functionality with memory for frequently used prices. Durable stainless steel construction with easy-to-clean surface. Built-in rechargeable battery with long backup time.",
+    "price": 7200.0,
+    "stock_quantity": 15,
+    "image_url": "/images/PRC-Scale.jpeg",
+    "specifications": "{\"max_capacity\": \"30kg\", \"division\": \"5g\", \"display_type\": \"Dual Green LED - Customer & Operator\", \"weighing_pan\": \"SS 304 Stainless Steel\", \"dimensions\": \"300 x 240mm Platform\", \"computing_functions\": \"Weight x Unit Price = Total Amount\", \"memory\": \"Price Memory Function\", \"tare_range\": \"Full Capacity\", \"power_source\": \"AC 230V / DC 6V Rechargeable Battery\", \"battery_life\": \"40-50 Hours Continuous Use\", \"body_material\": \"ABS Plastic Housing\", \"certification\": \"ISO 9001:2015\", \"applications\": \"Retail Shops, Grocery Stores, Supermarkets, Markets\"}"
+  },
+  {
+    "name": "Heavy Duty Note Counting Machine - Multi-Currency with UV+MG Detection",
+    "category": "note_counter",
+    "description": "Professional-grade currency counting machine designed for heavy-duty commercial use. Features advanced counterfeit detection with UV, MG, and IR sensors. Large LCD display with intuitive controls. Supports batch counting, add mode, and self-diagnostic functions. Built-in thermal protection and jam detection for reliable operation.",
+    "price": 15800.0,
+    "stock_quantity": 6,
+    "image_url": "/images/Multi-Currency.jpeg",
+    "specifications": "{\"counting_capacity\": \"1000-1200 notes/min\", \"hopper\": \"300 notes capacity\", \"stacker\": \"200 notes capacity\", \"detection_system\": \"UV + MG + IR Triple Detection\", \"display_type\": \"Large LCD Display with External Display\", \"batch_preset\": \"1-999 notes\", \"functions\": \"Count, Add, Batch, Self-Check\", \"error_alerts\": \"Double, Half, Chain, Jam Detection\", \"motor_type\": \"Heavy Duty DC Motor\", \"noise_level\": \"<60dB\", \"power_consumption\": \"80W\", \"video_url\": \"/videos/Multi-Currency.mp4\", \"video_demos\": [\"/videos/Note-Machine1.mp4\", \"/videos/Note-Machine2.mp4\"], \"net_weight\": \"6.5kg\", \"certification\": \"CE Certified\", \"applications\": \"Banks, Supermarkets, Hotels, Casinos\"}"
+  },
+  {
+    "name": "Basic Currency Note Counting Machine with LCD Display",
+    "category": "note_counter",
+    "description": "Compact and efficient note counting machine with large LCD display and intuitive button controls. Features UV counterfeit detection, batch counting, and automatic error detection. Perfect for small businesses, retail shops, and offices requiring reliable cash handling.",
+    "price": 9800.0,
+    "stock_quantity": 12,
+    "image_url": "/images/Basic-NoteMachine.jpeg",
+    "specifications": "{\"counting_speed\": \"900-1000 notes/minute\", \"hopper_capacity\": \"200 notes\", \"stacker_capacity\": \"150 notes\", \"display_type\": \"Large LCD Display\", \"counterfeit_detection\": \"UV Detection\", \"batch_function\": \"1-999 notes preset\", \"error_detection\": \"Double Note, Half Note, Chain Note\", \"power\": \"AC 220V 50Hz\", \"dimensions\": \"280 x 240 x 170mm\", \"net_weight\": \"5.8kg\", \"features\": \"Auto Start/Stop, Add Function, Error Alert\", \"warranty\": \"1 Year\", \"ideal_for\": \"Small Businesses, Retail Shops, Offices\"}"
+  },
+  {
+    "name": "Premium Note Counter with External Customer Display - Dual LED",
+    "category": "note_counter",
+    "description": "Professional note counting machine with dual display system - main control panel plus external customer-facing LED display. Features comprehensive button panel for currency selection and mode control. Equipped with UV and MG counterfeit detection. Heavy-duty dual roller system for accurate counting. Perfect for banks, currency exchanges, and high-volume retail operations.",
+    "price": 12500.0,
+    "stock_quantity": 10,
+    "image_url": "/images/Basic-Note-Machine.jpeg",
+    "specifications": "{\"counting_speed\": \"1000 notes/minute\", \"hopper_capacity\": \"300 notes\", \"stacker_capacity\": \"200 notes\", \"display_system\": \"Dual Display - Control Panel + External LED Customer Display\", \"control_panel\": \"Large LCD with Full Button Matrix\", \"external_display\": \"Red LED Digital Display\", \"counterfeit_detection\": \"UV + MG Detection\", \"currency_modes\": \"Multi-Currency Support (INR, USD, EUR, GBP, etc)\", \"batch_function\": \"1-999 notes preset\", \"error_detection\": \"Double, Half, Chain, Jam Detection\", \"power\": \"AC 220V 50Hz\", \"dimensions\": \"300 x 250 x 190mm\", \"net_weight\": \"6.8kg\", \"features\": \"Auto Start/Stop, Add Mode, Total Count, Error Alert\", \"warranty\": \"1 Year\", \"ideal_for\": \"Banks, Currency Exchanges, Large Retail\"}"
+  },
+  {
+    "name": "Industrial Platform Scale 750x750mm - Heavy Duty Weighing System",
+    "category": "weighing_scale",
+    "description": "Heavy-duty industrial platform scale with large 750mm x 750mm checkered steel platform. Features pole-mounted digital indicator with bright LED display for easy reading. Anti-slip diamond plate surface ensures safety during weighing. Ideal for weighing heavy goods, sacks, drums, and industrial materials. Built with robust MS construction for long-lasting durability in warehouse and factory environments.",
+    "price": 12500.0,
+    "stock_quantity": 8,
+    "image_url": "/images/750*750mm.jpeg",
+    "specifications": "{\"platform_size\": \"750mm x 750mm\", \"capacity\": \"500kg to 1000kg\", \"accuracy\": \"\u00b150g to \u00b1100g\", \"platform_material\": \"MS Steel with Anti-Slip Checkered Plate\", \"indicator\": \"Pole-Mounted Digital Display\", \"display_type\": \"Bright LED Display\", \"pole_height\": \"Adjustable 800-1000mm\", \"platform_thickness\": \"5-6mm Heavy Gauge Steel\", \"load_cell\": \"4 Load Cell System\", \"tare_function\": \"Yes\", \"power\": \"AC 230V / Rechargeable Battery\", \"battery_backup\": \"40+ Hours\", \"dimensions\": \"750 x 750 x 100mm\", \"net_weight\": \"45kg\", \"max_load\": \"1 Ton\", \"certification\": \"ISO Certified\", \"warranty\": \"1 Year\", \"ideal_for\": \"Warehouses, Factories, Godowns, Loading Docks\"}"
+  }
+]
