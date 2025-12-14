@@ -1,12 +1,12 @@
 // 'use client'
 
-// import { useState, useEffect, Suspense } from 'react'
+// import { useState, useEffect, Suspense, memo, useMemo } from 'react'
 // import { useSearchParams } from 'next/navigation'
 // import { motion } from 'framer-motion'
 // import Image from 'next/image'
 // import { Scale, Package, Wrench, Box } from 'lucide-react'
 // import Link from 'next/link'
-// import { productApi } from '@/services/api' // ✅ Added
+// import { productApi } from '@/services/api'
 
 // interface Product {
 //   id: number
@@ -42,7 +42,7 @@
 //     color: 'bg-green-500'
 //   },
 //   {
-//     id: 'mobile_accessory', // ✅ Fixed from 'accessories'
+//     id: 'mobile_accessory',
 //     name: 'Mobile Accessories',
 //     description: 'Parts & components',
 //     icon: Wrench,
@@ -62,7 +62,7 @@
 //   const [sortBy, setSortBy] = useState<string>('featured')
 //   const [loading, setLoading] = useState(true)
 //   const [error, setError] = useState<string | null>(null)
-//   const [retrying, setRetrying] = useState(false) // ✅ Added
+//   const [retrying, setRetrying] = useState(false)
 
 //   // Set category from URL on mount
 //   useEffect(() => {
@@ -71,16 +71,14 @@
 //     }
 //   }, [categoryFromUrl])
 
-//   // ✅ Enhanced fetch with retry logic
+//   // ✅ FIXED: Fetch ALL products (no category filter in API call)
 //   const fetchProducts = async () => {
 //     try {
 //       setLoading(true)
 //       setError(null)
       
-//       // ✅ Use productApi with built-in retry logic
-//       const data = await productApi.getAll({
-//         category: selectedCategory && selectedCategory !== 'all' ? selectedCategory : undefined,
-//       })
+//       // ✅ Fetch ALL products - let client-side filtering handle categories
+//       const data = await productApi.getAll()
       
 //       setProducts(data)
 //       setFilteredProducts(data)
@@ -92,10 +90,10 @@
 //     }
 //   }
 
-//   // Fetch products on mount
+//   // ✅ FIXED: Fetch products ONCE on mount only
 //   useEffect(() => {
 //     fetchProducts()
-//   }, [selectedCategory]) // ✅ Only on mount
+//   }, []) // Empty dependency array - fetch once
 
 //   // ✅ Auto-retry if initial load fails
 //   useEffect(() => {
@@ -110,7 +108,7 @@
 //     }
 //   }, [error, retrying, products.length])
 
-//   // Filter products when category, price, or sort changes
+//   // ✅ Filter products when category, price, or sort changes (CLIENT-SIDE)
 //   useEffect(() => {
 //     let filtered = products
 
@@ -330,7 +328,7 @@
 //               {/* Products Grid - Mobile Optimized */}
 //               <div className="lg:col-span-3">
 //                 {loading ? (
-//                   // ✅ Enhanced loading state
+//                   // Loading state
 //                   <div className="flex justify-center items-center h-64">
 //                     <div className="text-center">
 //                       <div className="animate-spin rounded-full h-12 w-12 sm:h-16 sm:w-16 border-t-4 border-cyan-500 mx-auto mb-4"></div>
@@ -343,7 +341,7 @@
 //                     </div>
 //                   </div>
 //                 ) : error && products.length === 0 ? (
-//                   // ✅ Enhanced error state
+//                   // Error state
 //                   <div className="text-center py-12 sm:py-16 bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-white/50 px-4">
 //                     <div className="text-6xl mb-4">⏳</div>
 //                     <h3 className="text-xl sm:text-2xl font-bold mb-2 text-gray-900">Server is Starting Up</h3>
@@ -359,6 +357,7 @@
 //                     </p>
 //                   </div>
 //                 ) : filteredProducts.length === 0 ? (
+//                   // No products found
 //                   <div className="text-center py-12 sm:py-16 bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-white/50 px-4">
 //                     <Box className="w-12 h-12 sm:w-16 sm:h-16 text-gray-300 mx-auto mb-4" />
 //                     <h3 className="text-xl sm:text-2xl font-bold mb-2 text-gray-900">No Products Found</h3>
@@ -379,10 +378,13 @@
 //                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6">
 //                     {filteredProducts.map((product, index) => (
 //                       <motion.div
+//                       whileInView={{ opacity: 1, y: 0 }}
+//                       viewport={{ once: true, margin: "-50px" }}
+
 //                         key={product.id}
 //                         initial={{ opacity: 0, y: 20 }}
 //                         animate={{ opacity: 1, y: 0 }}
-//                         transition={{ delay: index * 0.05 }}
+//                         transition={{ delay: Math.min(index * 0.02, 0.3), duration: 0.3 }}
 //                         className="bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col overflow-hidden"
 //                       >
 //                         {/* Product Image */}
@@ -497,13 +499,21 @@
 
 
 
+
+
+
+
+
+
+
+
 'use client'
 
-import { useState, useEffect, Suspense } from 'react'
+import { useState, useEffect, Suspense, memo, useMemo } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
-import { Scale, Package, Wrench, Box } from 'lucide-react'
+import { Scale, Package, Wrench, Box, Eye } from 'lucide-react'
 import Link from 'next/link'
 import { productApi } from '@/services/api'
 
@@ -549,13 +559,77 @@ const categories: Category[] = [
   }
 ]
 
+// ✅ Memoized Product Card Component for better performance
+const ProductCard = memo(({ product, index }: { product: Product; index: number }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true, margin: "-50px" }}
+    transition={{ delay: Math.min(index * 0.02, 0.3), duration: 0.3 }}
+    className="bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col overflow-hidden"
+    style={{ willChange: 'transform, opacity' }}
+  >
+    {/* Product Image */}
+    <div className="relative h-48 sm:h-56 bg-gray-100">
+      <Image
+        src={product.image_url || '/images/placeholder.jpg'}
+        alt={product.name}
+        fill
+        className="object-contain p-4"
+        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+        priority={index < 3}
+        loading={index < 6 ? "eager" : "lazy"}
+      />
+    </div>
+
+    {/* Product Info */}
+    <div className="p-3 sm:p-4 flex-1 flex flex-col">
+      {/* Category Badge */}
+      <span className="inline-block px-2 py-1 text-xs font-semibold text-cyan-600 bg-cyan-50 rounded-full mb-2 w-fit">
+        {product.category.replace('_', ' ').toUpperCase()}
+      </span>
+
+      {/* Product Name */}
+      <h3 className="text-sm sm:text-base font-semibold text-gray-800 mb-2 line-clamp-2 min-h-[2.5rem]">
+        {product.name}
+      </h3>
+
+      {/* Product Description */}
+      <p className="hidden sm:block text-xs sm:text-sm text-gray-600 mb-3 line-clamp-2">
+        {product.description}
+      </p>
+
+      {/* Price and Stock */}
+      <div className="mt-auto space-y-2">
+        <div className="flex items-center justify-between">
+          <span className="text-lg sm:text-xl font-bold text-cyan-600">
+            ₹{product.price.toLocaleString('en-IN')}
+          </span>
+          <span className="text-xs sm:text-sm text-gray-500">
+            Stock: {product.stock_quantity}
+          </span>
+        </div>
+
+        {/* View Details Button with Eye Icon */}
+        <Link href={`/products/${product.id}`}>
+          <button className="w-full bg-cyan-600 hover:bg-cyan-700 text-white font-semibold py-2 sm:py-2.5 px-4 rounded-lg transition-colors duration-200 text-sm sm:text-base flex items-center justify-center gap-2">
+            <Eye className="w-4 h-4" />
+            View Details
+          </button>
+        </Link>
+      </div>
+    </div>
+  </motion.div>
+))
+
+ProductCard.displayName = 'ProductCard'
+
 // Separate component that uses useSearchParams
 function ProductsContent() {
   const searchParams = useSearchParams()
   const categoryFromUrl = searchParams.get('category')
   
   const [products, setProducts] = useState<Product[]>([])
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>([])
   const [selectedCategory, setSelectedCategory] = useState<string | null>(categoryFromUrl)
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 100000])
   const [sortBy, setSortBy] = useState<string>('featured')
@@ -570,17 +644,13 @@ function ProductsContent() {
     }
   }, [categoryFromUrl])
 
-  // ✅ FIXED: Fetch ALL products (no category filter in API call)
+  // ✅ Fetch ALL products (no category filter)
   const fetchProducts = async () => {
     try {
       setLoading(true)
       setError(null)
-      
-      // ✅ Fetch ALL products - let client-side filtering handle categories
       const data = await productApi.getAll()
-      
       setProducts(data)
-      setFilteredProducts(data)
     } catch (err) {
       setError('Unable to load products. The server may be starting up...')
       console.error('Error fetching products:', err)
@@ -589,10 +659,10 @@ function ProductsContent() {
     }
   }
 
-  // ✅ FIXED: Fetch products ONCE on mount only
+  // Fetch products once on mount
   useEffect(() => {
     fetchProducts()
-  }, []) // Empty dependency array - fetch once
+  }, [])
 
   // ✅ Auto-retry if initial load fails
   useEffect(() => {
@@ -602,13 +672,12 @@ function ProductsContent() {
         console.log('Auto-retrying product fetch...')
         fetchProducts().finally(() => setRetrying(false))
       }, 3000)
-      
       return () => clearTimeout(timer)
     }
   }, [error, retrying, products.length])
 
-  // ✅ Filter products when category, price, or sort changes (CLIENT-SIDE)
-  useEffect(() => {
+  // ✅ OPTIMIZED: Use useMemo instead of useEffect for filtering
+  const filteredProducts = useMemo(() => {
     let filtered = products
 
     // Filter by category
@@ -628,61 +697,34 @@ function ProductsContent() {
       filtered = [...filtered].sort((a, b) => b.price - a.price)
     }
 
-    setFilteredProducts(filtered)
+    return filtered
   }, [selectedCategory, priceRange, sortBy, products])
 
   // Handle category click
   const handleCategoryClick = (categoryId: string) => {
-    if (selectedCategory === categoryId) {
-      setSelectedCategory(null)
-    } else {
-      setSelectedCategory(categoryId)
-    }
+    setSelectedCategory(selectedCategory === categoryId ? null : categoryId)
   }
 
   return (
     <div className="min-h-screen relative overflow-hidden">
-      {/* Enhanced Visible Background */}
+      {/* ✅ OPTIMIZED: Static background (removed heavy animations) */}
       <div className="fixed inset-0 -z-10">
         <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-gray-50 to-purple-50" />
         
-        <motion.div
-          animate={{
-            scale: [1, 1.2, 1],
-            x: [0, 50, 0],
-            y: [0, -30, 0],
-          }}
-          transition={{
-            duration: 20,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-          className="absolute top-10 right-10 w-[400px] sm:w-[600px] h-[400px] sm:h-[600px] bg-gradient-to-br from-blue-200/40 to-cyan-300/40 rounded-full blur-3xl"
-        />
-        
-        <motion.div
-          animate={{
-            scale: [1, 1.3, 1],
-            x: [0, -40, 0],
-            y: [0, 40, 0],
-          }}
-          transition={{
-            duration: 18,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-          className="absolute bottom-10 left-10 w-[350px] sm:w-[500px] h-[350px] sm:h-[500px] bg-gradient-to-br from-purple-200/30 to-pink-300/30 rounded-full blur-3xl"
-        />
+        {/* Static decorative blobs (no animation) */}
+        <div className="absolute top-10 right-10 w-[300px] sm:w-[400px] h-[300px] sm:h-[400px] bg-gradient-to-br from-blue-200/30 to-cyan-300/30 rounded-full blur-3xl opacity-50" />
+        <div className="absolute bottom-10 left-10 w-[250px] sm:w-[350px] h-[250px] sm:h-[350px] bg-gradient-to-br from-purple-200/25 to-pink-300/25 rounded-full blur-3xl opacity-50" />
       </div>
 
       {/* Content */}
       <div className="relative z-10">
-        {/* Header Section - Mobile Optimized with navbar spacing */}
-        <section className="pt-20 sm:pt-24 pb-6 sm:pb-12 px-4 bg-white/60 backdrop-blur-md border-b border-white/50 shadow-sm">
+        {/* Header Section */}
+        <section className="pt-20 sm:pt-24 pb-6 sm:pb-12 px-4 bg-white/80 border-b border-gray-200 shadow-sm">
           <div className="max-w-7xl mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3 }}
             >
               <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-2 sm:mb-3 text-gray-900">
                 Our Products
@@ -705,16 +747,12 @@ function ProductsContent() {
           <div className="max-w-7xl mx-auto">
             <div className="grid lg:grid-cols-4 gap-4 sm:gap-8">
               
-              {/* Sidebar - Hidden on Mobile */}
-              <motion.aside
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                className="hidden lg:block lg:col-span-1"
-              >
+              {/* Sidebar */}
+              <aside className="hidden lg:block lg:col-span-1">
                 <div className="sticky top-24 space-y-6">
                   
                   {/* Browse Categories */}
-                  <div className="bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-white/50 p-4 sm:p-6">
+                  <div className="bg-white/95 rounded-2xl shadow-lg border border-gray-200 p-4 sm:p-6">
                     <h3 className="text-lg sm:text-xl font-bold mb-4 flex items-center gap-2 text-gray-900">
                       <Box className="w-5 h-5 sm:w-6 sm:h-6 text-cyan-600" />
                       Browse Categories
@@ -729,7 +767,7 @@ function ProductsContent() {
                           <button
                             key={category.id}
                             onClick={() => handleCategoryClick(category.id)}
-                            className={`w-full flex items-center gap-3 p-3 rounded-xl transition-all ${
+                            className={`w-full flex items-center gap-3 p-3 rounded-xl transition-all duration-200 ${
                               isSelected
                                 ? 'bg-gradient-to-r from-cyan-500 to-blue-500 text-white shadow-lg scale-105'
                                 : 'hover:bg-gray-100 text-gray-700'
@@ -749,7 +787,6 @@ function ProductsContent() {
                       })}
                     </div>
 
-                    {/* View All Products Button */}
                     <button
                       onClick={() => setSelectedCategory(null)}
                       className="w-full mt-4 bg-gradient-to-r from-cyan-500 to-blue-500 text-white py-2.5 sm:py-3 rounded-xl font-semibold hover:shadow-xl transition-all text-sm sm:text-base"
@@ -759,7 +796,7 @@ function ProductsContent() {
                   </div>
 
                   {/* Price Range Filter */}
-                  <div className="bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-white/50 p-4 sm:p-6">
+                  <div className="bg-white/95 rounded-2xl shadow-lg border border-gray-200 p-4 sm:p-6">
                     <h4 className="font-semibold text-gray-700 mb-4 text-sm sm:text-base">Price Range</h4>
                     <div className="space-y-4">
                       <input
@@ -779,12 +816,12 @@ function ProductsContent() {
                   </div>
 
                   {/* Sort By */}
-                  <div className="bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-white/50 p-4 sm:p-6">
+                  <div className="bg-white/95 rounded-2xl shadow-lg border border-gray-200 p-4 sm:p-6">
                     <h4 className="font-semibold text-gray-700 mb-4 text-sm sm:text-base">Sort By</h4>
                     <select
                       value={sortBy}
                       onChange={(e) => setSortBy(e.target.value)}
-                      className="w-full p-2.5 sm:p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 bg-white/90 text-gray-700 text-sm sm:text-base"
+                      className="w-full p-2.5 sm:p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 bg-white text-gray-700 text-sm sm:text-base"
                     >
                       <option value="featured">Featured</option>
                       <option value="price_low">Price: Low to High</option>
@@ -792,13 +829,12 @@ function ProductsContent() {
                     </select>
                   </div>
                 </div>
-              </motion.aside>
+              </aside>
 
-              {/* Mobile Filters - Shown only on mobile */}
+              {/* Mobile Filters */}
               <div className="lg:hidden col-span-full">
-                <div className="bg-white/90 backdrop-blur-md rounded-xl shadow-md p-4 mb-4">
+                <div className="bg-white/95 rounded-xl shadow-md p-4 mb-4">
                   <div className="flex flex-col sm:flex-row gap-3">
-                    {/* Category Filter */}
                     <select
                       value={selectedCategory || ''}
                       onChange={(e) => setSelectedCategory(e.target.value || null)}
@@ -810,7 +846,6 @@ function ProductsContent() {
                       ))}
                     </select>
 
-                    {/* Sort */}
                     <select
                       value={sortBy}
                       onChange={(e) => setSortBy(e.target.value)}
@@ -824,10 +859,9 @@ function ProductsContent() {
                 </div>
               </div>
 
-              {/* Products Grid - Mobile Optimized */}
+              {/* Products Grid */}
               <div className="lg:col-span-3">
                 {loading ? (
-                  // Loading state
                   <div className="flex justify-center items-center h-64">
                     <div className="text-center">
                       <div className="animate-spin rounded-full h-12 w-12 sm:h-16 sm:w-16 border-t-4 border-cyan-500 mx-auto mb-4"></div>
@@ -840,8 +874,7 @@ function ProductsContent() {
                     </div>
                   </div>
                 ) : error && products.length === 0 ? (
-                  // Error state
-                  <div className="text-center py-12 sm:py-16 bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-white/50 px-4">
+                  <div className="text-center py-12 sm:py-16 bg-white/95 rounded-2xl shadow-lg border border-gray-200 px-4">
                     <div className="text-6xl mb-4">⏳</div>
                     <h3 className="text-xl sm:text-2xl font-bold mb-2 text-gray-900">Server is Starting Up</h3>
                     <p className="text-gray-600 mb-6 text-sm sm:text-base">{error}</p>
@@ -856,8 +889,7 @@ function ProductsContent() {
                     </p>
                   </div>
                 ) : filteredProducts.length === 0 ? (
-                  // No products found
-                  <div className="text-center py-12 sm:py-16 bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-white/50 px-4">
+                  <div className="text-center py-12 sm:py-16 bg-white/95 rounded-2xl shadow-lg border border-gray-200 px-4">
                     <Box className="w-12 h-12 sm:w-16 sm:h-16 text-gray-300 mx-auto mb-4" />
                     <h3 className="text-xl sm:text-2xl font-bold mb-2 text-gray-900">No Products Found</h3>
                     <p className="text-gray-600 mb-6 text-sm sm:text-base">Try adjusting your filters</p>
@@ -873,65 +905,9 @@ function ProductsContent() {
                     </button>
                   </div>
                 ) : (
-                  /* Mobile-Responsive Product Grid */
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6">
                     {filteredProducts.map((product, index) => (
-                      <motion.div
-                        key={product.id}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: index * 0.05 }}
-                        className="bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col overflow-hidden"
-                      >
-                        {/* Product Image */}
-                        <div className="relative h-48 sm:h-56 bg-gray-100">
-                          <Image
-                            src={product.image_url || '/images/placeholder.jpg'}
-                            alt={product.name}
-                            fill
-                            className="object-contain p-4"
-                            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                            priority={index < 3}
-                          />
-                        </div>
-
-                        {/* Product Info */}
-                        <div className="p-3 sm:p-4 flex-1 flex flex-col">
-                          {/* Category Badge */}
-                          <span className="inline-block px-2 py-1 text-xs font-semibold text-cyan-600 bg-cyan-50 rounded-full mb-2 w-fit">
-                            {product.category.replace('_', ' ').toUpperCase()}
-                          </span>
-
-                          {/* Product Name */}
-                          <h3 className="text-sm sm:text-base font-semibold text-gray-800 mb-2 line-clamp-2 min-h-[2.5rem]">
-                            {product.name}
-                          </h3>
-
-                          {/* Product Description - Mobile Hidden, Tablet+ Visible */}
-                          <p className="hidden sm:block text-xs sm:text-sm text-gray-600 mb-3 line-clamp-2">
-                            {product.description}
-                          </p>
-
-                          {/* Price and Stock */}
-                          <div className="mt-auto space-y-2">
-                            <div className="flex items-center justify-between">
-                              <span className="text-lg sm:text-xl font-bold text-cyan-600">
-                                ₹{product.price.toLocaleString('en-IN')}
-                              </span>
-                              <span className="text-xs sm:text-sm text-gray-500">
-                                Stock: {product.stock_quantity}
-                              </span>
-                            </div>
-
-                            {/* View Details Button */}
-                            <Link href={`/products/${product.id}`}>
-                              <button className="w-full bg-cyan-600 hover:bg-cyan-700 text-white font-semibold py-2 sm:py-2.5 px-4 rounded-lg transition-colors duration-200 text-sm sm:text-base">
-                                View Details
-                              </button>
-                            </Link>
-                          </div>
-                        </div>
-                      </motion.div>
+                      <ProductCard key={product.id} product={product} index={index} />
                     ))}
                   </div>
                 )}
@@ -940,31 +916,26 @@ function ProductsContent() {
           </div>
         </section>
 
-        {/* Call to Action Section - Mobile Optimized */}
+        {/* Call to Action */}
         <section className="py-12 sm:py-16 px-4 mt-8 sm:mt-12">
           <div className="max-w-7xl mx-auto">
             <div className="relative bg-gradient-to-br from-teal-600 via-cyan-600 to-blue-700 rounded-2xl sm:rounded-3xl p-8 sm:p-12 text-center shadow-2xl overflow-hidden">
               <div className="relative z-10">
-                <div className="text-5xl sm:text-7xl mb-4 sm:mb-6">
-                  📦
-                </div>
+                <div className="text-5xl sm:text-7xl mb-4 sm:mb-6">📦</div>
                 <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-white mb-3 sm:mb-4 px-4">
                   Can't Find What You Need?
                 </h2>
-                
                 <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white font-medium mb-6 sm:mb-10 max-w-2xl mx-auto px-4">
                   Contact us for custom orders and bulk pricing
                 </p>
-                
                 <div className="flex gap-3 sm:gap-4 justify-center flex-wrap px-4">
                   <Link href="/contact">
                     <button className="bg-white text-teal-700 px-6 sm:px-10 py-3 sm:py-4 rounded-full font-bold text-sm sm:text-lg shadow-2xl hover:shadow-white/40 transition-all">
                       Contact Us
                     </button>
                   </Link>
-                  
                   <a href="tel:9825247312">
-                    <button className="bg-white/20 backdrop-blur-md border-2 border-white text-white px-6 sm:px-10 py-3 sm:py-4 rounded-full font-bold text-sm sm:text-lg hover:bg-white hover:text-teal-700 transition-all shadow-2xl">
+                    <button className="bg-white/20 border-2 border-white text-white px-6 sm:px-10 py-3 sm:py-4 rounded-full font-bold text-sm sm:text-lg hover:bg-white hover:text-teal-700 transition-all shadow-2xl">
                       Call Us
                     </button>
                   </a>
@@ -978,7 +949,6 @@ function ProductsContent() {
   )
 }
 
-// Main page component with Suspense wrapper
 export default function ProductsPage() {
   return (
     <Suspense fallback={
