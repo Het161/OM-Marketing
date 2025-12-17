@@ -4,7 +4,8 @@
 
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
-import { FiPhone, FiMail } from 'react-icons/fi';
+import { FiPhone, FiMail, FiAward } from 'react-icons/fi';
+import Link from 'next/link';
 
 export default function Hero3D() {
   const [particles, setParticles] = useState<Array<{ x: number; delay: number }>>([]);
@@ -161,7 +162,7 @@ export default function Hero3D() {
               type: "spring",
               stiffness: 100
             }}
-            className="mb-8"
+            className="mb-6"
           >
             <motion.div
               animate={{
@@ -173,7 +174,7 @@ export default function Hero3D() {
                 repeat: Infinity,
                 ease: "easeInOut"
               }}
-              className="text-9xl inline-block relative"
+              className="text-8xl md:text-9xl inline-block relative"
             >
               <div className="absolute inset-0 blur-3xl bg-white/40 scale-150" />
               <span className="relative filter drop-shadow-2xl">⚖️</span>
@@ -185,7 +186,7 @@ export default function Hero3D() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-6xl md:text-8xl font-black text-white mb-4"
+            className="text-5xl md:text-7xl lg:text-8xl font-black text-white mb-4"
             style={{
               textShadow: '0 10px 40px rgba(0,0,0,0.5), 0 0 80px rgba(255,255,255,0.15)',
               letterSpacing: '-0.02em'
@@ -199,7 +200,7 @@ export default function Hero3D() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="text-2xl md:text-3xl text-white/95 mb-4 font-light"
+            className="text-xl md:text-2xl lg:text-3xl text-white/95 mb-4 font-light"
             style={{
               textShadow: '0 4px 20px rgba(0,0,0,0.4)'
             }}
@@ -207,80 +208,96 @@ export default function Hero3D() {
             Premium Weighing Solutions Since 2008
           </motion.p>
           
-          {/* Badge */}
+          {/* Badge - FIXED COLORS */}
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, delay: 0.6 }}
-            className="inline-block mb-10"
+            className="inline-flex items-center gap-2 mb-8"
           >
-            <div className="backdrop-blur-sm bg-white/20 px-6 py-2 rounded-full border-2 border-white/40 shadow-xl">
-              <span className="text-white font-semibold text-sm">
-                🏆 ISO 9001:2008 Certified
+            <div className="backdrop-blur-md bg-white/20 px-5 py-2.5 rounded-full border-2 border-white/50 shadow-2xl">
+              <span className="text-white font-bold text-base md:text-lg flex items-center gap-2">
+                🏆 <span className="hidden sm:inline">15+ Years -</span> ISO 9001:2008 Certified
               </span>
             </div>
           </motion.div>
           
-          {/* CTA Buttons */}
+          {/* CTA Buttons - FIXED COLORS */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.8 }}
-            className="flex gap-4 justify-center flex-wrap mb-8"
+            className="flex gap-3 md:gap-4 justify-center flex-wrap mb-6 md:mb-8"
           >
-            <motion.a
-              href="#products"
-              whileHover={{ scale: 1.05, y: -3 }}
-              whileTap={{ scale: 0.95 }}
-              className="group relative bg-white text-teal-600 px-10 py-5 rounded-2xl font-bold text-lg shadow-2xl cursor-pointer inline-flex items-center gap-3 overflow-hidden"
-            >
-              <motion.div
-                className="absolute inset-0 bg-gradient-to-r from-teal-500 to-cyan-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-              />
-              <span className="relative z-10 group-hover:text-white transition-colors">
-                Explore Products
-              </span>
-              <motion.span
-                animate={{ x: [0, 5, 0] }}
-                transition={{ duration: 1.5, repeat: Infinity }}
-                className="relative z-10 text-xl group-hover:text-white transition-colors"
+            {/* Explore Products Button - WHITE BACKGROUND */}
+            <Link href="/products">
+              <motion.button
+                whileHover={{ scale: 1.05, y: -3 }}
+                whileTap={{ scale: 0.95 }}
+                className="group relative bg-white text-teal-600 px-8 md:px-10 py-4 md:py-5 rounded-2xl font-bold text-base md:text-lg shadow-2xl cursor-pointer inline-flex items-center gap-3 overflow-hidden"
               >
-                →
-              </motion.span>
-            </motion.a>
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-r from-teal-500 to-cyan-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                />
+                <span className="relative z-10 group-hover:text-white transition-colors">
+                  Explore Products
+                </span>
+                <motion.span
+                  animate={{ x: [0, 5, 0] }}
+                  transition={{ duration: 1.5, repeat: Infinity }}
+                  className="relative z-10 text-xl group-hover:text-white transition-colors"
+                >
+                  →
+                </motion.span>
+              </motion.button>
+            </Link>
             
-            <motion.a
-              href="/contact"
-              whileHover={{ scale: 1.05, y: -3 }}
-              whileTap={{ scale: 0.95 }}
-              className="backdrop-blur-sm bg-white/15 border-2 border-white/60 text-white px-10 py-5 rounded-2xl font-bold text-lg hover:bg-white hover:text-teal-600 transition-all cursor-pointer inline-flex items-center gap-3 shadow-xl"
-            >
-              <FiPhone className="text-xl" />
-              Contact Us
-            </motion.a>
+            {/* Contact Us Button - SEMI-TRANSPARENT WITH BORDER */}
+            <Link href="/contact">
+              <motion.button
+                whileHover={{ scale: 1.05, y: -3 }}
+                whileTap={{ scale: 0.95 }}
+                className="backdrop-blur-md bg-white/15 border-2 border-white/60 text-white px-8 md:px-10 py-4 md:py-5 rounded-2xl font-bold text-base md:text-lg hover:bg-white hover:text-teal-600 transition-all cursor-pointer inline-flex items-center gap-3 shadow-2xl"
+              >
+                <FiPhone className="text-xl" />
+                <span>Contact Us</span>
+              </motion.button>
+            </Link>
           </motion.div>
           
-          {/* Contact Info */}
+          {/* Contact Info - FIXED COLORS */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 1 }}
-            className="flex gap-8 justify-center flex-wrap text-white/90 text-sm"
+            className="flex gap-3 md:gap-4 justify-center flex-wrap"
           >
+            {/* Phone Button - GREEN BACKGROUND */}
             <a 
               href="tel:9825247312" 
-              className="flex items-center gap-2 hover:text-white transition-colors group backdrop-blur-sm bg-white/10 px-4 py-2 rounded-full"
+              className="group"
             >
-              <FiPhone className="group-hover:animate-bounce" />
-              <span className="font-medium">98252 47312</span>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="bg-green-500 hover:bg-green-600 text-white px-5 md:px-6 py-2.5 md:py-3 rounded-full font-semibold text-sm md:text-base transition-colors inline-flex items-center gap-2 shadow-xl"
+              >
+                <FiPhone className="group-hover:animate-bounce" />
+                <span className="font-medium">98252 47312</span>
+              </motion.button>
             </a>
-            <a 
-              href="mailto:ommarketing.weighingscale1@gmail.com" 
-              className="flex items-center gap-2 hover:text-white transition-colors group backdrop-blur-sm bg-white/10 px-4 py-2 rounded-full"
-            >
-              <FiMail className="group-hover:animate-bounce" />
-              <span className="font-medium">Get a Quote</span>
-            </a>
+            
+            {/* Get Quote Button - BLUE BACKGROUND */}
+            <Link href="/contact">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="bg-blue-500 hover:bg-blue-600 text-white px-5 md:px-6 py-2.5 md:py-3 rounded-full font-semibold text-sm md:text-base transition-colors inline-flex items-center gap-2 shadow-xl"
+              >
+                <FiMail />
+                <span className="font-medium">Get a Quote</span>
+              </motion.button>
+            </Link>
           </motion.div>
         </div>
       </div>
