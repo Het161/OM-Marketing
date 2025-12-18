@@ -28,6 +28,7 @@ export default function ContactPage() {
     try {
       // Actually call the backend API
       const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://om-marketing.onrender.com';
+
       const response = await fetch(`${API_URL}/api/contact/`, {
         method: 'POST',
         headers: {
