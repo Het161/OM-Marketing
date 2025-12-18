@@ -155,11 +155,14 @@ from sqlalchemy.orm import Session
 from sqlalchemy import text, func
 import os
 
+
 from .database import engine, Base, get_db
 from .routes import products, orders, auth, contact
 
+
 # Create all database tables
 Base.metadata.create_all(bind=engine)
+
 
 # Initialize FastAPI app
 app = FastAPI(
@@ -167,6 +170,7 @@ app = FastAPI(
     description="E-commerce API for weighing scales, note counters, and mobile accessories",
     version="1.0.0"
 )
+
 
 # ✅ Enhanced CORS Configuration
 app.add_middleware(
@@ -178,6 +182,7 @@ app.add_middleware(
     expose_headers=["*"],
     max_age=3600,
 )
+
 
 # Explicit OPTIONS handler for CORS preflight requests
 @app.options("/{full_path:path}")
@@ -194,11 +199,13 @@ async def options_handler(request: Request, full_path: str):
         }
     )
 
+
 # Include API routers
 app.include_router(products.router, prefix="/api/products", tags=["Products"])
 app.include_router(orders.router, prefix="/api/orders", tags=["Orders"])
 app.include_router(auth.router, prefix="/api/auth", tags=["Authentication"])
 app.include_router(contact.router, prefix="/api", tags=["Contact"])
+
 
 # ✅ Enhanced root endpoint
 @app.get("/")
@@ -212,6 +219,7 @@ async def root():
         "version": "1.0.0",
         "frontend": "https://ommarketing.co.in"
     }
+
 
 # ✅ Enhanced health check with database connection test
 @app.get("/health")
@@ -251,8 +259,10 @@ async def health_check(db: Session = Depends(get_db)):
         "message": "All systems operational ✅"
     }
 
+
 # ✅ ONE-TIME SEED ENDPOINT
 from app.seed_data import seed_database
+
 
 @app.post("/admin/seed-database")
 async def seed_db_endpoint():
@@ -262,6 +272,7 @@ async def seed_db_endpoint():
     Works for both SQLite (local) and PostgreSQL (Render).
     """
     return seed_database()
+
 
 # ✅ ADMIN: Fix category names
 @app.post("/admin/fix-categories")
@@ -317,3 +328,217 @@ async def fix_categories(db: Session = Depends(get_db)):
             "message": str(e)
         }
 
+
+# ✅ ADMIN: Update Product Price by ID
+@app.patch("/admin/update-price/{product_id}")
+async def update_product_price(
+    product_id: int, 
+    new_price: float,
+    db: Session = Depends(get_db)
+):
+    """
+    Update product price by product ID.
+    Usage: PATCH /admin/update-price/15?new_price=6200
+    """
+    from .models import Product
+    
+    try:
+        product = db.query(Product).filter(Product.id == product_id).first()
+        
+        if not product:
+            return JSONResponse(
+                status_code=404,
+                content={
+                    "status": "error",
+                    "message": f"Product with ID {product_id} not found"
+                }
+            )
+        
+        old_price = product.price
+        product.price = new_price
+        db.commit()
+        
+        return {
+            "status": "success",
+            "message": f"Price updated successfully",
+            "product": {
+                "id": product.id,
+                "name": product.name,
+                "category": product.category,
+                "old_price": old_price,
+                "new_price": new_price
+            }
+        }
+        
+    except Exception as e:
+        db.rollback()
+        return JSONResponse(
+            status_code=500,
+            content={
+                "status": "error",
+                "message": str(e)
+            }
+        )
+
+
+# ✅ ADMIN: Update Product Price by Name
+@app.patch("/admin/update-price-by-name")
+async def update_product_price_by_name(
+    product_name: str,
+    new_price: float,
+    db: Session = Depends(get_db)
+):
+    """
+    Update product price by product name (partial match).
+    Usage: PATCH /admin/update-price-by-name?product_name=PRC&new_price=6200
+    """
+    from .models import Product
+    
+    try:
+        product = db.query(Product).filter(
+            Product.name.ilike(f"%{product_name}%")
+        ).first()
+        
+        if not product:
+            return JSONResponse(
+                status_code=404,
+                content={
+                    "status": "error",
+                    "message": f"Product containing '{product_name}' not found"
+                }
+            )
+        
+        old_price = product.price
+        product.price = new_price
+        db.commit()
+        
+        return {
+            "status": "success",
+            "message": f"Price updated successfully",
+            "product": {
+                "id": product.id,
+                "name": product.name,
+                "category": product.category,
+                "old_price": old_price,
+                "new_price": new_price
+            }
+        }
+        
+    except Exception as e:
+        db.rollback()
+        return JSONResponse(
+            status_code=500,
+            content={
+                "status": "error",
+                "message": str(e)
+            }
+        )
+
+
+# ✅ ADMIN: Bulk Update Multiple Products
+@app.post("/admin/bulk-update-prices")
+async def bulk_update_prices(
+    updates: list[dict],
+    db: Session = Depends(get_db)
+):
+    """
+    Bulk update multiple product prices.
+    Usage: POST /admin/bulk-update-prices
+    Body: [{"id": 15, "price": 6200}, {"id": 34, "price": 6200}]
+    """
+    from .models import Product
+    
+    try:
+        results = []
+        
+        for update in updates:
+            product_id = update.get("id")
+            new_price = update.get("price")
+            
+            if not product_id or not new_price:
+                results.append({
+                    "id": product_id,
+                    "status": "error",
+                    "message": "Missing id or price"
+                })
+                continue
+            
+            product = db.query(Product).filter(Product.id == product_id).first()
+            
+            if not product:
+                results.append({
+                    "id": product_id,
+                    "status": "error",
+                    "message": f"Product not found"
+                })
+                continue
+            
+            old_price = product.price
+            product.price = new_price
+            
+            results.append({
+                "id": product.id,
+                "name": product.name,
+                "status": "success",
+                "old_price": old_price,
+                "new_price": new_price
+            })
+        
+        db.commit()
+        
+        success_count = sum(1 for r in results if r["status"] == "success")
+        
+        return {
+            "status": "completed",
+            "total": len(updates),
+            "successful": success_count,
+            "failed": len(updates) - success_count,
+            "results": results
+        }
+        
+    except Exception as e:
+        db.rollback()
+        return JSONResponse(
+            status_code=500,
+            content={
+                "status": "error",
+                "message": str(e)
+            }
+        )
+
+
+# ✅ ADMIN: List All Products with Prices
+@app.get("/admin/list-products")
+async def list_all_products(db: Session = Depends(get_db)):
+    """
+    List all products with their current prices.
+    Useful for seeing what products exist before updating.
+    """
+    from .models import Product
+    
+    try:
+        products = db.query(Product).order_by(Product.id).all()
+        
+        return {
+            "status": "success",
+            "total": len(products),
+            "products": [
+                {
+                    "id": p.id,
+                    "name": p.name,
+                    "price": p.price,
+                    "category": p.category,
+                    "stock": p.stock
+                }
+                for p in products
+            ]
+        }
+        
+    except Exception as e:
+        return JSONResponse(
+            status_code=500,
+            content={
+                "status": "error",
+                "message": str(e)
+            }
+        )
