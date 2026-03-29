@@ -15,8 +15,10 @@ import os
 DATABASE_URL = os.getenv('DATABASE_URL')
 
 # Determine if we're using PostgreSQL or SQLite
-IS_POSTGRES = DATABASE_URL is not None and 'postgres' in DATABASE_URL
-IS_SQLITE = not IS_POSTGRES
+# FORCE SQLITE: The Render PostgreSQL free tier has expired, causing 'Name or service not known' errors.
+# We force IS_POSTGRES to False so the app falls back to the local SQLite database and stays online. 
+IS_POSTGRES = False
+IS_SQLITE = True
 
 # ✅ Configure database based on environment
 if IS_POSTGRES:
