@@ -94,13 +94,13 @@ text
 
 ## 🌐 Live Demo
 
-- **Website:** [Coming Soon]
-- **Admin:** [Coming Soon]
+- **Website:** ommarketing.co.in
+- **Admin:** OM Marketing Solutions
 
 ## 📞 Contact
 
 **OM Marketing**
-- 📧 Email: ommarketing.weighingscale1@gmail.com
+- 📧 Email: support@ommarketingsolutions.in
 - 📱 Phone: +91 98252 47312
 - 📍 Location: Shop 15, JB Plaza, Kathal, District- Kheda, Gujarat
 

@@ -1,568 +1,18 @@
-// 'use client';
-
-// import { useState, useEffect } from 'react';
-// import { motion } from 'framer-motion';
-// import Image from 'next/image';
-// import Link from 'next/link';
-// import { FiShoppingBag, FiTrendingUp, FiAward, FiTruck } from 'react-icons/fi';
-// import Hero3D from '@/components/Hero3D';
-// import { productApi } from '@/services/api';
-
-// interface Product {
-//   id: number;
-//   name: string;
-//   description: string;
-//   price: number;
-//   image_url: string;
-//   category: string;
-//   stock_quantity: number;
-// }
-
-// export default function HomePage() {
-//   const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
-//   const [loading, setLoading] = useState(true);
-
-//   useEffect(() => {
-//     async function fetchFeaturedProducts() {
-//       try {
-//         const products = await productApi.getAll({ limit: 6 });
-//         setFeaturedProducts(products);
-//       } catch (error) {
-//         console.error('Failed to fetch products:', error);
-//       } finally {
-//         setLoading(false);
-//       }
-//     }
-//     fetchFeaturedProducts();
-//   }, []);
-
-//   const getPlaceholderDataURL = () => {
-//     return "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjYwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNjAwIiBoZWlnaHQ9IjYwMCIgZmlsbD0iI2YzZjRmNiIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyNCIgZmlsbD0iIzlhYTBhNiI+TG9hZGluZy4uLjwvdGV4dD48L3N2Zz4=";
-//   };
-
-//   return (
-//     <main className="min-h-screen">
-//       {/* Hero Section - No changes needed (Hero3D handles its own spacing) */}
-//       <Hero3D />
-
-//       {/* Featured Products Section - ✅ UPDATED */}
-//       <section id="products" className="relative pt-24 sm:pt-28 pb-20 px-4 overflow-hidden">
-//         <div className="absolute inset-0 bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50" />
-        
-//         <motion.div
-//           animate={{
-//             scale: [1, 1.2, 1],
-//             x: [0, 50, 0],
-//           }}
-//           transition={{
-//             duration: 20,
-//             repeat: Infinity,
-//             ease: "easeInOut"
-//           }}
-//           className="absolute top-20 left-10 w-96 h-96 bg-blue-200/30 rounded-full blur-3xl"
-//         />
-//         <motion.div
-//           animate={{
-//             scale: [1, 1.3, 1],
-//             x: [0, -50, 0],
-//           }}
-//           transition={{
-//             duration: 18,
-//             repeat: Infinity,
-//             ease: "easeInOut"
-//           }}
-//           className="absolute bottom-20 right-10 w-[500px] h-[500px] bg-purple-200/30 rounded-full blur-3xl"
-//         />
-        
-//         <div className="max-w-7xl mx-auto relative z-10">
-//           <motion.div
-//             initial={{ opacity: 0, y: 20 }}
-//             whileInView={{ opacity: 1, y: 0 }}
-//             viewport={{ once: true }}
-//             className="text-center mb-12"
-//           >
-//             <h2 className="text-4xl md:text-5xl font-bold mb-4">
-//               Featured Products
-//             </h2>
-//             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-//               Discover our most popular weighing solutions
-//             </p>
-//           </motion.div>
-
-//           {loading ? (
-//             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-//               {[1, 2, 3, 4, 5, 6].map((i) => (
-//                 <div key={i} className="bg-white rounded-2xl overflow-hidden shadow-lg animate-pulse">
-//                   <div className="aspect-square bg-gray-200" />
-//                   <div className="p-6 space-y-3">
-//                     <div className="h-6 bg-gray-200 rounded w-3/4" />
-//                     <div className="h-4 bg-gray-200 rounded w-1/2" />
-//                     <div className="h-10 bg-gray-200 rounded" />
-//                   </div>
-//                 </div>
-//               ))}
-//             </div>
-//           ) : (
-//             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-//               {featuredProducts.map((product, index) => (
-//                 <motion.div
-//                   key={product.id}
-//                   initial={{ opacity: 0, y: 20 }}
-//                   whileInView={{ opacity: 1, y: 0 }}
-//                   viewport={{ once: true }}
-//                   transition={{ delay: index * 0.1 }}
-//                 >
-//                   <Link href={`/products/${product.id}`}>
-//                     <motion.div
-//                       whileHover={{ y: -8 }}
-//                       className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 group cursor-pointer h-full flex flex-col"
-//                     >
-//                       <div className="relative aspect-square rounded-2xl overflow-hidden">
-//                         <Image
-//                           src={product.image_url || '/images/placeholder.jpg'}
-//                           alt={product.name}
-//                           fill
-//                           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-//                           className="object-cover group-hover:scale-110 transition-transform duration-500"
-//                           loading={index < 3 ? "eager" : "lazy"}
-//                           priority={index < 3}
-//                           placeholder="blur"
-//                           blurDataURL={getPlaceholderDataURL()}
-//                           onError={(e) => {
-//                             const target = e.target as HTMLImageElement;
-//                             target.src = '/images/placeholder.jpg';
-//                           }}
-//                         />
-                        
-//                         <div className="absolute top-4 left-4 bg-primary-500 text-white px-3 py-1 rounded-full text-sm font-semibold capitalize z-10">
-//                           {product.category.replace('_', ' ')}
-//                         </div>
-
-//                         {product.stock_quantity === 0 && (
-//                           <div className="absolute top-4 right-4 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-semibold z-10">
-//                             Out of Stock
-//                           </div>
-//                         )}
-//                       </div>
-
-//                       <div className="p-6 flex-grow flex flex-col">
-//                         <h3 className="text-xl font-bold mb-2 group-hover:text-primary-500 transition-colors line-clamp-2">
-//                           {product.name}
-//                         </h3>
-                        
-//                         <p className="text-gray-600 text-sm mb-4 line-clamp-2 flex-grow">
-//                           {product.description}
-//                         </p>
-
-//                         <div className="flex items-baseline gap-2 mb-4">
-//                           <span className="text-2xl font-bold text-primary-500">
-//                             ₹{product.price.toLocaleString('en-IN')}
-//                           </span>
-//                           <span className="text-gray-500 line-through text-sm">
-//                             ₹{(product.price * 1.2).toLocaleString('en-IN')}
-//                           </span>
-//                           <span className="ml-auto bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs font-semibold">
-//                             Save 20%
-//                           </span>
-//                         </div>
-
-//                         <motion.button
-//                           whileHover={{ scale: 1.02 }}
-//                           whileTap={{ scale: 0.98 }}
-//                           className="w-full bg-primary-500 text-white py-3 rounded-xl font-semibold hover:bg-primary-600 transition-colors flex items-center justify-center gap-2"
-//                         >
-//                           <FiShoppingBag />
-//                           View Details
-//                         </motion.button>
-//                       </div>
-//                     </motion.div>
-//                   </Link>
-//                 </motion.div>
-//               ))}
-//             </div>
-//           )}
-
-//           <motion.div
-//             initial={{ opacity: 0, y: 20 }}
-//             whileInView={{ opacity: 1, y: 0 }}
-//             viewport={{ once: true }}
-//             className="text-center mt-12"
-//           >
-//             <Link href="/products">
-//               <motion.button
-//                 whileHover={{ scale: 1.05, y: -2 }}
-//                 whileTap={{ scale: 0.95 }}
-//                 className="btn-primary text-lg px-10 py-4 inline-flex items-center gap-3"
-//               >
-//                 View All Products
-//                 <motion.span
-//                   animate={{ x: [0, 5, 0] }}
-//                   transition={{ duration: 1.5, repeat: Infinity }}
-//                 >
-//                   →
-//                 </motion.span>
-//               </motion.button>
-//             </Link>
-//           </motion.div>
-//         </div>
-//       </section>
-
-//       {/* Features Section - ✅ UPDATED */}
-//       <section className="relative pt-20 pb-20 px-4 overflow-hidden">
-//         <div className="absolute inset-0 bg-gradient-to-br from-white via-teal-50 to-cyan-50" />
-        
-//         <motion.div
-//           animate={{
-//             scale: [1, 1.15, 1],
-//             rotate: [0, 180, 360],
-//           }}
-//           transition={{
-//             duration: 25,
-//             repeat: Infinity,
-//             ease: "linear"
-//           }}
-//           className="absolute top-10 right-10 w-80 h-80 bg-teal-200/40 rounded-full blur-3xl"
-//         />
-//         <motion.div
-//           animate={{
-//             scale: [1, 1.2, 1],
-//             y: [0, -30, 0],
-//           }}
-//           transition={{
-//             duration: 20,
-//             repeat: Infinity,
-//             ease: "easeInOut"
-//           }}
-//           className="absolute bottom-10 left-10 w-96 h-96 bg-cyan-200/40 rounded-full blur-3xl"
-//         />
-        
-//         <div className="max-w-7xl mx-auto relative z-10">
-//           <motion.div
-//             initial={{ opacity: 0, y: 20 }}
-//             whileInView={{ opacity: 1, y: 0 }}
-//             viewport={{ once: true }}
-//             className="text-center mb-12"
-//           >
-//             <h2 className="text-4xl md:text-5xl font-bold mb-4">
-//               Why Choose OM Marketing?
-//             </h2>
-//             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-//               Your trusted partner for precision weighing solutions
-//             </p>
-//           </motion.div>
-
-//           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-//             {[
-//               {
-//                 icon: <FiAward className="text-4xl" />,
-//                 title: 'ISO Certified',
-//                 description: 'Quality assured products meeting international standards',
-//                 color: 'from-blue-500 to-cyan-500',
-//               },
-//               {
-//                 icon: <FiTruck className="text-4xl" />,
-//                 title: 'Fast Delivery',
-//                 description: 'Quick and reliable shipping across India',
-//                 color: 'from-green-500 to-emerald-500',
-//               },
-//               {
-//                 icon: <FiTrendingUp className="text-4xl" />,
-//                 title: '15+ Years',
-//                 description: 'Trusted experience in weighing solutions',
-//                 color: 'from-purple-500 to-pink-500',
-//               },
-//               {
-//                 icon: <FiShoppingBag className="text-4xl" />,
-//                 title: 'Wide Range',
-//                 description: 'Comprehensive product selection for all needs',
-//                 color: 'from-orange-500 to-red-500',
-//               },
-//             ].map((feature, index) => (
-//               <motion.div
-//                 key={index}
-//                 initial={{ opacity: 0, y: 20 }}
-//                 whileInView={{ opacity: 1, y: 0 }}
-//                 viewport={{ once: true }}
-//                 transition={{ delay: index * 0.1 }}
-//                 whileHover={{ y: -5, scale: 1.05 }}
-//                 className="text-center group"
-//               >
-//                 <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all">
-//                   <motion.div
-//                     whileHover={{ rotate: 360 }}
-//                     transition={{ duration: 0.6 }}
-//                     className={`w-20 h-20 mx-auto mb-4 rounded-2xl bg-gradient-to-br ${feature.color} text-white flex items-center justify-center shadow-lg group-hover:shadow-2xl`}
-//                   >
-//                     {feature.icon}
-//                   </motion.div>
-//                   <h3 className="text-xl font-bold mb-2">{feature.title}</h3>
-//                   <p className="text-gray-600">{feature.description}</p>
-//                 </div>
-//               </motion.div>
-//             ))}
-//           </div>
-//         </div>
-//       </section>
-
-//       {/* Browse by Category Section - ✅ UPDATED with id="categories" */}
-//       <section id="categories" className="relative pt-20 pb-20 px-4 overflow-hidden">
-//         <div className="absolute inset-0 bg-gradient-to-br from-purple-50 via-pink-50 to-orange-50" />
-        
-//         <motion.div
-//           animate={{
-//             x: [0, 60, 0],
-//             y: [0, -40, 0],
-//             scale: [1, 1.2, 1],
-//           }}
-//           transition={{
-//             duration: 22,
-//             repeat: Infinity,
-//             ease: "easeInOut"
-//           }}
-//           className="absolute top-20 left-20 w-[400px] h-[400px] bg-purple-300/30 rounded-full blur-3xl"
-//         />
-//         <motion.div
-//           animate={{
-//             x: [0, -50, 0],
-//             scale: [1, 1.25, 1],
-//           }}
-//           transition={{
-//             duration: 18,
-//             repeat: Infinity,
-//             ease: "easeInOut"
-//           }}
-//           className="absolute bottom-20 right-20 w-[450px] h-[450px] bg-pink-300/30 rounded-full blur-3xl"
-//         />
-        
-//         <div className="max-w-7xl mx-auto relative z-10">
-//           <motion.div
-//             initial={{ opacity: 0, y: 20 }}
-//             whileInView={{ opacity: 1, y: 0 }}
-//             viewport={{ once: true }}
-//             className="text-center mb-12"
-//           >
-//             <h2 className="text-4xl md:text-5xl font-bold mb-4">Browse by Category</h2>
-//             <p className="text-gray-600 text-lg">Find exactly what you need</p>
-//           </motion.div>
-
-//           <div className="grid md:grid-cols-3 gap-8">
-//             {/* Weighing Scales Card */}
-//             <motion.div
-//               initial={{ opacity: 0, y: 20 }}
-//               whileInView={{ opacity: 1, y: 0 }}
-//               viewport={{ once: true }}
-//               transition={{ delay: 0.1 }}
-//             >
-//               <Link href="/products?category=weighing_scale">
-//                 <div className="relative bg-gradient-to-br from-blue-500 to-blue-700 rounded-3xl p-8 h-80 overflow-hidden group cursor-pointer transform transition-all hover:scale-105 hover:shadow-2xl">
-//                   <div className="absolute top-4 right-4 bg-white/20 backdrop-blur-md px-4 py-2 rounded-full text-white font-semibold">
-//                     50+ Models
-//                   </div>
-                  
-//                   <div className="relative z-10 h-full flex flex-col">
-//                     <div className="text-7xl mb-6 transform group-hover:scale-110 transition-transform">
-//                       ⚖️
-//                     </div>
-                    
-//                     <div className="mt-auto text-white">
-//                       <h3 className="text-2xl font-bold mb-2">Weighing Scales</h3>
-//                       <p className="text-blue-100 mb-4">Explore our range of weighing scales</p>
-//                       <div className="flex items-center gap-2 font-semibold">
-//                         Browse →
-//                       </div>
-//                     </div>
-//                   </div>
-                  
-//                   <div className="absolute inset-0 bg-white/10 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity" />
-//                 </div>
-//               </Link>
-//             </motion.div>
-
-//             {/* Note Counters Card */}
-//             <motion.div
-//               initial={{ opacity: 0, y: 20 }}
-//               whileInView={{ opacity: 1, y: 0 }}
-//               viewport={{ once: true }}
-//               transition={{ delay: 0.2 }}
-//             >
-//               <Link href="/products?category=note_counter">
-//                 <div className="relative bg-gradient-to-br from-green-500 to-green-700 rounded-3xl p-8 h-80 overflow-hidden group cursor-pointer transform transition-all hover:scale-105 hover:shadow-2xl">
-//                   <div className="absolute top-4 right-4 bg-white/20 backdrop-blur-md px-4 py-2 rounded-full text-white font-semibold">
-//                     15+ Models
-//                   </div>
-                  
-//                   <div className="relative z-10 h-full flex flex-col">
-//                     <div className="text-7xl mb-6 transform group-hover:scale-110 transition-transform">
-//                       💵
-//                     </div>
-                    
-//                     <div className="mt-auto text-white">
-//                       <h3 className="text-2xl font-bold mb-2">Note Counters</h3>
-//                       <p className="text-green-100 mb-4">Explore our range of note counters</p>
-//                       <div className="flex items-center gap-2 font-semibold">
-//                         Browse →
-//                       </div>
-//                     </div>
-//                   </div>
-                  
-//                   <div className="absolute inset-0 bg-white/10 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity" />
-//                 </div>
-//               </Link>
-//             </motion.div>
-
-//             {/* Accessories Card */}
-//             <motion.div
-//               initial={{ opacity: 0, y: 20 }}
-//               whileInView={{ opacity: 1, y: 0 }}
-//               viewport={{ once: true }}
-//               transition={{ delay: 0.3 }}
-//             >
-//               <Link href="/products?category=accessories">
-//                 <div className="relative bg-gradient-to-br from-purple-500 to-pink-700 rounded-3xl p-8 h-80 overflow-hidden group cursor-pointer transform transition-all hover:scale-105 hover:shadow-2xl">
-//                   <div className="absolute top-4 right-4 bg-white/20 backdrop-blur-md px-4 py-2 rounded-full text-white font-semibold">
-//                     100+ Items
-//                   </div>
-                  
-//                   <div className="relative z-10 h-full flex flex-col">
-//                     <div className="text-7xl mb-6 transform group-hover:scale-110 transition-transform">
-//                       📱
-//                     </div>
-                    
-//                     <div className="mt-auto text-white">
-//                       <h3 className="text-2xl font-bold mb-2">Accessories</h3>
-//                       <p className="text-purple-100 mb-4">Explore our range of accessories</p>
-//                       <div className="flex items-center gap-2 font-semibold">
-//                         Browse →
-//                       </div>
-//                     </div>
-//                   </div>
-                  
-//                   <div className="absolute inset-0 bg-white/10 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity" />
-//                 </div>
-//               </Link>
-//             </motion.div>
-//           </div>
-//         </div>
-//       </section>
-
-//       {/* CTA Section - ✅ UPDATED with id="contact" */}
-//       <section id="contact" className="relative pt-20 pb-20 px-4 overflow-hidden">
-//         <div className="absolute inset-0 bg-gradient-to-br from-teal-600 via-cyan-600 to-blue-600" />
-        
-//         <motion.div
-//           animate={{
-//             scale: [1, 1.2, 1],
-//             rotate: [0, 180, 360],
-//           }}
-//           transition={{
-//             duration: 20,
-//             repeat: Infinity,
-//             ease: "linear"
-//           }}
-//           className="absolute top-0 left-0 w-96 h-96 bg-cyan-400/20 rounded-full blur-3xl"
-//         />
-//         <motion.div
-//           animate={{
-//             scale: [1, 1.3, 1],
-//             x: [0, -50, 0],
-//           }}
-//           transition={{
-//             duration: 18,
-//             repeat: Infinity,
-//             ease: "easeInOut"
-//           }}
-//           className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-teal-400/20 rounded-full blur-3xl"
-//         />
-        
-//         <div className="max-w-4xl mx-auto text-center relative z-10">
-//           <motion.div
-//             initial={{ opacity: 0, y: 20 }}
-//             whileInView={{ opacity: 1, y: 0 }}
-//             viewport={{ once: true }}
-//           >
-//             <motion.div
-//               animate={{
-//                 y: [0, -10, 0],
-//               }}
-//               transition={{
-//                 duration: 2,
-//                 repeat: Infinity,
-//                 ease: "easeInOut"
-//               }}
-//               className="text-7xl mb-6"
-//             >
-//               📞
-//             </motion.div>
-//             <h2 className="text-4xl md:text-5xl font-bold mb-4 text-white" style={{
-//               textShadow: '0 10px 30px rgba(0,0,0,0.3)'
-//             }}>
-//               Ready to Get Started?
-//             </h2>
-//             <p className="text-xl mb-8 text-white/90">
-//               Contact us for custom solutions and bulk orders
-//             </p>
-//             <div className="flex gap-4 justify-center flex-wrap">
-//               <Link href="/contact">
-//                 <motion.button
-//                   whileHover={{ scale: 1.05, y: -2 }}
-//                   whileTap={{ scale: 0.98 }}
-//                   className="bg-white text-teal-600 px-10 py-4 rounded-2xl font-bold shadow-2xl hover:shadow-white/20 transition-all text-lg"
-//                 >
-//                   Contact Us
-//                 </motion.button>
-//               </Link>
-//               <a href="tel:9825247312">
-//                 <motion.button
-//                   whileHover={{ scale: 1.05, y: -2 }}
-//                   whileTap={{ scale: 0.98 }}
-//                   className="bg-white/15 backdrop-blur-md border-2 border-white text-white px-10 py-4 rounded-2xl font-bold hover:bg-white hover:text-teal-600 transition-all shadow-2xl text-lg"
-//                 >
-//                   Call: 98252 47312
-//                 </motion.button>
-//               </a>
-//             </div>
-//           </motion.div>
-//         </div>
-//       </section>
-//     </main>
-//   );
-// }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 'use client';
 
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
-import { FiShoppingBag, FiTrendingUp, FiAward, FiTruck } from 'react-icons/fi';
+import { FiShoppingBag, FiTrendingUp, FiAward, FiTruck, FiArrowRight } from 'react-icons/fi';
 import Hero3D from '@/components/Hero3D';
 import { useProducts } from '@/hooks/useProducts';
 
-// ✅ Optimized animation variants (faster, less CPU intensive)
 const fadeInUp = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { 
-    opacity: 1, 
+  hidden: { opacity: 0, y: 24 },
+  visible: {
+    opacity: 1,
     y: 0,
-    transition: { duration: 0.3, ease: "easeOut" } // Reduced from 0.5-0.8
+    transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] }
   }
 } as const;
 
@@ -571,140 +21,122 @@ const staggerContainer = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.05, // Reduced from 0.1
+      staggerChildren: 0.08,
       delayChildren: 0.1,
     }
   }
 };
 
 export default function HomePage() {
-  // ✅ Use SWR hook for caching
   const { products: featuredProducts, isLoading } = useProducts({ limit: 6 });
 
-  const getPlaceholderDataURL = () => {
-    return "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjYwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNjAwIiBoZWlnaHQ9IjYwMCIgZmlsbD0iI2YzZjRmNiIvPjwvc3ZnPg==";
-  };
-
   return (
-    <main className="min-h-screen">
-      {/* Hero Section */}
+    <main className="min-h-screen bg-white">
       <Hero3D />
 
       {/* Featured Products Section */}
-      <section id="products" className="relative pt-24 sm:pt-28 pb-20 px-4 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50" />
-        
-        {/* ✅ Simplified animations - removed complex motion divs */}
-        <div className="absolute top-20 left-10 w-96 h-96 bg-blue-200/30 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-20 right-10 w-[500px] h-[500px] bg-purple-200/30 rounded-full blur-3xl animate-pulse" />
-        
-        <div className="max-w-7xl mx-auto relative z-10">
+      <section id="products" className="py-24 px-4">
+        <div className="max-w-7xl mx-auto">
           <motion.div
             variants={fadeInUp}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-            className="text-center mb-12"
+            viewport={{ once: true, margin: '-80px' }}
+            className="text-center mb-16"
           >
-            <h2 className="text-4xl md:text-5xl font-bold mb-4">
+            <span className="inline-block text-teal-600 font-semibold text-sm tracking-wider uppercase mb-3">
+              Our Collection
+            </span>
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4 tracking-tight">
               Featured Products
             </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Discover our most popular weighing solutions
+            <p className="text-lg text-gray-500 max-w-2xl mx-auto">
+              Discover our most popular precision weighing solutions trusted by businesses across India
             </p>
           </motion.div>
 
           {isLoading ? (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {[1, 2, 3, 4, 5, 6].map((i) => (
-                <div key={i} className="bg-white rounded-2xl overflow-hidden shadow-lg animate-pulse">
-                  <div className="aspect-square bg-gray-200" />
-                  <div className="p-6 space-y-3">
-                    <div className="h-6 bg-gray-200 rounded w-3/4" />
-                    <div className="h-4 bg-gray-200 rounded w-1/2" />
-                    <div className="h-10 bg-gray-200 rounded" />
+                <div key={i} className="rounded-2xl overflow-hidden border border-gray-100">
+                  <div className="aspect-square skeleton-shimmer" />
+                  <div className="p-5 space-y-3">
+                    <div className="h-5 skeleton-shimmer rounded-lg w-3/4" />
+                    <div className="h-4 skeleton-shimmer rounded-lg w-1/2" />
+                    <div className="h-10 skeleton-shimmer rounded-xl" />
                   </div>
                 </div>
               ))}
             </div>
           ) : (
-            <motion.div 
+            <motion.div
               variants={staggerContainer}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: true, margin: "-100px" }}
-              className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
+              viewport={{ once: true, margin: '-80px' }}
+              className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
             >
               {featuredProducts.map((product, index) => (
-                <motion.div
-                  key={product.id}
-                  variants={fadeInUp}
-                >
+                <motion.div key={product.id} variants={fadeInUp}>
                   <Link href={`/products/${product.id}`}>
                     <motion.div
-                      whileHover={{ y: -8 }}
-                      transition={{ duration: 0.2 }} // Faster transition
-                      className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 group cursor-pointer h-full flex flex-col"
+                      whileHover={{ y: -6 }}
+                      transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                      className="group bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-xl hover:border-gray-200 transition-all duration-300 cursor-pointer h-full flex flex-col"
                     >
-                      <div className="relative aspect-square rounded-2xl overflow-hidden">
+                      {/* Product Image */}
+                      <div className="relative aspect-square bg-gray-50 overflow-hidden">
                         <Image
                           src={product.image_url || '/images/placeholder.jpg'}
                           alt={product.name}
                           fill
                           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                          className="object-cover group-hover:scale-110 transition-transform duration-500"
-                          loading={index < 3 ? "eager" : "lazy"}
+                          className="object-cover group-hover:scale-105 transition-transform duration-500"
+                          loading={index < 3 ? 'eager' : 'lazy'}
                           priority={index < 3}
-                          placeholder="blur"
-                          blurDataURL={getPlaceholderDataURL()}
-                          quality={75} // Reduced from default
                           onError={(e) => {
                             const target = e.target as HTMLImageElement;
                             target.src = '/images/placeholder.jpg';
                           }}
                         />
-                        
-                        <div className="absolute top-4 left-4 bg-primary-500 text-white px-3 py-1 rounded-full text-sm font-semibold capitalize z-10">
+                        {/* Category Badge */}
+                        <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold text-gray-700 capitalize shadow-sm">
                           {product.category.replace('_', ' ')}
                         </div>
 
                         {product.stock_quantity === 0 && (
-                          <div className="absolute top-4 right-4 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-semibold z-10">
+                          <div className="absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-full text-xs font-semibold">
                             Out of Stock
                           </div>
                         )}
+
+                        {/* Hover Overlay */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                       </div>
 
-                      <div className="p-6 flex-grow flex flex-col">
-                        <h3 className="text-xl font-bold mb-2 group-hover:text-primary-500 transition-colors line-clamp-2">
+                      {/* Product Info */}
+                      <div className="p-5 flex-grow flex flex-col">
+                        <h3 className="text-base font-semibold text-gray-900 mb-1.5 group-hover:text-teal-700 transition-colors line-clamp-2">
                           {product.name}
                         </h3>
-                        
-                        <p className="text-gray-600 text-sm mb-4 line-clamp-2 flex-grow">
+
+                        <p className="text-sm text-gray-400 mb-4 line-clamp-2 flex-grow">
                           {product.description}
                         </p>
 
-                        <div className="flex items-baseline gap-2 mb-4">
-                          <span className="text-2xl font-bold text-primary-500">
-                            ₹{product.price.toLocaleString('en-IN')}
-                          </span>
-                          <span className="text-gray-500 line-through text-sm">
-                            ₹{(product.price * 1.2).toLocaleString('en-IN')}
-                          </span>
-                          <span className="ml-auto bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs font-semibold">
-                            Save 20%
-                          </span>
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <span className="text-xl font-bold text-gray-900">
+                              ₹{product.price.toLocaleString('en-IN')}
+                            </span>
+                            <span className="text-sm text-gray-400 line-through ml-2">
+                              ₹{(product.price * 1.2).toLocaleString('en-IN')}
+                            </span>
+                          </div>
+                          <div className="w-10 h-10 rounded-xl bg-teal-50 flex items-center justify-center group-hover:bg-teal-500 transition-colors">
+                            <FiArrowRight className="text-teal-600 group-hover:text-white transition-colors" />
+                          </div>
                         </div>
-
-                        <motion.button
-                          whileHover={{ scale: 1.02 }}
-                          whileTap={{ scale: 0.98 }}
-                          transition={{ duration: 0.1 }} // Faster
-                          className="w-full bg-primary-500 text-white py-3 rounded-xl font-semibold hover:bg-primary-600 transition-colors flex items-center justify-center gap-2"
-                        >
-                          <FiShoppingBag />
-                          View Details
-                        </motion.button>
                       </div>
                     </motion.div>
                   </Link>
@@ -722,91 +154,85 @@ export default function HomePage() {
           >
             <Link href="/products">
               <motion.button
-                whileHover={{ scale: 1.05, y: -2 }}
-                whileTap={{ scale: 0.95 }}
-                transition={{ duration: 0.2 }}
-                className="btn-primary text-lg px-10 py-4 inline-flex items-center gap-3"
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+                className="btn-primary text-base px-8 py-3.5 inline-flex items-center gap-2"
               >
                 View All Products
-                <span>→</span>
+                <FiArrowRight />
               </motion.button>
             </Link>
           </motion.div>
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="relative pt-20 pb-20 px-4 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-white via-teal-50 to-cyan-50" />
-        
-        {/* ✅ Simplified background animations */}
-        <div className="absolute top-10 right-10 w-80 h-80 bg-teal-200/40 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-10 left-10 w-96 h-96 bg-cyan-200/40 rounded-full blur-3xl animate-pulse" />
-        
-        <div className="max-w-7xl mx-auto relative z-10">
+      {/* Why Choose Us Section */}
+      <section className="py-24 px-4 bg-gray-50">
+        <div className="max-w-7xl mx-auto">
           <motion.div
             variants={fadeInUp}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-            className="text-center mb-12"
+            viewport={{ once: true, margin: '-80px' }}
+            className="text-center mb-16"
           >
-            <h2 className="text-4xl md:text-5xl font-bold mb-4">
+            <span className="inline-block text-teal-600 font-semibold text-sm tracking-wider uppercase mb-3">
+              Why Us
+            </span>
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4 tracking-tight">
               Why Choose OM Marketing?
             </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Your trusted partner for precision weighing solutions
+            <p className="text-lg text-gray-500 max-w-2xl mx-auto">
+              Your trusted partner for precision weighing solutions since 2008
             </p>
           </motion.div>
 
-          <motion.div 
+          <motion.div
             variants={staggerContainer}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-            className="grid md:grid-cols-2 lg:grid-cols-4 gap-8"
+            viewport={{ once: true, margin: '-80px' }}
+            className="grid md:grid-cols-2 lg:grid-cols-4 gap-6"
           >
             {[
               {
-                icon: <FiAward className="text-4xl" />,
+                icon: <FiAward className="text-2xl" />,
                 title: 'ISO Certified',
                 description: 'Quality assured products meeting international standards',
-                color: 'from-blue-500 to-cyan-500',
+                gradient: 'from-sky-500 to-blue-600',
               },
               {
-                icon: <FiTruck className="text-4xl" />,
+                icon: <FiTruck className="text-2xl" />,
                 title: 'Fast Delivery',
                 description: 'Quick and reliable shipping across India',
-                color: 'from-green-500 to-emerald-500',
+                gradient: 'from-emerald-500 to-green-600',
               },
               {
-                icon: <FiTrendingUp className="text-4xl" />,
+                icon: <FiTrendingUp className="text-2xl" />,
                 title: '15+ Years',
                 description: 'Trusted experience in weighing solutions',
-                color: 'from-purple-500 to-pink-500',
+                gradient: 'from-violet-500 to-purple-600',
               },
               {
-                icon: <FiShoppingBag className="text-4xl" />,
+                icon: <FiShoppingBag className="text-2xl" />,
                 title: 'Wide Range',
                 description: 'Comprehensive product selection for all needs',
-                color: 'from-orange-500 to-red-500',
+                gradient: 'from-amber-500 to-orange-600',
               },
             ].map((feature, index) => (
               <motion.div
                 key={index}
                 variants={fadeInUp}
-                whileHover={{ y: -5, scale: 1.02 }}
-                transition={{ duration: 0.2 }}
-                className="text-center group"
+                whileHover={{ y: -4 }}
+                transition={{ duration: 0.3 }}
+                className="group"
               >
-                <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all">
-                  <div
-                    className={`w-20 h-20 mx-auto mb-4 rounded-2xl bg-gradient-to-br ${feature.color} text-white flex items-center justify-center shadow-lg`}
-                  >
+                <div className="bg-white rounded-2xl p-6 border border-gray-100 hover:shadow-lg hover:border-gray-200 transition-all h-full">
+                  <div className={`w-12 h-12 mb-5 rounded-xl bg-gradient-to-br ${feature.gradient} text-white flex items-center justify-center shadow-lg`}>
                     {feature.icon}
                   </div>
-                  <h3 className="text-xl font-bold mb-2">{feature.title}</h3>
-                  <p className="text-gray-600">{feature.description}</p>
+                  <h3 className="text-lg font-bold text-gray-900 mb-2">{feature.title}</h3>
+                  <p className="text-sm text-gray-500 leading-relaxed">{feature.description}</p>
                 </div>
               </motion.div>
             ))}
@@ -815,81 +241,89 @@ export default function HomePage() {
       </section>
 
       {/* Browse by Category Section */}
-      <section id="categories" className="relative pt-20 pb-20 px-4 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-purple-50 via-pink-50 to-orange-50" />
-        
-        {/* ✅ Simplified animations */}
-        <div className="absolute top-20 left-20 w-[400px] h-[400px] bg-purple-300/30 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-20 right-20 w-[450px] h-[450px] bg-pink-300/30 rounded-full blur-3xl animate-pulse" />
-        
-        <div className="max-w-7xl mx-auto relative z-10">
+      <section id="categories" className="py-24 px-4">
+        <div className="max-w-7xl mx-auto">
           <motion.div
             variants={fadeInUp}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-            className="text-center mb-12"
+            viewport={{ once: true, margin: '-80px' }}
+            className="text-center mb-16"
           >
-            <h2 className="text-4xl md:text-5xl font-bold mb-4">Browse by Category</h2>
-            <p className="text-gray-600 text-lg">Find exactly what you need</p>
+            <span className="inline-block text-teal-600 font-bold text-sm tracking-widest uppercase mb-3">
+              BROWSE
+            </span>
+            <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4 tracking-tight">
+              Shop by Category
+            </h2>
+            <p className="text-gray-500 text-lg font-medium">Find exactly what you need</p>
           </motion.div>
 
-          <motion.div 
+          <motion.div
             variants={staggerContainer}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-            className="grid md:grid-cols-3 gap-8"
+            viewport={{ once: true, margin: '-80px' }}
+            className="grid md:grid-cols-3 gap-6"
           >
             {[
               {
-                emoji: '⚖️',
+                icon: (
+                  <svg className="w-8 h-8 opacity-80" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M12 3v18M3 10l4-4 4 4M15 10l4-4 4 4M7 21h10"/>
+                    <circle cx="7" cy="14" r="4"/><circle cx="17" cy="14" r="4"/>
+                  </svg>
+                ),
                 title: 'Weighing Scales',
-                desc: 'Explore our range of weighing scales',
+                desc: 'Industrial, commercial, and retail weighing solutions',
                 count: '50+ Models',
-                color: 'from-blue-500 to-blue-700',
+                bgClass: 'bg-[#008B8B]', // Deep teal
                 link: '/products?category=weighing_scale',
               },
               {
-                emoji: '💵',
+                icon: <span className="text-3xl">💰</span>,
                 title: 'Note Counters',
-                desc: 'Explore our range of note counters',
+                desc: 'High-speed currency counting with fake detection',
                 count: '15+ Models',
-                color: 'from-green-500 to-green-700',
+                bgClass: 'bg-[#00A35C]', // Rich emerald
                 link: '/products?category=note_counter',
               },
               {
-                emoji: '📱',
+                icon: <span className="text-3xl">📱</span>,
                 title: 'Accessories',
-                desc: 'Explore our range of accessories',
+                desc: 'Mobile accessories, parts, and components',
                 count: '100+ Items',
-                color: 'from-purple-500 to-pink-700',
-                link: '/products?category=accessories',
+                bgClass: 'bg-[#8A2BE2]', // Vivid purple
+                link: '/products?category=mobile_accessory',
               },
             ].map((category, index) => (
               <motion.div key={index} variants={fadeInUp}>
                 <Link href={category.link}>
-                  <div className={`relative bg-gradient-to-br ${category.color} rounded-3xl p-8 h-80 overflow-hidden group cursor-pointer transform transition-all hover:scale-105 hover:shadow-2xl`}>
-                    <div className="absolute top-4 right-4 bg-white/20 backdrop-blur-md px-4 py-2 rounded-full text-white font-semibold">
-                      {category.count}
-                    </div>
-                    
-                    <div className="relative z-10 h-full flex flex-col">
-                      <div className="text-7xl mb-6 transform group-hover:scale-110 transition-transform">
-                        {category.emoji}
+                  <motion.div
+                    whileHover={{ y: -6 }}
+                    transition={{ duration: 0.3 }}
+                    className={`relative ${category.bgClass} rounded-[2rem] p-8 h-80 overflow-hidden group cursor-pointer shadow-lg hover:shadow-2xl flex flex-col justify-between`}
+                  >
+                    {/* Top Row: Icon & Badge */}
+                    <div className="flex justify-between items-start relative z-10">
+                      <div className="text-black/60 group-hover:scale-110 transition-transform duration-300">
+                        {category.icon}
                       </div>
-                      
-                      <div className="mt-auto text-white">
-                        <h3 className="text-2xl font-bold mb-2">{category.title}</h3>
-                        <p className="text-white/90 mb-4">{category.desc}</p>
-                        <div className="flex items-center gap-2 font-semibold">
-                          Browse →
-                        </div>
+                      <div className="bg-white/20 backdrop-blur-md px-4 py-1.5 rounded-full text-white text-xs font-semibold tracking-wide">
+                        {category.count}
                       </div>
                     </div>
-                    
-                    <div className="absolute inset-0 bg-white/10 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity" />
-                  </div>
+
+                    {/* Bottom Row: Info */}
+                    <div className="relative z-10 mt-auto">
+                      <h3 className="text-2xl font-bold text-white mb-2">{category.title}</h3>
+                      <p className="text-white/80 text-sm mb-4 leading-relaxed font-medium pr-4">{category.desc}</p>
+                      <div className="flex items-center gap-2 text-sm font-bold text-white/90 group-hover:text-white transition-colors">
+                        Browse Products
+                        <FiArrowRight className="group-hover:translate-x-1 transition-transform" />
+                      </div>
+                    </div>
+                  </motion.div>
                 </Link>
               </motion.div>
             ))}
@@ -898,52 +332,56 @@ export default function HomePage() {
       </section>
 
       {/* CTA Section */}
-      <section id="contact" className="relative pt-20 pb-20 px-4 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-teal-600 via-cyan-600 to-blue-600" />
-        
-        {/* ✅ Simplified animations */}
-        <div className="absolute top-0 left-0 w-96 h-96 bg-cyan-400/20 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-teal-400/20 rounded-full blur-3xl animate-pulse" />
-        
-        <div className="max-w-4xl mx-auto text-center relative z-10">
+      <section id="contact" className="py-24 px-4">
+        <div className="max-w-4xl mx-auto">
           <motion.div
             variants={fadeInUp}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
+            className="relative rounded-3xl overflow-hidden"
           >
-            <div className="text-7xl mb-6 animate-bounce">
-              📞
-            </div>
-            <h2 className="text-4xl md:text-5xl font-bold mb-4 text-white" style={{
-              textShadow: '0 10px 30px rgba(0,0,0,0.3)'
-            }}>
-              Ready to Get Started?
-            </h2>
-            <p className="text-xl mb-8 text-white/90">
-              Contact us for custom solutions and bulk orders
-            </p>
-            <div className="flex gap-4 justify-center flex-wrap">
-              <Link href="/contact">
-                <motion.button
-                  whileHover={{ scale: 1.05, y: -2 }}
-                  whileTap={{ scale: 0.98 }}
-                  transition={{ duration: 0.2 }}
-                  className="bg-white text-teal-600 px-10 py-4 rounded-2xl font-bold shadow-2xl hover:shadow-white/20 transition-all text-lg"
-                >
-                  Contact Us
-                </motion.button>
-              </Link>
-              <a href="tel:9825247312">
-                <motion.button
-                  whileHover={{ scale: 1.05, y: -2 }}
-                  whileTap={{ scale: 0.98 }}
-                  transition={{ duration: 0.2 }}
-                  className="bg-white/15 backdrop-blur-md border-2 border-white text-white px-10 py-4 rounded-2xl font-bold hover:bg-white hover:text-teal-600 transition-all shadow-2xl text-lg"
-                >
-                  Call: 98252 47312
-                </motion.button>
-              </a>
+            {/* Background */}
+            <div className="absolute inset-0" style={{
+              background: 'linear-gradient(135deg, #0f172a 0%, #0e2f3c 30%, #0d5e52 70%, #0d9488 100%)',
+            }} />
+            <div className="absolute inset-0 opacity-10"
+              style={{
+                backgroundImage: `
+                  linear-gradient(to right, rgba(255,255,255,0.3) 1px, transparent 1px),
+                  linear-gradient(to bottom, rgba(255,255,255,0.3) 1px, transparent 1px)
+                `,
+                backgroundSize: '40px 40px'
+              }}
+            />
+
+            <div className="relative z-10 text-center py-16 px-8">
+              <h2 className="text-3xl md:text-5xl font-bold mb-4 text-white tracking-tight">
+                Ready to Get Started?
+              </h2>
+              <p className="text-lg mb-10 text-white/60 max-w-xl mx-auto">
+                Contact us for custom solutions, bulk orders, and competitive pricing
+              </p>
+              <div className="flex gap-4 justify-center flex-wrap">
+                <Link href="/contact">
+                  <motion.button
+                    whileHover={{ scale: 1.03, y: -2 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="bg-white text-gray-900 px-8 py-4 rounded-2xl font-bold shadow-xl hover:shadow-2xl transition-all text-base"
+                  >
+                    Contact Us
+                  </motion.button>
+                </Link>
+                <a href="tel:9825247312">
+                  <motion.button
+                    whileHover={{ scale: 1.03, y: -2 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="bg-white/10 border border-white/20 text-white px-8 py-4 rounded-2xl font-semibold hover:bg-white/20 transition-all text-base"
+                  >
+                    Call: 98252 47312
+                  </motion.button>
+                </a>
+              </div>
             </div>
           </motion.div>
         </div>

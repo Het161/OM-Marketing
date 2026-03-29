@@ -1,220 +1,119 @@
-// frontend/src/app/about/page.tsx
-
 'use client';
 
 import { motion } from 'framer-motion';
-import { FiAward, FiUsers, FiTarget, FiHeart, FiTrendingUp, FiCheckCircle, FiMessageCircle, FiPhone, FiMail } from 'react-icons/fi';
+import { FiAward, FiUsers, FiTarget, FiHeart, FiTrendingUp, FiCheckCircle, FiTruck, FiShield, FiPhone, FiMail, FiMessageCircle } from 'react-icons/fi';
 import { FaWhatsapp } from 'react-icons/fa';
 import Link from 'next/link';
-import { useState } from 'react';
+
+const fadeInUp = {
+  hidden: { opacity: 0, y: 24 },
+  visible: {
+    opacity: 1, y: 0,
+    transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] }
+  }
+};
+
+const staggerContainer = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.08, delayChildren: 0.1 }
+  }
+};
 
 export default function AboutPage() {
-  const [selectedService, setSelectedService] = useState<string | null>(null);
-
   const handleServiceClick = (service: string) => {
-    const message = getWhatsAppMessage(service);
-    const whatsappUrl = `https://wa.me/919825247312?text=${encodeURIComponent(message)}`;
-    window.open(whatsappUrl, '_blank');
-  };
-
-  const getWhatsAppMessage = (service: string) => {
-    const messages = {
-      consultation: "Hi! I'm interested in Expert Consultation for weighing solutions. Can you help me choose the right product?",
-      technical: "Hi! I need Technical Support for my weighing scale. Can you assist me?",
-      aftersales: "Hi! I'm looking for After-Sales Care services. Can you provide more information?"
+    const messages: Record<string, string> = {
+      consultation: "Hi! I'm interested in Expert Consultation for weighing solutions.",
+      technical: "Hi! I need Technical Support for my weighing scale.",
+      aftersales: "Hi! I'm looking for After-Sales Care services.",
     };
-    return messages[service as keyof typeof messages] || "Hi! I'm interested in your services.";
+    const msg = messages[service] || "Hi! I'm interested in your services.";
+    window.open(`https://wa.me/919825247312?text=${encodeURIComponent(msg)}`, '_blank');
   };
 
   return (
-    <div className="min-h-screen relative overflow-hidden">
-      {/* Animated Background */}
-      <div className="fixed inset-0 -z-10">
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50" />
-        
-        <motion.div
-          animate={{
-            scale: [1, 1.2, 1],
-            x: [0, 50, 0],
-            y: [0, -30, 0],
+    <div className="min-h-screen bg-white">
+      {/* Hero */}
+      <section className="relative pt-24 pb-16 overflow-hidden">
+        <div className="absolute inset-0" style={{
+          background: 'linear-gradient(135deg, #0f172a 0%, #0e2f3c 30%, #0d5e52 70%, #0d9488 100%)',
+        }} />
+        <div className="absolute inset-0 opacity-[0.04]"
+          style={{
+            backgroundImage: `
+              linear-gradient(to right, rgba(255,255,255,1) 1px, transparent 1px),
+              linear-gradient(to bottom, rgba(255,255,255,1) 1px, transparent 1px)
+            `,
+            backgroundSize: '60px 60px'
           }}
-          transition={{
-            duration: 20,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-          className="absolute top-20 left-10 w-96 h-96 bg-blue-200/30 rounded-full blur-3xl"
         />
-        
-        <motion.div
-          animate={{
-            scale: [1, 1.3, 1],
-            x: [0, -50, 0],
-          }}
-          transition={{
-            duration: 18,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-          className="absolute bottom-20 right-10 w-[500px] h-[500px] bg-purple-200/30 rounded-full blur-3xl"
-        />
-        
-        <motion.div
-          animate={{
-            scale: [1, 1.15, 1],
-            rotate: [0, 180, 360],
-          }}
-          transition={{
-            duration: 25,
-            repeat: Infinity,
-            ease: "linear"
-          }}
-          className="absolute top-1/2 left-1/3 w-[400px] h-[400px] bg-green-200/20 rounded-full blur-3xl"
-        />
-      </div>
 
-      {/* Hero Section */}
-      <section className="relative py-20 px-4 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-teal-600 via-cyan-600 to-blue-700" />
-        
-        <motion.div
-          animate={{
-            scale: [1, 1.2, 1],
-            rotate: [0, 90, 0],
-          }}
-          transition={{
-            duration: 15,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-          className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-3xl"
-        />
-        
-        <div className="max-w-7xl mx-auto relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-center"
-          >
-            <motion.div
-              animate={{
-                y: [0, -15, 0],
-              }}
-              transition={{
-                duration: 3,
-                repeat: Infinity,
-                ease: "easeInOut"
-              }}
-              className="text-7xl mb-6"
-            >
-              🏢
-            </motion.div>
-            
-            <h1 className="text-5xl md:text-6xl font-bold mb-4 text-white" style={{
-              textShadow: '0 10px 40px rgba(0,0,0,0.3)'
-            }}>
+        <div className="max-w-4xl mx-auto relative z-10 text-center px-4">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/15 bg-white/5 backdrop-blur-sm mb-6">
+              <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse-soft" />
+              <span className="text-white/80 text-sm font-medium">Trusted Since 2008</span>
+            </div>
+            <h1 className="text-4xl md:text-6xl font-bold text-white mb-4 tracking-tight">
               About OM Marketing
             </h1>
-            
-            <p className="text-xl md:text-2xl text-white/95 max-w-3xl mx-auto font-medium" style={{
-              textShadow: '0 4px 20px rgba(0,0,0,0.2)'
-            }}>
-              Your Trusted Partner in Premium Weighing Solutions Since 2008
+            <p className="text-lg text-white/60 max-w-xl mx-auto">
+              Your trusted partner in premium weighing solutions for over 15 years
             </p>
           </motion.div>
         </div>
-        
-        <div className="absolute bottom-0 left-0 right-0">
-          <svg 
-            viewBox="0 0 1440 120" 
-            xmlns="http://www.w3.org/2000/svg" 
-            className="w-full"
-            style={{ transform: 'translateY(1px)' }}
-          >
-            <path 
-              fill="rgba(249, 250, 251, 0.8)" 
-              d="M0,64L48,69.3C96,75,192,85,288,80C384,75,480,53,576,48C672,43,768,53,864,58.7C960,64,1056,64,1152,58.7C1248,53,1344,43,1392,37.3L1440,32L1440,120L1392,120C1344,120,1248,120,1152,120C1056,120,960,120,864,120C768,120,672,120,576,120C480,120,384,120,288,120C192,120,96,120,48,120L0,120Z"
-            />
-          </svg>
-        </div>
+
+        <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-white to-transparent" />
       </section>
 
-      {/* Our Story Section */}
-      <section className="py-20 px-4 relative z-10">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-            >
-              <div className="bg-white/80 backdrop-blur-lg rounded-3xl p-8 shadow-xl border border-white/50">
-                <h2 className="text-4xl font-bold mb-6 bg-gradient-to-r from-teal-600 to-cyan-600 bg-clip-text text-transparent">
-                  Our Story
-                </h2>
-                <div className="space-y-4 text-gray-700 text-lg leading-relaxed">
-                  <p>
-                    Founded in <strong className="text-primary-600">2008</strong>, OM Marketing has been at the forefront of providing high-quality weighing solutions across Gujarat and India.
-                  </p>
-                  <p>
-                    What started as a small family business in Gandhinagar has grown into a trusted name in the weighing scale industry, serving thousands of satisfied customers.
-                  </p>
-                  <p>
-                    With over <strong className="text-primary-600">15+ years</strong> of experience, we pride ourselves on delivering precision, quality, and exceptional customer service.
-                  </p>
-                </div>
+      {/* Our Story + Stats */}
+      <section className="py-20 px-4">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid lg:grid-cols-5 gap-10 items-start">
+            {/* Story — 3 cols */}
+            <motion.div variants={fadeInUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="lg:col-span-3">
+              <span className="inline-block text-teal-600 font-semibold text-sm tracking-wider uppercase mb-3">Our Story</span>
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6 tracking-tight">
+                Building Trust, One Scale at a Time
+              </h2>
+              <div className="space-y-4 text-gray-500 leading-relaxed">
+                <p>
+                  Founded in <strong className="text-gray-800">2008</strong>, OM Marketing has been at the forefront of providing high-quality weighing solutions across Gujarat and India.
+                </p>
+                <p>
+                  What started as a small family business has grown into a trusted name in the weighing scale industry, serving thousands of satisfied customers across various sectors.
+                </p>
+                <p>
+                  With over <strong className="text-gray-800">15+ years</strong> of experience, we pride ourselves on delivering precision, quality, and exceptional customer service with every product.
+                </p>
               </div>
             </motion.div>
 
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="relative"
+            {/* Stats Card — 2 cols */}
+            <motion.div variants={fadeInUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
+              className="lg:col-span-2"
             >
-              <div className="bg-gradient-to-br from-teal-500 via-cyan-500 to-blue-600 rounded-3xl p-12 text-white shadow-2xl">
-                <motion.div
-                  animate={{
-                    rotate: [0, 360],
-                  }}
-                  transition={{
-                    duration: 20,
-                    repeat: Infinity,
-                    ease: "linear"
-                  }}
-                  className="absolute -top-6 -right-6 w-24 h-24 bg-white/20 rounded-full blur-xl"
-                />
-                
-                <div className="space-y-6">
-                  <div className="flex items-center gap-4">
-                    <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center text-3xl">
-                      📅
+              <div className="rounded-2xl overflow-hidden" style={{
+                background: 'linear-gradient(135deg, #0f172a 0%, #0e2f3c 30%, #0d5e52 70%, #0d9488 100%)',
+              }}>
+                <div className="p-8 space-y-6 text-white">
+                  {[
+                    { value: '2008', label: 'Year Founded', icon: '📅' },
+                    { value: '5000+', label: 'Happy Customers', icon: '👥' },
+                    { value: '200+', label: 'Product Models', icon: '⚖️' },
+                    { value: '15+', label: 'Years Experience', icon: '🏆' },
+                  ].map((stat, i) => (
+                    <div key={i} className="flex items-center gap-4">
+                      <div className="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center text-2xl flex-shrink-0">
+                        {stat.icon}
+                      </div>
+                      <div>
+                        <div className="text-2xl font-bold">{stat.value}</div>
+                        <div className="text-sm text-white/50">{stat.label}</div>
+                      </div>
                     </div>
-                    <div>
-                      <div className="text-3xl font-bold">2008</div>
-                      <div className="text-white/80">Year Founded</div>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-center gap-4">
-                    <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center text-3xl">
-                      👥
-                    </div>
-                    <div>
-                      <div className="text-3xl font-bold">5000+</div>
-                      <div className="text-white/80">Happy Customers</div>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-center gap-4">
-                    <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center text-3xl">
-                      ⚖️
-                    </div>
-                    <div>
-                      <div className="text-3xl font-bold">200+</div>
-                      <div className="text-white/80">Product Models</div>
-                    </div>
-                  </div>
+                  ))}
                 </div>
               </div>
             </motion.div>
@@ -222,301 +121,157 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Our Values Section */}
-      <section className="py-20 px-4 relative z-10">
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-12"
-          >
-            <h2 className="text-4xl md:text-5xl font-bold mb-4">
-              Our Core Values
+      {/* Core Values */}
+      <section className="py-20 px-4 bg-gray-50">
+        <div className="max-w-6xl mx-auto">
+          <motion.div variants={fadeInUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="text-center mb-14">
+            <span className="inline-block text-teal-600 font-semibold text-sm tracking-wider uppercase mb-3">Our Values</span>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight">
+              What Drives Us
             </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              The principles that guide everything we do
-            </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true }}
+            className="grid md:grid-cols-2 lg:grid-cols-4 gap-5"
+          >
             {[
-              {
-                icon: <FiAward className="text-4xl" />,
-                title: 'Quality First',
-                description: 'ISO certified products meeting highest standards',
-                color: 'from-yellow-400 to-orange-500',
-              },
-              {
-                icon: <FiHeart className="text-4xl" />,
-                title: 'Customer Focus',
-                description: 'Your satisfaction is our top priority',
-                color: 'from-red-400 to-pink-500',
-              },
-              {
-                icon: <FiCheckCircle className="text-4xl" />,
-                title: 'Integrity',
-                description: 'Honest and transparent in all dealings',
-                color: 'from-green-400 to-emerald-500',
-              },
-              {
-                icon: <FiTrendingUp className="text-4xl" />,
-                title: 'Innovation',
-                description: 'Constantly improving our products and services',
-                color: 'from-blue-400 to-cyan-500',
-              },
-            ].map((value, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                whileHover={{ y: -5, scale: 1.05 }}
-                className="group"
-              >
-                <div className="bg-white/90 backdrop-blur-lg rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all border border-white/50 h-full">
-                  <motion.div
-                    whileHover={{ rotate: 360 }}
-                    transition={{ duration: 0.6 }}
-                    className={`w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br ${value.color} text-white flex items-center justify-center shadow-lg`}
-                  >
+              { icon: <FiAward className="text-xl" />, title: 'Quality First', desc: 'ISO certified products meeting highest standards', gradient: 'from-amber-500 to-orange-600' },
+              { icon: <FiHeart className="text-xl" />, title: 'Customer Focus', desc: 'Your satisfaction is our top priority', gradient: 'from-rose-500 to-pink-600' },
+              { icon: <FiCheckCircle className="text-xl" />, title: 'Integrity', desc: 'Honest and transparent in all dealings', gradient: 'from-emerald-500 to-green-600' },
+              { icon: <FiTrendingUp className="text-xl" />, title: 'Innovation', desc: 'Constantly improving our solutions', gradient: 'from-sky-500 to-blue-600' },
+            ].map((value, i) => (
+              <motion.div key={i} variants={fadeInUp} whileHover={{ y: -4 }} transition={{ duration: 0.3 }}>
+                <div className="bg-white rounded-2xl p-6 border border-gray-100 hover:shadow-lg hover:border-gray-200 transition-all h-full">
+                  <div className={`w-11 h-11 mb-4 rounded-xl bg-gradient-to-br ${value.gradient} text-white flex items-center justify-center shadow-lg`}>
                     {value.icon}
-                  </motion.div>
-                  <h3 className="text-xl font-bold mb-2 text-center">{value.title}</h3>
-                  <p className="text-gray-600 text-center">{value.description}</p>
+                  </div>
+                  <h3 className="text-base font-bold text-gray-900 mb-1.5">{value.title}</h3>
+                  <p className="text-sm text-gray-400 leading-relaxed">{value.desc}</p>
                 </div>
               </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
-      {/* Why Choose Us Section */}
-      <section className="py-20 px-4 relative z-10">
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-12"
-          >
-            <h2 className="text-4xl md:text-5xl font-bold mb-4">
+      {/* Why Choose Us */}
+      <section className="py-20 px-4">
+        <div className="max-w-6xl mx-auto">
+          <motion.div variants={fadeInUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="text-center mb-14">
+            <span className="inline-block text-teal-600 font-semibold text-sm tracking-wider uppercase mb-3">Advantages</span>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight">
               Why Choose OM Marketing?
             </h2>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 gap-6">
+          <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true }}
+            className="grid md:grid-cols-2 lg:grid-cols-3 gap-5"
+          >
             {[
-              {
-                icon: '✅',
-                title: 'Authorized Dealer',
-                description: 'Official dealer for top brands like Phoenix, Citizen, and more',
-              },
-              {
-                icon: '🎯',
-                title: 'Wide Product Range',
-                description: '200+ models from table-top to heavy-duty industrial scales',
-              },
-              {
-                icon: '🚚',
-                title: 'Fast Delivery',
-                description: 'Quick delivery across Gujarat and all over India',
-              },
-              {
-                icon: '💰',
-                title: 'Competitive Pricing',
-                description: 'Best prices in the market with regular offers',
-              },
-              {
-                icon: '🔧',
-                title: 'After-Sales Support',
-                description: 'Comprehensive maintenance and calibration services',
-              },
-              {
-                icon: '🏆',
-                title: 'Trusted by Thousands',
-                description: '5000+ satisfied customers across various industries',
-              },
-            ].map((feature, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                whileHover={{ scale: 1.02 }}
-              >
-                <div className="bg-white/90 backdrop-blur-lg rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all border border-white/50 flex gap-4">
-                  <div className="text-4xl flex-shrink-0">{feature.icon}</div>
+              { icon: <FiShield className="text-xl" />, title: 'Authorized Dealer', desc: 'Official dealer for top brands', gradient: 'from-sky-500 to-blue-600' },
+              { icon: <FiTarget className="text-xl" />, title: 'Wide Range', desc: '200+ models from table-top to industrial', gradient: 'from-amber-500 to-orange-600' },
+              { icon: <FiTruck className="text-xl" />, title: 'Fast Delivery', desc: 'Quick delivery across Gujarat & India', gradient: 'from-emerald-500 to-green-600' },
+              { icon: <FiTrendingUp className="text-xl" />, title: 'Competitive Pricing', desc: 'Best prices with regular offers', gradient: 'from-violet-500 to-purple-600' },
+              { icon: <FiCheckCircle className="text-xl" />, title: 'After-Sales Support', desc: 'Maintenance & calibration services', gradient: 'from-rose-500 to-pink-600' },
+              { icon: <FiUsers className="text-xl" />, title: 'Trusted by Thousands', desc: '5000+ satisfied customers', gradient: 'from-teal-500 to-cyan-600' },
+            ].map((feature, i) => (
+              <motion.div key={i} variants={fadeInUp} whileHover={{ y: -4 }} transition={{ duration: 0.3 }}>
+                <div className="bg-white rounded-2xl p-5 border border-gray-100 hover:shadow-lg hover:border-gray-200 transition-all flex items-start gap-4">
+                  <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${feature.gradient} text-white flex items-center justify-center shadow-sm flex-shrink-0`}>
+                    {feature.icon}
+                  </div>
                   <div>
-                    <h3 className="text-xl font-bold mb-2">{feature.title}</h3>
-                    <p className="text-gray-600">{feature.description}</p>
+                    <h3 className="text-sm font-bold text-gray-900 mb-1">{feature.title}</h3>
+                    <p className="text-sm text-gray-400">{feature.desc}</p>
                   </div>
                 </div>
               </motion.div>
             ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Team / Services Section */}
+      <section className="py-20 px-4 bg-gray-50">
+        <div className="max-w-4xl mx-auto">
+          <motion.div variants={fadeInUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="text-center mb-10">
+            <span className="inline-block text-teal-600 font-semibold text-sm tracking-wider uppercase mb-3">Our Team</span>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight mb-4">
+              Dedicated Professionals
+            </h2>
+            <p className="text-gray-400 max-w-2xl mx-auto">
+              Our experienced team is here to help you find the perfect weighing solution. Deep industry knowledge with commitment to satisfaction.
+            </p>
+          </motion.div>
+
+          <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true }}
+            className="flex flex-wrap justify-center gap-3 mb-10"
+          >
+            {[
+              { label: 'Expert Consultation', icon: <FiMessageCircle />, color: 'from-sky-500 to-blue-600', service: 'consultation' },
+              { label: 'Technical Support', icon: <FiPhone />, color: 'from-emerald-500 to-green-600', service: 'technical' },
+              { label: 'After-Sales Care', icon: <FiHeart />, color: 'from-violet-500 to-purple-600', service: 'aftersales' },
+            ].map((btn, i) => (
+              <motion.button
+                key={i}
+                variants={fadeInUp}
+                onClick={() => handleServiceClick(btn.service)}
+                whileHover={{ scale: 1.03, y: -2 }}
+                whileTap={{ scale: 0.97 }}
+                className={`inline-flex items-center gap-2 bg-gradient-to-br ${btn.color} text-white px-6 py-3 rounded-xl font-semibold text-sm shadow-lg hover:shadow-xl transition-all`}
+              >
+                {btn.icon}
+                {btn.label}
+              </motion.button>
+            ))}
+          </motion.div>
+
+          <div className="text-center">
+            <p className="text-xs text-gray-400 mb-3">Or reach us directly:</p>
+            <div className="flex justify-center gap-4">
+              <a href="tel:9825247312" className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-teal-600 transition-colors">
+                <FiPhone className="text-sm" /> 98252 47312
+              </a>
+              <a href="mailto:ommarketing.weighingscale1@gmail.com" className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-teal-600 transition-colors">
+                <FiMail className="text-sm" /> Email Us
+              </a>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Our Team Section - WITH FUNCTIONAL BUTTONS */}
-      <section className="py-20 px-4 relative z-10">
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-12"
+      {/* CTA */}
+      <section className="py-20 px-4">
+        <div className="max-w-4xl mx-auto">
+          <motion.div variants={fadeInUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
+            className="relative rounded-3xl overflow-hidden"
           >
-            <h2 className="text-4xl md:text-5xl font-bold mb-4">
-              Our Team
-            </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Dedicated professionals committed to your success
-            </p>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="bg-white/90 backdrop-blur-lg rounded-3xl p-12 shadow-xl border border-white/50 text-center"
-          >
-            <div className="max-w-3xl mx-auto">
-              <FiUsers className="text-6xl text-primary-500 mx-auto mb-6" />
-              <p className="text-lg text-gray-700 leading-relaxed mb-6">
-                Our experienced team of sales professionals and technical experts are here to help you find the perfect weighing solution for your needs. With deep industry knowledge and a commitment to customer satisfaction, we ensure you get the best products and services.
+            <div className="absolute inset-0" style={{
+              background: 'linear-gradient(135deg, #0f172a 0%, #0e2f3c 30%, #0d5e52 70%, #0d9488 100%)',
+            }} />
+            <div className="relative z-10 text-center py-16 px-8">
+              <h2 className="text-3xl md:text-5xl font-bold mb-4 text-white tracking-tight">
+                Let&apos;s Work Together
+              </h2>
+              <p className="text-lg mb-10 text-white/60 max-w-xl mx-auto">
+                Partner with us for all your weighing needs
               </p>
-              
-              {/* FUNCTIONAL BUTTONS */}
-              <div className="flex flex-wrap justify-center gap-4 mt-8">
-                {/* Expert Consultation Button */}
-                <motion.button
-                  onClick={() => handleServiceClick('consultation')}
-                  whileHover={{ scale: 1.05, y: -2 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="group bg-gradient-to-br from-blue-500 to-cyan-500 text-white px-8 py-4 rounded-full font-bold shadow-lg hover:shadow-2xl transition-all flex items-center gap-2"
-                >
-                  <FiMessageCircle className="group-hover:rotate-12 transition-transform" />
-                  Expert Consultation
-                </motion.button>
-
-                {/* Technical Support Button */}
-                <motion.button
-                  onClick={() => handleServiceClick('technical')}
-                  whileHover={{ scale: 1.05, y: -2 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="group bg-gradient-to-br from-green-500 to-emerald-500 text-white px-8 py-4 rounded-full font-bold shadow-lg hover:shadow-2xl transition-all flex items-center gap-2"
-                >
-                  <FiPhone className="group-hover:rotate-12 transition-transform" />
-                  Technical Support
-                </motion.button>
-
-                {/* After-Sales Care Button */}
-                <motion.button
-                  onClick={() => handleServiceClick('aftersales')}
-                  whileHover={{ scale: 1.05, y: -2 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="group bg-gradient-to-br from-purple-500 to-pink-500 text-white px-8 py-4 rounded-full font-bold shadow-lg hover:shadow-2xl transition-all flex items-center gap-2"
-                >
-                  <FiHeart className="group-hover:scale-110 transition-transform" />
-                  After-Sales Care
-                </motion.button>
-              </div>
-
-              {/* Alternative Contact Methods */}
-              <div className="mt-8 pt-8 border-t border-gray-200">
-                <p className="text-sm text-gray-600 mb-4">Or reach us directly:</p>
-                <div className="flex flex-wrap justify-center gap-4">
-                  <a 
-                    href="tel:9825247312"
-                    className="inline-flex items-center gap-2 text-gray-700 hover:text-teal-600 transition-colors"
+              <div className="flex gap-4 justify-center flex-wrap">
+                <Link href="/contact">
+                  <motion.button whileHover={{ scale: 1.03, y: -2 }} whileTap={{ scale: 0.98 }}
+                    className="bg-white text-gray-900 px-8 py-4 rounded-2xl font-bold shadow-xl text-base"
                   >
-                    <FiPhone className="text-lg" />
-                    <span className="font-semibold">98252 47312</span>
-                  </a>
-                  <a 
-                    href="mailto:ommarketing.weighingscale1@gmail.com"
-                    className="inline-flex items-center gap-2 text-gray-700 hover:text-teal-600 transition-colors"
+                    Contact Us
+                  </motion.button>
+                </Link>
+                <Link href="/products">
+                  <motion.button whileHover={{ scale: 1.03, y: -2 }} whileTap={{ scale: 0.98 }}
+                    className="bg-white/10 border border-white/20 text-white px-8 py-4 rounded-2xl font-semibold text-base hover:bg-white/20 transition-all"
                   >
-                    <FiMail className="text-lg" />
-                    <span className="font-semibold">Email Us</span>
-                  </a>
-                </div>
+                    Browse Products
+                  </motion.button>
+                </Link>
               </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="relative py-20 px-4 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-teal-600 via-cyan-600 to-blue-700" />
-        
-        <motion.div
-          animate={{
-            scale: [1, 1.2, 1],
-            rotate: [0, 180, 360],
-          }}
-          transition={{
-            duration: 20,
-            repeat: Infinity,
-            ease: "linear"
-          }}
-          className="absolute top-0 left-0 w-96 h-96 bg-cyan-400/20 rounded-full blur-3xl"
-        />
-        
-        <div className="max-w-4xl mx-auto text-center relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            <motion.div
-              animate={{
-                y: [0, -10, 0],
-              }}
-              transition={{
-                duration: 2,
-                repeat: Infinity,
-                ease: "easeInOut"
-              }}
-              className="text-7xl mb-6"
-            >
-              🤝
-            </motion.div>
-            
-            <h2 className="text-4xl md:text-5xl font-bold mb-4 text-white" style={{
-              textShadow: '0 10px 30px rgba(0,0,0,0.3)'
-            }}>
-              Let's Work Together
-            </h2>
-            
-            <p className="text-xl mb-8 text-white/90 font-medium">
-              Partner with us for all your weighing needs
-            </p>
-            
-            <div className="flex gap-4 justify-center flex-wrap">
-              <Link href="/contact">
-                <motion.button
-                  whileHover={{ scale: 1.05, y: -2 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="bg-white text-teal-700 px-10 py-4 rounded-full font-bold shadow-2xl hover:shadow-white/40 transition-all text-lg"
-                >
-                  Contact Us
-                </motion.button>
-              </Link>
-              
-              <Link href="/products">
-                <motion.button
-                  whileHover={{ scale: 1.05, y: -2 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="bg-white/20 backdrop-blur-md border-2 border-white text-white px-10 py-4 rounded-full font-bold hover:bg-white hover:text-teal-700 transition-all shadow-2xl"
-                >
-                  Browse Products
-                </motion.button>
-              </Link>
             </div>
           </motion.div>
         </div>

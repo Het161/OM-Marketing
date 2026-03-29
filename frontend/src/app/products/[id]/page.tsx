@@ -1,22 +1,78 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useParams } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
-import { FiHeart, FiShare2, FiCheck, FiArrowLeft, FiPhone, FiMail, FiMessageCircle } from 'react-icons/fi';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { FiCheck, FiArrowLeft, FiPhone, FiMail, FiMessageCircle, FiShield, FiTruck, FiBox } from 'react-icons/fi';
 import { productApi } from '@/services/api';
 
-export default function ProductDetailPage() {
+// --- STUNNING 3D BACKGROUND COMPONENT ---
+const DynamicBackground = () => {
+  const { scrollY } = useScroll();
+  const y1 = useTransform(scrollY, [0, 1000], [0, 200]);
+  const y2 = useTransform(scrollY, [0, 1000], [0, -150]);
+
+  return (
+    <div className="fixed inset-0 overflow-hidden pointer-events-none -z-10 bg-[#0f172a]">
+      {/* Deep Gradient Base */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-teal-900/40 via-[#0f172a] to-black" />
+      
+      {/* 3D Floating Orbs */}
+      <motion.div 
+        style={{ y: y1 }}
+        animate={{ 
+          scale: [1, 1.2, 1],
+          opacity: [0.3, 0.5, 0.3],
+          rotate: [0, 90, 0]
+        }}
+        transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+        className="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] rounded-full bg-teal-500/20 blur-[120px]"
+      />
+      <motion.div 
+        style={{ y: y2 }}
+        animate={{ 
+          scale: [1, 1.5, 1],
+          opacity: [0.2, 0.4, 0.2],
+          rotate: [0, -90, 0]
+        }}
+        transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+        className="absolute bottom-[-10%] right-[-10%] w-[60vw] h-[60vw] rounded-full bg-purple-500/10 blur-[150px]"
+      />
+      <motion.div 
+        animate={{ 
+          scale: [1, 1.1, 1],
+          x: [0, 100, 0],
+          y: [0, 50, 0]
+        }}
+        transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute top-[40%] left-[60%] w-[30vw] h-[30vw] rounded-full bg-cyan-400/10 blur-[100px]"
+      />
+
+      {/* Grid Pattern overlay for depth */}
+      <div 
+        className="absolute inset-0 opacity-[0.03]"
+        style={{
+          backgroundImage: `linear-gradient(to right, #ffffff 1px, transparent 1px), linear-gradient(to bottom, #ffffff 1px, transparent 1px)`,
+          backgroundSize: '4rem 4rem',
+          transform: 'perspective(500px) rotateX(60deg) translateY(-100px) translateZ(-200px)',
+          transformOrigin: 'top center'
+        }}
+      />
+    </div>
+  );
+};
+
+function ProductDetailContent() {
   const params = useParams();
   const productId = parseInt(params.id as string);
   
   const [product, setProduct] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [activeImage, setActiveImage] = useState(0);
   
-  // Fetch product details
   useEffect(() => {
     async function fetchProduct() {
       try {
@@ -25,390 +81,280 @@ export default function ProductDetailPage() {
         setProduct(data);
       } catch (err) {
         setError('Product not found');
-        console.error(err);
       } finally {
         setLoading(false);
       }
     }
-    
-    if (productId) {
-      fetchProduct();
-    }
+    if (productId) fetchProduct();
   }, [productId]);
   
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-16 w-16 border-4 border-cyan-500 border-t-transparent" />
+      <div className="min-h-screen flex items-center justify-center bg-[#0f172a]">
+        <div className="relative w-24 h-24">
+          <motion.div 
+            animate={{ rotate: 360 }}
+            transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+            className="absolute inset-0 border-t-4 border-b-4 border-teal-500 rounded-full"
+          />
+          <motion.div 
+            animate={{ rotate: -360 }}
+            transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
+            className="absolute inset-2 border-l-4 border-r-4 border-cyan-400 rounded-full"
+          />
+        </div>
       </div>
     );
   }
   
   if (error || !product) {
     return (
-      <div className="min-h-screen flex items-center justify-center px-4">
+      <div className="min-h-screen flex items-center justify-center bg-[#0f172a] text-white px-4">
         <div className="text-center">
-          <div className="text-6xl mb-4">😞</div>
-          <h2 className="text-3xl font-bold mb-4">Product Not Found</h2>
-          <p className="text-gray-600 mb-8">{error}</p>
+          <h2 className="text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-red-400 to-rose-600">Product Not Found</h2>
+          <p className="text-gray-400 mb-8 max-w-md mx-auto">{error}</p>
           <Link href="/products">
-            <button className="btn-primary">Browse All Products</button>
+            <button className="bg-white/10 hover:bg-white/20 text-white border border-white/20 px-8 py-3 rounded-full font-medium transition-all backdrop-blur-md">
+              Browse All Products
+            </button>
           </Link>
         </div>
       </div>
     );
   }
   
-  // ✅ FIX: Parse specifications safely
   let specifications: Record<string, string> = {};
   if (product.specifications) {
     try {
-      // Try to parse as JSON first
       specifications = JSON.parse(product.specifications);
     } catch {
-      // If it's a plain string, convert to object
       const specs = product.specifications.split(',').map((s: string) => s.trim());
       specifications = { 'Details': specs.join(', ') };
     }
   }
+
+  // Create a gallery array (in a real app, this comes from backend)
+  const images = [
+    product.image_url || '/images/placeholder.jpg',
+    '/images/placeholder.jpg',
+    '/images/placeholder.jpg',
+    '/images/placeholder.jpg'
+  ];
   
   return (
-    <div className="min-h-screen py-12 px-4 bg-gray-50">
-      <div className="max-w-7xl mx-auto">
-        {/* Back Button */}
-        <Link href="/products">
-          <button className="flex items-center gap-2 text-gray-600 hover:text-primary-500 mb-8 transition-colors">
-            <FiArrowLeft /> Back to Products
-          </button>
-        </Link>
+    <div className="min-h-screen relative text-slate-100 overflow-hidden">
+      <DynamicBackground />
+      
+      <div className="relative z-10 pt-24 pb-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        {/* Breadcrumb / Back Navigation */}
+        <motion.div 
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          className="mb-8"
+        >
+          <Link href="/products" className="inline-flex items-center gap-2 text-teal-400 hover:text-teal-300 font-medium transition-colors bg-white/5 backdrop-blur-md px-4 py-2 rounded-full border border-white/10">
+            <FiArrowLeft /> Back to Collection
+          </Link>
+        </motion.div>
         
-        <div className="grid lg:grid-cols-2 gap-12">
-          {/* Product Images */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="space-y-4"
+        <div className="grid lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+          
+          {/* LEFT: 3D Product Image Gallery */}
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="lg:col-span-6 space-y-6"
+            style={{ perspective: 1000 }} // Enable 3D perspective
           >
-            <div className="relative aspect-square rounded-2xl overflow-hidden bg-white shadow-lg">
+            <motion.div 
+              whileHover={{ rotateX: 5, rotateY: -5, scale: 1.02 }}
+              transition={{ type: "spring", stiffness: 300, damping: 20 }}
+              className="relative aspect-square rounded-[2rem] overflow-hidden bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-md border border-white/10 shadow-[0_0_40px_rgba(20,184,166,0.15)] flex items-center justify-center p-8 group"
+            >
+              <div className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              
               <Image
-                src={product.image_url || '/images/placeholder.jpg'}
+                src={images[activeImage]}
                 alt={product.name}
                 fill
                 sizes="(max-width: 768px) 100vw, 50vw"
-                className="object-contain p-6"
+                className="object-contain p-8 drop-shadow-2xl transition-transform duration-700 ease-in-out group-hover:scale-105"
                 priority
               />
               
-              {/* Stock Badge */}
+              {/* Floating Badges */}
               {product.stock_quantity === 0 && (
-                <div className="absolute top-4 left-4 bg-red-500 text-white px-4 py-2 rounded-full font-semibold z-10">
+                <div className="absolute top-6 left-6 bg-rose-500/90 backdrop-blur-md text-white px-4 py-1.5 rounded-full text-sm font-bold shadow-lg shadow-rose-500/30">
                   Out of Stock
                 </div>
               )}
-            </div>
+              <div className="absolute top-6 right-6 bg-teal-500/20 text-teal-300 border border-teal-500/30 backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest shadow-lg">
+                {product.category.replace('_', ' ')}
+              </div>
+            </motion.div>
             
-            {/* Thumbnail Gallery */}
+            {/* Thumbnail Strip */}
             <div className="grid grid-cols-4 gap-4">
-              {[1, 2, 3, 4].map((i) => (
-                <div
-                  key={i}
-                  className="relative aspect-square rounded-lg overflow-hidden bg-gray-200 cursor-pointer hover:opacity-75 transition-opacity"
+              {images.map((img, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setActiveImage(idx)}
+                  className={`relative aspect-square rounded-2xl overflow-hidden backdrop-blur-sm transition-all duration-300 ${
+                    activeImage === idx 
+                      ? 'border-2 border-teal-400 shadow-[0_0_20px_rgba(45,212,191,0.3)] bg-white/10' 
+                      : 'border border-white/10 bg-white/5 hover:bg-white/10 hover:border-white/20'
+                  }`}
                 >
                   <Image
-                    src={product.image_url || '/images/placeholder.jpg'}
-                    alt={`${product.name} view ${i}`}
+                    src={img}
+                    alt={`${product.name} view ${idx + 1}`}
                     fill
                     sizes="(max-width: 768px) 25vw, 12vw"
-                    className="object-cover"
+                    className="object-contain p-3"
                   />
-                </div>
+                </button>
               ))}
             </div>
           </motion.div>
           
-          {/* Product Info */}
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
+          
+          {/* RIGHT: Product Information (Glassmorphism Panel) */}
+          <motion.div 
+            initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="lg:col-span-6 flex flex-col h-full"
           >
-            {/* Category Badge */}
-            <div className="inline-block bg-primary-100 text-primary-700 px-4 py-1 rounded-full text-sm font-semibold mb-4 capitalize">
-              {product.category.replace('_', ' ')}
-            </div>
-            
-            <h1 className="text-4xl font-bold mb-4">{product.name}</h1>
-            
-            {/* Price */}
-            <div className="flex items-baseline gap-4 mb-6">
-              <span className="text-5xl font-bold text-primary-500">
-                ₹{product.price.toLocaleString('en-IN')}
-              </span>
-              <span className="text-gray-500 line-through text-xl">
-                ₹{(product.price * 1.2).toLocaleString('en-IN')}
-              </span>
-              <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-semibold">
-                Save 20%
-              </span>
-            </div>
-            
-            {/* Stock Status */}
-            <div className="flex items-center gap-2 mb-6">
-              {product.stock_quantity > 0 ? (
-                <>
-                  <FiCheck className="text-green-500" />
-                  <span className="text-green-600 font-medium">In Stock</span>
-                  {product.stock_quantity < 10 && (
-                    <span className="text-red-500 text-sm">
-                      (Only {product.stock_quantity} left!)
-                    </span>
-                  )}
-                </>
-              ) : (
-                <span className="text-red-500 font-medium">Out of Stock</span>
-              )}
-            </div>
-            
-            {/* Description */}
-            <div className="mb-8">
-              <h3 className="text-xl font-semibold mb-3">Description</h3>
-              <p className="text-gray-600 leading-relaxed">
-                {product.description || 'No description available for this product.'}
-              </p>
-            </div>
-            
-            {/* Specifications */}
-            {Object.keys(specifications).length > 0 && (
-              <div className="mb-8">
-                <h3 className="text-xl font-semibold mb-3">Specifications</h3>
-                <div className="bg-white rounded-xl p-6 space-y-3">
-                  {Object.entries(specifications).map(([key, value]) => (
-                    <div key={key} className="flex justify-between border-b pb-2">
-                      <span className="text-gray-600 capitalize">
-                        {key.replace('_', ' ')}:
-                      </span>
-                      <span className="font-medium">{value as string}</span>
-                    </div>
-                  ))}
+            <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-[2rem] p-8 lg:p-10 shadow-2xl relative overflow-hidden flex-1">
+              
+              {/* Internal Glass Highlight */}
+              <div className="absolute top-0 left-0 w-full h-1/2 bg-gradient-to-b from-white/5 to-transparent pointer-events-none" />
+              
+              <h1 className="text-3xl md:text-5xl font-extrabold text-white mb-4 leading-tight tracking-tight relative z-10">
+                {product.name}
+              </h1>
+              
+              <div className="flex flex-wrap items-end gap-4 mb-8 relative z-10 pb-8 border-b border-white/10">
+                <span className="text-5xl font-black bg-clip-text text-transparent bg-gradient-to-r from-teal-400 to-cyan-300">
+                  ₹{product.price.toLocaleString('en-IN')}
+                </span>
+                <span className="text-slate-400 line-through text-2xl font-medium mb-1">
+                  ₹{(product.price * 1.2).toLocaleString('en-IN')}
+                </span>
+                <span className="bg-teal-500/20 border border-teal-500/30 text-teal-300 px-3 py-1.5 rounded-lg text-sm font-bold tracking-wide mb-2">
+                  SAVE 20%
+                </span>
+              </div>
+              
+              <div className="grid grid-cols-2 gap-4 mb-8">
+                <div className="flex items-center gap-3 text-slate-300">
+                  <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-teal-400">
+                    <FiCheck size={20} />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-white">{product.stock_quantity > 0 ? 'In Stock' : 'Out of Stock'}</p>
+                    <p className="text-xs text-slate-400">Ready to ship</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3 text-slate-300">
+                  <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-blue-400">
+                    <FiShield size={20} />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-white">1 Year Warranty</p>
+                    <p className="text-xs text-slate-400">100% Guaranteed</p>
+                  </div>
                 </div>
               </div>
-            )}
-            
-            {/* Contact/Inquiry Buttons */}
-            <div className="space-y-4 mb-6">
-              {/* WhatsApp Button */}
-              <a
-                href={`https://wa.me/919825247312?text=${encodeURIComponent(
-                  `Hi! I'm interested in ${product.name}. Can you provide more details?`
-                )}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block"
-              >
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="w-full bg-green-500 text-white py-4 rounded-xl font-bold text-lg hover:bg-green-600 transition-colors flex items-center justify-center gap-3 shadow-lg"
-                >
-                  <FiMessageCircle size={24} />
-                  Inquire on WhatsApp
-                </motion.button>
-              </a>
               
-              <div className="grid grid-cols-2 gap-4">
-                {/* Call Button */}
-                <a href="tel:9825247312">
+              <div className="mb-8 relative z-10">
+                <h3 className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-3">Description</h3>
+                <p className="text-slate-300 leading-relaxed text-lg">
+                  {product.description || 'Premium precision weighing solution built for durability and exact measurements in commercial environments.'}
+                </p>
+              </div>
+              
+              {/* Premium Specs Grid */}
+              {Object.keys(specifications).length > 0 && (
+                <div className="mb-10 relative z-10">
+                  <h3 className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4">Specifications</h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {Object.entries(specifications).map(([key, value]) => (
+                      <div key={key} className="bg-white/5 border border-white/5 rounded-xl p-4 hover:bg-white/10 transition-colors">
+                        <p className="text-xs text-slate-400 uppercase tracking-wider mb-1">
+                          {key.replace('_', ' ')}
+                        </p>
+                        <p className="font-semibold text-white">{value as string}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+              
+              {/* Ultimate CTA Buttons */}
+              <div className="space-y-4 relative z-10 mt-auto">
+                <a
+                  href={`https://wa.me/919825247312?text=${encodeURIComponent(`Hi! I'm interested in the ${product.name}.`)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block"
+                >
                   <motion.button
-                    whileHover={{ scale: 1.02 }}
+                    whileHover={{ scale: 1.02, backgroundColor: '#16a34a' }}
                     whileTap={{ scale: 0.98 }}
-                    className="w-full bg-cyan-500 text-white py-3 rounded-xl font-semibold hover:bg-cyan-600 transition-colors flex items-center justify-center gap-2"
+                    className="w-full bg-[#25D366] text-white py-4 rounded-xl font-bold text-lg transition-colors flex items-center justify-center gap-3 shadow-[0_10px_20px_rgba(37,211,102,0.3)]"
                   >
-                    <FiPhone size={20} />
-                    Call Now
+                    <FiMessageCircle size={24} />
+                    Inquire on WhatsApp
                   </motion.button>
                 </a>
                 
-                {/* Email Button */}
-                <Link href="/contact">
-                  <motion.button
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    className="w-full bg-primary-500 text-white py-3 rounded-xl font-semibold hover:bg-primary-600 transition-colors flex items-center justify-center gap-2"
-                  >
-                    <FiMail size={20} />
-                    Email Us
-                  </motion.button>
-                </Link>
+                <div className="grid grid-cols-2 gap-4">
+                  <a href="tel:9825247312" className="block">
+                    <motion.button
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      className="w-full bg-white/10 hover:bg-white/20 border border-white/20 text-white py-4 rounded-xl font-semibold transition-all flex items-center justify-center gap-2 backdrop-blur-sm"
+                    >
+                      <FiPhone size={20} /> Call Us
+                    </motion.button>
+                  </a>
+                  <Link href="/contact" className="block">
+                    <motion.button
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      className="w-full bg-cyan-600 hover:bg-cyan-500 text-white py-4 rounded-xl font-semibold transition-all flex items-center justify-center gap-2 shadow-[0_10px_20px_rgba(8,145,178,0.3)]"
+                    >
+                      <FiMail size={20} /> Email Us
+                    </motion.button>
+                  </Link>
+                </div>
               </div>
               
-              {/* Share & Wishlist */}
-              <div className="flex gap-4">
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="flex-1 border-2 border-gray-300 py-3 rounded-xl hover:border-red-500 hover:text-red-500 transition-colors flex items-center justify-center gap-2 font-medium"
-                >
-                  <FiHeart size={20} />
-                  Save
-                </motion.button>
-                
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="flex-1 border-2 border-gray-300 py-3 rounded-xl hover:border-primary-500 hover:text-primary-500 transition-colors flex items-center justify-center gap-2 font-medium"
-                >
-                  <FiShare2 size={20} />
-                  Share
-                </motion.button>
-              </div>
             </div>
             
-            {/* Trust Badges */}
-            <div className="grid grid-cols-3 gap-4 p-6 bg-gradient-to-r from-cyan-50 to-blue-50 rounded-xl">
-              <div className="text-center">
-                <div className="text-3xl mb-2">🚚</div>
-                <p className="text-sm font-medium">Free Delivery</p>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl mb-2">✅</div>
-                <p className="text-sm font-medium">Quality Assured</p>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl mb-2">📞</div>
-                <p className="text-sm font-medium">24/7 Support</p>
-              </div>
+            {/* Premium Promise Strip below Card */}
+            <div className="mt-8 flex justify-center gap-4 sm:gap-8 text-slate-400 text-xs sm:text-sm font-medium">
+              <span className="flex items-center gap-2"><FiTruck className="text-teal-400" /> Fast Delivery</span>
+              <span className="flex items-center gap-2"><FiShield className="text-teal-400" /> Secure Payment</span>
+              <span className="flex items-center gap-2"><FiBox className="text-teal-400" /> Authentic Product</span>
             </div>
           </motion.div>
         </div>
-
-        {/* Have Questions Section - WITH BEAUTIFUL BACKGROUND */}
-        <section className="relative py-16 px-4 mt-12 overflow-hidden rounded-3xl">
-          {/* Animated Gradient Background */}
-          <div className="absolute inset-0 bg-gradient-to-br from-cyan-50 via-blue-50 to-purple-50" />
-          
-          {/* Animated Orbs */}
-          <motion.div
-            animate={{
-              scale: [1, 1.2, 1],
-              x: [0, 30, 0],
-              y: [0, -20, 0],
-            }}
-            transition={{
-              duration: 15,
-              repeat: Infinity,
-              ease: "easeInOut"
-            }}
-            className="absolute top-10 right-10 w-72 h-72 bg-cyan-300/30 rounded-full blur-3xl"
-          />
-          <motion.div
-            animate={{
-              scale: [1, 1.3, 1],
-              x: [0, -30, 0],
-              y: [0, 20, 0],
-            }}
-            transition={{
-              duration: 18,
-              repeat: Infinity,
-              ease: "easeInOut"
-            }}
-            className="absolute bottom-10 left-10 w-80 h-80 bg-purple-300/30 rounded-full blur-3xl"
-          />
-          
-          {/* Decorative Pattern */}
-          <div className="absolute inset-0 opacity-5">
-            <div 
-              style={{
-                backgroundImage: `
-                  linear-gradient(to right, #06b6d4 1px, transparent 1px),
-                  linear-gradient(to bottom, #06b6d4 1px, transparent 1px)
-                `,
-                backgroundSize: '40px 40px'
-              }}
-              className="w-full h-full"
-            />
-          </div>
-          
-          <div className="max-w-4xl mx-auto text-center relative z-10">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-            >
-              {/* Icon */}
-              <motion.div
-                animate={{
-                  y: [0, -10, 0],
-                }}
-                transition={{
-                  duration: 3,
-                  repeat: Infinity,
-                  ease: "easeInOut"
-                }}
-                className="text-7xl mb-6 filter drop-shadow-lg"
-              >
-                💬
-              </motion.div>
-
-              {/* Title */}
-              <h2 className="text-4xl md:text-5xl font-bold mb-4 text-gray-900">
-                Have Questions About This Product?
-              </h2>
-              
-              <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-                Our team is ready to help you with specifications and pricing
-              </p>
-              
-              {/* Action Buttons */}
-              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                {/* Contact Us Button */}
-                <Link href="/contact">
-                  <motion.button
-                    whileHover={{ scale: 1.05, y: -2 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="bg-white text-gray-800 px-8 py-4 rounded-2xl font-bold text-lg shadow-xl hover:shadow-2xl transition-all flex items-center gap-3 border-2 border-gray-200 hover:border-cyan-500"
-                  >
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                    </svg>
-                    Contact Us
-                  </motion.button>
-                </Link>
-                
-                {/* WhatsApp Button */}
-                <a
-                  href={`https://wa.me/919825247312?text=${encodeURIComponent(
-                    `Hi! I'm interested in ${product.name}. Can you provide more details?`
-                  )}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <motion.button
-                    whileHover={{ scale: 1.05, y: -2 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="bg-green-500 text-white px-8 py-4 rounded-2xl font-bold text-lg shadow-xl hover:shadow-2xl hover:bg-green-600 transition-all flex items-center gap-3"
-                  >
-                    <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
-                    </svg>
-                    Chat on WhatsApp
-                  </motion.button>
-                </a>
-              </div>
-
-              {/* Phone Number */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.3 }}
-                className="mt-6"
-              >
-                <a href="tel:9825247312" className="text-gray-600 hover:text-cyan-600 transition-colors text-lg font-medium">
-                  Or call us directly: <span className="font-bold">+91 98252 47312</span>
-                </a>
-              </motion.div>
-            </motion.div>
-          </div>
-        </section>
       </div>
     </div>
   );
+}
+
+export default function ProductDetailPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-[#0f172a] flex items-center justify-center">
+        <div className="w-16 h-16 border-4 border-teal-500 border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    }>
+      <ProductDetailContent />
+    </Suspense>
+  )
 }
