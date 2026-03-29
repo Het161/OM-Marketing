@@ -12,7 +12,7 @@ const fadeInUp = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] }
+    transition: { duration: 0.5 }
   }
 } as const;
 
@@ -81,7 +81,7 @@ export default function HomePage() {
                   <Link href={`/products/${product.id}`}>
                     <motion.div
                       whileHover={{ y: -6 }}
-                      transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                      transition={{ duration: 0.3 }}
                       className="group bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-xl hover:border-gray-200 transition-all duration-300 cursor-pointer h-full flex flex-col"
                     >
                       {/* Product Image */}
