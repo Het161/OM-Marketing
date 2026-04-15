@@ -320,3 +320,262 @@ body {
     min-width: 44px;
   }
 }
+
+/* ============================================
+   ENHANCED ANIMATIONS
+   ============================================ */
+
+/* Animated gradient shift for hero backgrounds */
+@keyframes gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.animate-gradient {
+  background-size: 300% 300%;
+  animation: gradient-shift 10s ease infinite;
+}
+
+/* Hero animated background class */
+.hero-animated-bg {
+  background: linear-gradient(-45deg, #0f172a, #0c3644, #0d5e52, #0d9488, #06b6d4, #0c4a6e);
+  background-size: 400% 400%;
+  animation: gradient-shift 14s ease infinite;
+}
+
+/* Bounce + pulse ring for floating action buttons (WhatsApp) */
+@keyframes bounce-pulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.5);
+  }
+  50% {
+    transform: scale(1.08);
+    box-shadow: 0 0 0 14px rgba(34, 197, 94, 0);
+  }
+}
+
+.animate-bounce-pulse {
+  animation: bounce-pulse 2.5s ease-in-out infinite;
+}
+
+/* Shake for form validation errors */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  15%      { transform: translateX(-8px); }
+  30%      { transform: translateX(8px); }
+  45%      { transform: translateX(-6px); }
+  60%      { transform: translateX(6px); }
+  75%      { transform: translateX(-4px); }
+  90%      { transform: translateX(4px); }
+}
+
+.animate-shake {
+  animation: shake 0.55s cubic-bezier(0.36, 0.07, 0.19, 0.97);
+}
+
+/* Glow pulse for CTA buttons */
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 4px 20px rgba(13, 148, 136, 0.3), 0 0 0 0 rgba(13, 148, 136, 0.2); }
+  50%       { box-shadow: 0 4px 40px rgba(13, 148, 136, 0.65), 0 0 60px rgba(13, 148, 136, 0.2); }
+}
+
+.animate-glow-pulse {
+  animation: glow-pulse 2.2s ease-in-out infinite;
+}
+
+/* Animated gradient top border for Footer */
+@keyframes gradient-border-flow {
+  0%, 100% { background-position: 0% 50%; }
+  50%       { background-position: 100% 50%; }
+}
+
+.gradient-border-top {
+  height: 2px;
+  background: linear-gradient(90deg, #0d9488, #06b6d4, #f59e0b, #10b981, #7c3aed, #0d9488);
+  background-size: 300% 100%;
+  animation: gradient-border-flow 5s ease infinite;
+}
+
+/* Slide up entrance for back-to-top */
+@keyframes slide-up-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.animate-slide-up-in {
+  animation: slide-up-in 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* ============================================
+   FLOATING LABEL INPUTS
+   ============================================ */
+.input-float-wrapper {
+  position: relative;
+}
+
+.input-float-wrapper .float-input {
+  width: 100%;
+  padding-top: 1.5rem;
+  padding-bottom: 0.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  border-radius: 0.75rem;
+  border: 1px solid #e5e7eb;
+  font-size: 0.875rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  background: white;
+  outline: none;
+}
+
+.input-float-wrapper .float-input:focus {
+  border-color: transparent;
+  box-shadow: 0 0 0 2px #0d9488;
+}
+
+.input-float-wrapper .float-label {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.875rem;
+  color: #9ca3af;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+  font-weight: 400;
+}
+
+.input-float-wrapper .float-input:focus ~ .float-label,
+.input-float-wrapper .float-input.has-value ~ .float-label {
+  top: 0.875rem;
+  transform: translateY(0);
+  font-size: 0.68rem;
+  color: #0d9488;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+/* For textarea: label starts at top instead of center */
+.input-float-wrapper.textarea-wrapper .float-label {
+  top: 1.125rem;
+  transform: none;
+}
+
+.input-float-wrapper.textarea-wrapper .float-input:focus ~ .float-label,
+.input-float-wrapper.textarea-wrapper .float-input.has-value ~ .float-label {
+  top: 0.5rem;
+  transform: none;
+  font-size: 0.68rem;
+  color: #0d9488;
+  font-weight: 500;
+}
+
+.input-float-wrapper.textarea-wrapper .float-input {
+  padding-top: 1.75rem;
+  resize: none;
+}
+
+/* Input focus glow */
+.input-focus-glow:focus {
+  box-shadow: 0 0 0 2px #0d9488, 0 0 20px rgba(13, 148, 136, 0.15);
+}
+
+/* ============================================
+   CUSTOM SCROLLBAR (enhanced)
+   ============================================ */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+/* ============================================
+   CARD 3D TILT (CSS-only approach)
+   ============================================ */
+.card-3d {
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+  transform-style: preserve-3d;
+}
+
+.card-3d:hover {
+  transform: translateY(-8px) rotateX(2deg);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.12), 0 8px 20px rgba(0,0,0,0.06);
+}
+
+/* ============================================
+   OVERLAY REVEAL (for category cards)
+   ============================================ */
+.overlay-reveal::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0);
+  transition: background 0.4s ease;
+}
+
+.overlay-reveal:hover::after {
+  background: rgba(0,0,0,0.08);
+}
+
+/* Ken Burns zoom for category card backgrounds */
+@keyframes ken-burns {
+  0%   { transform: scale(1); }
+  100% { transform: scale(1.08); }
+}
+
+.ken-burns {
+  animation: ken-burns 8s ease-in-out alternate infinite;
+}
+
+/* Page loader overlay */
+.page-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #0f172a 0%, #0d5e52 50%, #0d9488 100%);
+}
+
+/* Timeline connector line */
+.timeline-connector {
+  position: relative;
+}
+
+.timeline-connector::before {
+  content: '';
+  position: absolute;
+  left: 1.25rem;
+  top: 2.5rem;
+  bottom: -1rem;
+  width: 2px;
+  background: linear-gradient(to bottom, #0d9488, transparent);
+}
+
+/* Underline slide animation for links */
+.link-underline {
+  position: relative;
+}
+
+.link-underline::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: #0d9488;
+  transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.link-underline:hover::after {
+  width: 100%;
+}
