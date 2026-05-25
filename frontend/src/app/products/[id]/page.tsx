@@ -4,341 +4,318 @@ import { useState, useEffect, Suspense } from 'react';
 import { useParams } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { FiCheck, FiArrowLeft, FiPhone, FiMail, FiMessageCircle, FiShield, FiTruck, FiBox } from 'react-icons/fi';
+import { motion } from 'framer-motion';
+import {
+  ArrowLeft,
+  Check,
+  MessageCircle,
+  Phone,
+  Mail,
+  ShoppingBag,
+  ShieldCheck,
+  Truck,
+  Wrench,
+} from 'lucide-react';
 import { productApi } from '@/services/api';
+import { useCartStore } from '@/store/cartStore';
 
-// --- STUNNING 3D BACKGROUND COMPONENT ---
-const DynamicBackground = () => {
-  const { scrollY } = useScroll();
-  const y1 = useTransform(scrollY, [0, 1000], [0, 200]);
-  const y2 = useTransform(scrollY, [0, 1000], [0, -150]);
+interface Product {
+  id: number;
+  name: string;
+  category: string;
+  description: string;
+  price: number;
+  stock_quantity: number;
+  image_url: string;
+  specifications?: string;
+}
 
-  return (
-    <div className="fixed inset-0 overflow-hidden pointer-events-none -z-10 bg-[#0f172a]">
-      {/* Deep Gradient Base */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-teal-900/40 via-[#0f172a] to-black" />
-      
-      {/* 3D Floating Orbs */}
-      <motion.div 
-        style={{ y: y1 }}
-        animate={{ 
-          scale: [1, 1.2, 1],
-          opacity: [0.3, 0.5, 0.3],
-          rotate: [0, 90, 0]
-        }}
-        transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-        className="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] rounded-full bg-teal-500/20 blur-[120px]"
-      />
-      <motion.div 
-        style={{ y: y2 }}
-        animate={{ 
-          scale: [1, 1.5, 1],
-          opacity: [0.2, 0.4, 0.2],
-          rotate: [0, -90, 0]
-        }}
-        transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-        className="absolute bottom-[-10%] right-[-10%] w-[60vw] h-[60vw] rounded-full bg-purple-500/10 blur-[150px]"
-      />
-      <motion.div 
-        animate={{ 
-          scale: [1, 1.1, 1],
-          x: [0, 100, 0],
-          y: [0, 50, 0]
-        }}
-        transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute top-[40%] left-[60%] w-[30vw] h-[30vw] rounded-full bg-cyan-400/10 blur-[100px]"
-      />
+const E: [number, number, number, number] = [0.16, 1, 0.3, 1];
+const WHATSAPP_NUMBER = '919825247312';
 
-      {/* Grid Pattern overlay for depth */}
-      <div 
-        className="absolute inset-0 opacity-[0.03]"
-        style={{
-          backgroundImage: `linear-gradient(to right, #ffffff 1px, transparent 1px), linear-gradient(to bottom, #ffffff 1px, transparent 1px)`,
-          backgroundSize: '4rem 4rem',
-          transform: 'perspective(500px) rotateX(60deg) translateY(-100px) translateZ(-200px)',
-          transformOrigin: 'top center'
-        }}
-      />
-    </div>
-  );
-};
+function parseSpecifications(raw?: string): Record<string, string> {
+  if (!raw) return {};
+  try {
+    const parsed = JSON.parse(raw);
+    if (parsed && typeof parsed === 'object') {
+      return Object.fromEntries(
+        Object.entries(parsed).map(([k, v]) => [k, String(v)])
+      );
+    }
+    return {};
+  } catch {
+    const specs = raw.split(',').map((s) => s.trim()).filter(Boolean);
+    return specs.length ? { Details: specs.join(', ') } : {};
+  }
+}
 
 function ProductDetailContent() {
   const params = useParams();
   const productId = parseInt(params.id as string);
-  
-  const [product, setProduct] = useState<any>(null);
+
+  const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [activeImage, setActiveImage] = useState(0);
-  
+  const [added, setAdded] = useState(false);
+
+  const addItem = useCartStore((s) => s.addItem);
+
   useEffect(() => {
-    async function fetchProduct() {
+    let alive = true;
+    (async () => {
       try {
         setLoading(true);
         const data = await productApi.getById(productId);
-        setProduct(data);
+        if (alive) setProduct(data);
       } catch (err) {
-        setError('Product not found');
+        console.error(err);
+        if (alive) setError('This piece could not be located.');
       } finally {
-        setLoading(false);
+        if (alive) setLoading(false);
       }
-    }
-    if (productId) fetchProduct();
+    })();
+    return () => {
+      alive = false;
+    };
   }, [productId]);
-  
+
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#0f172a]">
-        <div className="relative w-24 h-24">
-          <motion.div 
-            animate={{ rotate: 360 }}
-            transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-            className="absolute inset-0 border-t-4 border-b-4 border-teal-500 rounded-full"
-          />
-          <motion.div 
-            animate={{ rotate: -360 }}
-            transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
-            className="absolute inset-2 border-l-4 border-r-4 border-cyan-400 rounded-full"
-          />
-        </div>
+      <div className="min-h-[60vh] flex items-center justify-center">
+        <div className="w-8 h-8 border border-brand-gold/30 border-t-brand-gold rounded-full animate-spin" />
       </div>
     );
-  }
-  
-  if (error || !product) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-[#0f172a] text-white px-4">
-        <div className="text-center">
-          <h2 className="text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-red-400 to-rose-600">Product Not Found</h2>
-          <p className="text-gray-400 mb-8 max-w-md mx-auto">{error}</p>
-          <Link href="/products">
-            <button className="bg-white/10 hover:bg-white/20 text-white border border-white/20 px-8 py-3 rounded-full font-medium transition-all backdrop-blur-md">
-              Browse All Products
-            </button>
-          </Link>
-        </div>
-      </div>
-    );
-  }
-  
-  let specifications: Record<string, string> = {};
-  if (product.specifications) {
-    try {
-      specifications = JSON.parse(product.specifications);
-    } catch {
-      const specs = product.specifications.split(',').map((s: string) => s.trim());
-      specifications = { 'Details': specs.join(', ') };
-    }
   }
 
-  // Create a gallery array (in a real app, this comes from backend)
-  const images = [
-    product.image_url || '/images/placeholder.jpg',
-    '/images/placeholder.jpg',
-    '/images/placeholder.jpg',
-    '/images/placeholder.jpg'
-  ];
-  
+  if (error || !product) {
+    return (
+      <div className="min-h-[60vh] flex items-center justify-center px-6">
+        <div className="text-center max-w-md">
+          <p className="eyebrow text-brand-muted mb-5">Not Found</p>
+          <h2 className="font-display text-3xl sm:text-4xl text-brand-ivory mb-4">
+            This piece could not be located.
+          </h2>
+          <p className="text-sm text-brand-muted mb-8">{error}</p>
+          <Link href="/products" className="btn-outline">
+            <ArrowLeft strokeWidth={1.25} size={16} />
+            Back to the Collection
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  const specifications = parseSpecifications(product.specifications);
+  const inStock = product.stock_quantity > 0;
+  const lowStock = inStock && product.stock_quantity < 5;
+  const whatsappHref = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
+    `Hello, I am enquiring about ${product.name}. Could you share availability and pricing?`
+  )}`;
+
+  const handleAddToBag = () => {
+    if (!inStock) return;
+    addItem({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      quantity: 1,
+      image_url: product.image_url,
+      category: product.category,
+    });
+    setAdded(true);
+    setTimeout(() => setAdded(false), 2200);
+  };
+
   return (
-    <div className="min-h-screen relative text-slate-100 overflow-hidden">
-      <DynamicBackground />
-      
-      <div className="relative z-10 pt-24 pb-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        {/* Breadcrumb / Back Navigation */}
-        <motion.div 
-          initial={{ opacity: 0, x: -20 }}
+    <div>
+      <div className="max-w-[1400px] mx-auto px-6 sm:px-8 py-10 sm:py-14">
+
+        {/* Back link */}
+        <motion.div
+          initial={{ opacity: 0, x: -8 }}
           animate={{ opacity: 1, x: 0 }}
-          className="mb-8"
+          transition={{ duration: 0.5, ease: E }}
+          className="mb-10"
         >
-          <Link href="/products" className="inline-flex items-center gap-2 text-teal-400 hover:text-teal-300 font-medium transition-colors bg-white/5 backdrop-blur-md px-4 py-2 rounded-full border border-white/10">
-            <FiArrowLeft /> Back to Collection
+          <Link
+            href="/products"
+            className="inline-flex items-center gap-2 label-sm text-brand-muted hover:text-brand-gold transition-colors"
+          >
+            <ArrowLeft strokeWidth={1} size={14} />
+            Back to the Collection
           </Link>
         </motion.div>
-        
-        <div className="grid lg:grid-cols-12 gap-12 lg:gap-16 items-start">
-          
-          {/* LEFT: 3D Product Image Gallery */}
-          <motion.div 
-            initial={{ opacity: 0, y: 30 }}
+
+        <div className="grid lg:grid-cols-[1.1fr_1fr] gap-10 lg:gap-20 items-start">
+
+          {/* ── Image ── */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="lg:col-span-6 space-y-6"
-            style={{ perspective: 1000 }} // Enable 3D perspective
+            transition={{ duration: 0.8, ease: E }}
+            className="surface relative aspect-square overflow-hidden bg-[#0F0D0B]"
           >
-            <motion.div 
-              whileHover={{ rotateX: 5, rotateY: -5, scale: 1.02 }}
-              transition={{ type: "spring", stiffness: 300, damping: 20 }}
-              className="relative aspect-square rounded-[2rem] overflow-hidden bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-md border border-white/10 shadow-[0_0_40px_rgba(20,184,166,0.15)] flex items-center justify-center p-8 group"
-            >
-              <div className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              
-              <Image
-                src={images[activeImage]}
-                alt={product.name}
-                fill
-                sizes="(max-width: 768px) 100vw, 50vw"
-                className="object-contain p-8 drop-shadow-2xl transition-transform duration-700 ease-in-out group-hover:scale-105"
-                priority
-              />
-              
-              {/* Floating Badges */}
-              {product.stock_quantity === 0 && (
-                <div className="absolute top-6 left-6 bg-rose-500/90 backdrop-blur-md text-white px-4 py-1.5 rounded-full text-sm font-bold shadow-lg shadow-rose-500/30">
-                  Out of Stock
-                </div>
-              )}
-              <div className="absolute top-6 right-6 bg-teal-500/20 text-teal-300 border border-teal-500/30 backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest shadow-lg">
-                {product.category.replace('_', ' ')}
+            <Image
+              src={product.image_url || '/images/placeholder.jpg'}
+              alt={product.name}
+              fill
+              sizes="(max-width: 1024px) 100vw, 55vw"
+              className="object-contain p-10 sm:p-16"
+              priority
+            />
+
+            {!inStock && (
+              <div
+                className="absolute top-6 left-6 px-3 py-1.5 border border-[rgba(196,166,107,0.4)] text-[10px] tracking-[0.25em] uppercase text-brand-muted bg-brand-canvas/85"
+                style={{ borderRadius: 2 }}
+              >
+                Reserved
               </div>
-            </motion.div>
-            
-            {/* Thumbnail Strip */}
-            <div className="grid grid-cols-4 gap-4">
-              {images.map((img, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => setActiveImage(idx)}
-                  className={`relative aspect-square rounded-2xl overflow-hidden backdrop-blur-sm transition-all duration-300 ${
-                    activeImage === idx 
-                      ? 'border-2 border-teal-400 shadow-[0_0_20px_rgba(45,212,191,0.3)] bg-white/10' 
-                      : 'border border-white/10 bg-white/5 hover:bg-white/10 hover:border-white/20'
-                  }`}
-                >
-                  <Image
-                    src={img}
-                    alt={`${product.name} view ${idx + 1}`}
-                    fill
-                    sizes="(max-width: 768px) 25vw, 12vw"
-                    className="object-contain p-3"
-                  />
-                </button>
-              ))}
-            </div>
+            )}
+            {lowStock && (
+              <div
+                className="absolute top-6 left-6 px-3 py-1.5 border border-brand-gold/60 text-[10px] tracking-[0.25em] uppercase text-brand-gold bg-brand-canvas/85"
+                style={{ borderRadius: 2 }}
+              >
+                Last {product.stock_quantity}
+              </div>
+            )}
           </motion.div>
-          
-          
-          {/* RIGHT: Product Information (Glassmorphism Panel) */}
-          <motion.div 
-            initial={{ opacity: 0, x: 30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="lg:col-span-6 flex flex-col h-full"
+
+          {/* ── Info ── */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.15, ease: E }}
+            className="flex flex-col"
           >
-            <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-[2rem] p-8 lg:p-10 shadow-2xl relative overflow-hidden flex-1">
-              
-              {/* Internal Glass Highlight */}
-              <div className="absolute top-0 left-0 w-full h-1/2 bg-gradient-to-b from-white/5 to-transparent pointer-events-none" />
-              
-              <h1 className="text-3xl md:text-5xl font-extrabold text-white mb-4 leading-tight tracking-tight relative z-10">
-                {product.name}
-              </h1>
-              
-              <div className="flex flex-wrap items-end gap-4 mb-8 relative z-10 pb-8 border-b border-white/10">
-                <span className="text-5xl font-black bg-clip-text text-transparent bg-gradient-to-r from-teal-400 to-cyan-300">
-                  ₹{product.price.toLocaleString('en-IN')}
-                </span>
-                <span className="text-slate-400 line-through text-2xl font-medium mb-1">
-                  ₹{(product.price * 1.2).toLocaleString('en-IN')}
-                </span>
-                <span className="bg-teal-500/20 border border-teal-500/30 text-teal-300 px-3 py-1.5 rounded-lg text-sm font-bold tracking-wide mb-2">
-                  SAVE 20%
-                </span>
-              </div>
-              
-              <div className="grid grid-cols-2 gap-4 mb-8">
-                <div className="flex items-center gap-3 text-slate-300">
-                  <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-teal-400">
-                    <FiCheck size={20} />
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium text-white">{product.stock_quantity > 0 ? 'In Stock' : 'Out of Stock'}</p>
-                    <p className="text-xs text-slate-400">Ready to ship</p>
-                  </div>
+            <p className="eyebrow text-brand-muted mb-5">
+              {product.category.replace(/_/g, ' ')}
+            </p>
+
+            <h1 className="font-display text-[2.2rem] sm:text-[2.8rem] lg:text-[3.2rem] leading-[1.05] text-brand-ivory mb-8">
+              {product.name}
+            </h1>
+
+            <div className="font-display text-[2.4rem] text-brand-gold mb-10 leading-none">
+              ₹{product.price.toLocaleString('en-IN')}
+            </div>
+
+            <div className="hairline-h mb-10" />
+
+            {/* Description */}
+            <p className="text-base text-brand-muted leading-[1.75] mb-10">
+              {product.description ||
+                'A precision instrument crafted for the discerning operator — built to deliver exact measurements over decades of service.'}
+            </p>
+
+            {/* Availability + warranty row */}
+            <div className="grid grid-cols-2 gap-6 mb-10">
+              <div className="flex items-start gap-3">
+                <div className="text-brand-gold mt-0.5">
+                  <Check strokeWidth={1} size={18} />
                 </div>
-                <div className="flex items-center gap-3 text-slate-300">
-                  <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-blue-400">
-                    <FiShield size={20} />
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium text-white">1 Year Warranty</p>
-                    <p className="text-xs text-slate-400">100% Guaranteed</p>
-                  </div>
+                <div>
+                  <p className="label-sm text-brand-ivory mb-1">
+                    {inStock ? 'In Stock' : 'Made to Order'}
+                  </p>
+                  <p className="text-xs text-brand-muted">
+                    {inStock ? 'Ready for dispatch' : 'Available on enquiry'}
+                  </p>
                 </div>
               </div>
-              
-              <div className="mb-8 relative z-10">
-                <h3 className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-3">Description</h3>
-                <p className="text-slate-300 leading-relaxed text-lg">
-                  {product.description || 'Premium precision weighing solution built for durability and exact measurements in commercial environments.'}
+              <div className="flex items-start gap-3">
+                <div className="text-brand-gold mt-0.5">
+                  <ShieldCheck strokeWidth={1} size={18} />
+                </div>
+                <div>
+                  <p className="label-sm text-brand-ivory mb-1">Warranty</p>
+                  <p className="text-xs text-brand-muted">
+                    Lifetime atelier service
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Specifications */}
+            {Object.keys(specifications).length > 0 && (
+              <div className="mb-10">
+                <p className="eyebrow text-brand-muted mb-5">Specifications</p>
+                <dl className="border-t border-[rgba(196,166,107,0.15)]">
+                  {Object.entries(specifications).map(([key, value]) => (
+                    <div
+                      key={key}
+                      className="grid grid-cols-[140px_1fr] gap-6 py-3.5 border-b border-[rgba(196,166,107,0.12)]"
+                    >
+                      <dt className="label-sm text-brand-muted">
+                        {key.replace(/_/g, ' ')}
+                      </dt>
+                      <dd className="text-sm text-brand-ivory font-medium">
+                        {value}
+                      </dd>
+                    </div>
+                  ))}
+                </dl>
+              </div>
+            )}
+
+            {/* Actions */}
+            <div className="mt-auto pt-2 space-y-3">
+              <button
+                onClick={handleAddToBag}
+                disabled={!inStock}
+                className="btn-gold w-full"
+              >
+                <ShoppingBag strokeWidth={1.25} size={16} />
+                {!inStock
+                  ? 'Reserved · Enquire to Order'
+                  : added
+                  ? 'Added to Bag'
+                  : 'Add to Bag'}
+              </button>
+
+              <a
+                href={whatsappHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-outline w-full"
+              >
+                <MessageCircle strokeWidth={1.25} size={16} />
+                Enquire on WhatsApp
+              </a>
+
+              <div className="grid grid-cols-2 gap-3">
+                <a href="tel:9825247312" className="btn-outline">
+                  <Phone strokeWidth={1.25} size={16} />
+                  Call
+                </a>
+                <Link href="/contact" className="btn-outline">
+                  <Mail strokeWidth={1.25} size={16} />
+                  Email
+                </Link>
+              </div>
+            </div>
+
+            {/* Trust strip */}
+            <div className="mt-12 pt-8 border-t border-[rgba(196,166,107,0.12)] grid grid-cols-3 gap-4 text-center sm:text-left">
+              <div className="flex flex-col sm:flex-row items-center sm:items-start gap-2 sm:gap-3">
+                <Truck strokeWidth={1} size={20} className="text-brand-gold flex-shrink-0" />
+                <p className="text-[11px] tracking-[0.15em] uppercase text-brand-muted leading-snug">
+                  Pan-India<br />Dispatch
                 </p>
               </div>
-              
-              {/* Premium Specs Grid */}
-              {Object.keys(specifications).length > 0 && (
-                <div className="mb-10 relative z-10">
-                  <h3 className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4">Specifications</h3>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    {Object.entries(specifications).map(([key, value]) => (
-                      <div key={key} className="bg-white/5 border border-white/5 rounded-xl p-4 hover:bg-white/10 transition-colors">
-                        <p className="text-xs text-slate-400 uppercase tracking-wider mb-1">
-                          {key.replace('_', ' ')}
-                        </p>
-                        <p className="font-semibold text-white">{value as string}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-              
-              {/* Ultimate CTA Buttons */}
-              <div className="space-y-4 relative z-10 mt-auto">
-                <a
-                  href={`https://wa.me/919825247312?text=${encodeURIComponent(`Hi! I'm interested in the ${product.name}.`)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block"
-                >
-                  <motion.button
-                    whileHover={{ scale: 1.02, backgroundColor: '#16a34a' }}
-                    whileTap={{ scale: 0.98 }}
-                    className="w-full bg-[#25D366] text-white py-4 rounded-xl font-bold text-lg transition-colors flex items-center justify-center gap-3 shadow-[0_10px_20px_rgba(37,211,102,0.3)]"
-                  >
-                    <FiMessageCircle size={24} />
-                    Inquire on WhatsApp
-                  </motion.button>
-                </a>
-                
-                <div className="grid grid-cols-2 gap-4">
-                  <a href="tel:9825247312" className="block">
-                    <motion.button
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      className="w-full bg-white/10 hover:bg-white/20 border border-white/20 text-white py-4 rounded-xl font-semibold transition-all flex items-center justify-center gap-2 backdrop-blur-sm"
-                    >
-                      <FiPhone size={20} /> Call Us
-                    </motion.button>
-                  </a>
-                  <Link href="/contact" className="block">
-                    <motion.button
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      className="w-full bg-cyan-600 hover:bg-cyan-500 text-white py-4 rounded-xl font-semibold transition-all flex items-center justify-center gap-2 shadow-[0_10px_20px_rgba(8,145,178,0.3)]"
-                    >
-                      <FiMail size={20} /> Email Us
-                    </motion.button>
-                  </Link>
-                </div>
+              <div className="flex flex-col sm:flex-row items-center sm:items-start gap-2 sm:gap-3">
+                <Wrench strokeWidth={1} size={20} className="text-brand-gold flex-shrink-0" />
+                <p className="text-[11px] tracking-[0.15em] uppercase text-brand-muted leading-snug">
+                  On-site<br />Installation
+                </p>
               </div>
-              
-            </div>
-            
-            {/* Premium Promise Strip below Card */}
-            <div className="mt-8 flex justify-center gap-4 sm:gap-8 text-slate-400 text-xs sm:text-sm font-medium">
-              <span className="flex items-center gap-2"><FiTruck className="text-teal-400" /> Fast Delivery</span>
-              <span className="flex items-center gap-2"><FiShield className="text-teal-400" /> Secure Payment</span>
-              <span className="flex items-center gap-2"><FiBox className="text-teal-400" /> Authentic Product</span>
+              <div className="flex flex-col sm:flex-row items-center sm:items-start gap-2 sm:gap-3">
+                <ShieldCheck strokeWidth={1} size={20} className="text-brand-gold flex-shrink-0" />
+                <p className="text-[11px] tracking-[0.15em] uppercase text-brand-muted leading-snug">
+                  ISO<br />9001:2008
+                </p>
+              </div>
             </div>
           </motion.div>
         </div>
@@ -349,12 +326,14 @@ function ProductDetailContent() {
 
 export default function ProductDetailPage() {
   return (
-    <Suspense fallback={
-      <div className="min-h-screen bg-[#0f172a] flex items-center justify-center">
-        <div className="w-16 h-16 border-4 border-teal-500 border-t-transparent rounded-full animate-spin"></div>
-      </div>
-    }>
+    <Suspense
+      fallback={
+        <div className="min-h-[60vh] flex items-center justify-center">
+          <div className="w-8 h-8 border border-brand-gold/30 border-t-brand-gold rounded-full animate-spin" />
+        </div>
+      }
+    >
       <ProductDetailContent />
     </Suspense>
-  )
+  );
 }

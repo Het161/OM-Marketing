@@ -1,23 +1,28 @@
-// frontend/src/components/ProductCard.tsx
+'use client';
 
-'use client'
-
-import { motion } from 'framer-motion'
-import Image from 'next/image'
-import Link from 'next/link'
-import { useState } from 'react'
-import { FiEye } from 'react-icons/fi'
-import QuickViewModal from './QuickViewModal'
+import { motion } from 'framer-motion';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useState } from 'react';
+import { Eye } from 'lucide-react';
+import QuickViewModal from './QuickViewModal';
 
 interface ProductCardProps {
-  id: number
-  name: string
-  category: string
-  price: number
-  image_url: string
-  description?: string
-  stock_quantity: number
-  priority?: boolean
+  id: number;
+  name: string;
+  category: string;
+  price: number;
+  image_url: string;
+  description?: string;
+  stock_quantity: number;
+  priority?: boolean;
+}
+
+const PLACEHOLDER_BLUR =
+  'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MDAiIGhlaWdodD0iNjAwIj48cmVjdCB3aWR0aD0iNjAwIiBoZWlnaHQ9IjYwMCIgZmlsbD0iIzFDMTgxNCIvPjwvc3ZnPg==';
+
+function formatCategory(c: string) {
+  return c.replace(/_/g, ' ');
 }
 
 export default function ProductCard({
@@ -26,113 +31,104 @@ export default function ProductCard({
   category,
   price,
   image_url,
-  description,
   stock_quantity,
   priority = false,
 }: ProductCardProps) {
-  const [showQuickView, setShowQuickView] = useState(false)
-  const [imageError, setImageError] = useState(false)
+  const [showQuickView, setShowQuickView] = useState(false);
+  const [imageError, setImageError] = useState(false);
 
-  const getPlaceholderDataURL = () => {
-    return "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjYwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNjAwIiBoZWlnaHQ9IjYwMCIgZmlsbD0iI2YzZjRmNiIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyNCIgZmlsbD0iIzlhYTBhNiI+TG9hZGluZy4uLjwvdGV4dD48L3N2Zz4="
-  }
+  const displayImageUrl = imageError
+    ? '/images/placeholder.jpg'
+    : image_url || '/images/placeholder.jpg';
 
-  const displayImageUrl = imageError ? '/images/placeholder.jpg' : (image_url || '/images/placeholder.jpg')
+  const outOfStock = stock_quantity === 0;
+  const lowStock = stock_quantity > 0 && stock_quantity < 5;
 
   return (
     <>
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3 }}
-        whileHover={{ y: -8 }}
-        className="group h-full flex flex-col overflow-hidden bg-white rounded-2xl shadow-sm hover:shadow-xl border border-gray-200 transition-all relative"
+      <motion.article
+        initial={{ opacity: 0, y: 18 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: '-40px' }}
+        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+        className="surface group relative h-full flex flex-col"
       >
-        {/* Category Badge */}
-        <div className="absolute top-2 left-2 z-10 bg-gradient-to-r from-cyan-500 to-blue-500 text-white px-3 py-1 text-xs font-bold rounded-full uppercase">
-          {category.replace('_', ' ')}
-        </div>
-        
-        {/* Stock Badge */}
-        {stock_quantity === 0 && (
-          <div className="absolute top-2 right-2 z-10 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
-            Out of Stock
+        {/* ── Status label (top-right) ── */}
+        {outOfStock && (
+          <div
+            className="absolute top-4 right-4 z-10 px-2.5 py-1 border border-[rgba(196,166,107,0.4)] text-[10px] tracking-[0.2em] uppercase text-brand-muted bg-brand-canvas/85 backdrop-blur-sm"
+            style={{ borderRadius: 2 }}
+          >
+            Reserved
           </div>
         )}
-        
-        {/* Low Stock Badge */}
-        {stock_quantity > 0 && stock_quantity < 10 && (
-          <div className="absolute top-2 right-2 z-10 bg-orange-500 text-white px-3 py-1 rounded-full text-xs font-semibold">
-            Only {stock_quantity} left!
+        {lowStock && !outOfStock && (
+          <div
+            className="absolute top-4 right-4 z-10 px-2.5 py-1 border border-brand-gold/60 text-[10px] tracking-[0.2em] uppercase text-brand-gold bg-brand-canvas/85 backdrop-blur-sm"
+            style={{ borderRadius: 2 }}
+          >
+            Last {stock_quantity}
           </div>
         )}
-        
-        <Link href={`/products/${id}`} className="block">
-          {/* Product Image */}
-          <div className="relative h-64 overflow-hidden bg-gray-100">
+
+        <Link href={`/products/${id}`} className="block flex-1 flex flex-col">
+          {/* ── Image ── */}
+          <div className="relative aspect-square overflow-hidden bg-[#0F0D0B]">
             <Image
               src={displayImageUrl}
               alt={name}
               fill
-              sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
               priority={priority}
-              className="object-contain p-4 transition-transform duration-500 group-hover:scale-110"
-              quality={95}
+              className="object-contain p-8 transition-transform duration-[900ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04]"
+              quality={92}
               placeholder="blur"
-              blurDataURL={getPlaceholderDataURL()}
+              blurDataURL={PLACEHOLDER_BLUR}
               onError={() => setImageError(true)}
             />
-            
-            {/* Quick View Button - Only action button */}
-            <motion.button
+
+            {/* Soft vignette on hover */}
+            <div className="absolute inset-0 bg-gradient-to-t from-brand-canvas/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+            {/* Quick view trigger */}
+            <button
               onClick={(e) => {
-                e.preventDefault()
-                setShowQuickView(true)
+                e.preventDefault();
+                setShowQuickView(true);
               }}
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
-              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white/90 backdrop-blur-sm text-cyan-600 p-4 rounded-full opacity-0 group-hover:opacity-100 transition-all shadow-xl hover:bg-cyan-500 hover:text-white z-20"
-              aria-label="Quick View"
+              aria-label="Quick view"
+              className="absolute bottom-4 right-4 w-10 h-10 flex items-center justify-center border border-[rgba(196,166,107,0.3)] text-brand-ivory/80 bg-brand-canvas/70 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all duration-500 hover:border-brand-gold hover:text-brand-gold"
+              style={{ borderRadius: 2 }}
             >
-              <FiEye size={24} />
-            </motion.button>
+              <Eye strokeWidth={1} size={16} />
+            </button>
           </div>
-          
-          {/* Product Details */}
-          <div className="p-6 flex-1 flex flex-col">
-            <h3 className="text-lg font-semibold text-gray-800 mb-2 line-clamp-2 group-hover:text-cyan-500 transition-colors">
+
+          {/* ── Hairline ── */}
+          <div className="hairline-h" />
+
+          {/* ── Details ── */}
+          <div className="p-6 sm:p-7 flex-1 flex flex-col gap-4">
+            <span className="label-sm text-brand-muted">
+              {formatCategory(category)}
+            </span>
+
+            <h3 className="font-display text-[1.4rem] leading-[1.15] text-brand-ivory line-clamp-2">
               {name}
             </h3>
-            
-            {description && (
-              <p className="text-gray-600 text-sm mb-4 line-clamp-2 flex-1">
-                {description}
-              </p>
-            )}
-            
-            {/* Price Section */}
-            <div className="flex items-baseline gap-2 mb-4">
-              <span className="text-2xl font-bold text-cyan-600">
+
+            <div className="mt-auto flex items-baseline justify-between gap-4 pt-2">
+              <span className="font-display text-2xl text-brand-gold">
                 ₹{price.toLocaleString('en-IN')}
               </span>
-              <span className="text-gray-400 line-through text-sm">
-                ₹{(price * 1.2).toLocaleString('en-IN')}
+              <span className="link-gold text-[10px] tracking-[0.25em] uppercase text-brand-ivory/75 hover:text-brand-gold">
+                Discover
               </span>
-              <span className="ml-auto bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs font-semibold">
-                Save 20%
-              </span>
-            </div>
-            
-            {/* View Details Text */}
-            <div className="text-cyan-600 font-semibold flex items-center gap-2 group-hover:gap-3 transition-all">
-              View Details
-              <span className="transform group-hover:translate-x-1 transition-transform">→</span>
             </div>
           </div>
         </Link>
-      </motion.div>
+      </motion.article>
 
-      {/* Quick View Modal */}
       {showQuickView && (
         <QuickViewModal
           productId={id}
@@ -140,5 +136,5 @@ export default function ProductCard({
         />
       )}
     </>
-  )
+  );
 }

@@ -2,93 +2,62 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FiPhone, FiMail, FiMapPin, FiSend, FiInstagram, FiCheck } from 'react-icons/fi';
-import { FaWhatsapp } from 'react-icons/fa';
+import {
+  Phone,
+  Mail,
+  MapPin,
+  Instagram as InstagramIcon,
+  MessageCircle,
+  Send,
+  Check,
+  ArrowUpRight,
+} from 'lucide-react';
 
-const fadeInUp = {
-  hidden:  { opacity: 0, y: 24 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] as [number,number,number,number] } },
-};
+const E: [number, number, number, number] = [0.16, 1, 0.3, 1];
+const WHATSAPP_NUMBER = '919825247312';
+const whatsappMessage = encodeURIComponent("Hello, I'd like to enquire about your collection.");
 
-/* ── Floating Label Input ───────────────────────────────────────── */
-function FloatInput({
-  id, name, type = 'text', label, value, onChange, required = false,
-}: {
-  id: string; name: string; type?: string; label: string;
-  value: string; onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  required?: boolean;
-}) {
-  const [focused, setFocused] = useState(false);
-  const floated = focused || value !== '';
+const contactDetails = [
+  {
+    icon: Phone,
+    label: 'Telephone',
+    value: '+91 98252 47312',
+    href: 'tel:9825247312',
+  },
+  {
+    icon: Mail,
+    label: 'Email',
+    value: 'ommarketing.weighingscale1@gmail.com',
+    href: 'mailto:ommarketing.weighingscale1@gmail.com',
+  },
+  {
+    icon: MapPin,
+    label: 'Atelier',
+    value: 'Shop 15, JB Plaza · Naroda, Ahmedabad · Gujarat',
+    href: 'https://maps.app.goo.gl/K3ACrfZPQM16rsh57',
+  },
+  {
+    icon: InstagramIcon,
+    label: 'Instagram',
+    value: '@ommarketing_scales',
+    href: 'https://instagram.com/ommarketing_scales',
+  },
+];
 
-  return (
-    <div className="input-float-wrapper">
-      <input
-        id={id}
-        name={name}
-        type={type}
-        value={value}
-        onChange={onChange}
-        required={required}
-        onFocus={() => setFocused(true)}
-        onBlur={() => setFocused(false)}
-        className={`float-input input-focus-glow transition-all ${value ? 'has-value' : ''}`}
-        placeholder=" "
-        style={{ outline: 'none' }}
-      />
-      <label
-        htmlFor={id}
-        className={`float-label transition-all duration-200 ${floated ? 'top-[0.875rem] text-[0.68rem] text-teal-600 font-medium' : 'top-1/2 -translate-y-1/2 text-sm text-gray-400'}`}
-      >
-        {label}
-      </label>
-    </div>
-  );
-}
+const hours = [
+  { day: 'Monday — Saturday', range: '9:00 — 19:00' },
+  { day: 'Sunday', range: '10:00 — 16:00' },
+];
 
-/* ── Floating Label Textarea ────────────────────────────────────── */
-function FloatTextarea({
-  id, name, label, value, onChange, required = false, rows = 5,
-}: {
-  id: string; name: string; label: string; value: string;
-  onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
-  required?: boolean; rows?: number;
-}) {
-  const [focused, setFocused] = useState(false);
-  const floated = focused || value !== '';
-
-  return (
-    <div className="input-float-wrapper textarea-wrapper">
-      <textarea
-        id={id}
-        name={name}
-        value={value}
-        onChange={onChange}
-        required={required}
-        rows={rows}
-        onFocus={() => setFocused(true)}
-        onBlur={() => setFocused(false)}
-        className={`float-input input-focus-glow transition-all ${value ? 'has-value' : ''}`}
-        placeholder=" "
-        style={{ outline: 'none' }}
-      />
-      <label
-        htmlFor={id}
-        className={`float-label transition-all duration-200 ${floated ? 'top-[0.5rem] text-[0.68rem] text-teal-600 font-medium' : 'top-[1.125rem] text-sm text-gray-400'}`}
-      >
-        {label}
-      </label>
-    </div>
-  );
-}
-
-/* ── Page ───────────────────────────────────────────────────────── */
 export default function ContactPage() {
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', message: '' });
-  const [loading,  setLoading]  = useState(false);
-  const [success,  setSuccess]  = useState(false);
-  const [error,    setError]    = useState('');
-  const [shake,    setShake]    = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState('');
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -111,296 +80,312 @@ export default function ContactPage() {
         setTimeout(() => setSuccess(false), 5000);
       } else {
         setError(data.detail || 'Failed to send message. Please try again.');
-        setShake(true);
-        setTimeout(() => setShake(false), 600);
       }
     } catch (err) {
       console.error('Error:', err);
       setError('Failed to send message. Please check your connection.');
-      setShake(true);
-      setTimeout(() => setShake(false), 600);
     } finally {
       setLoading(false);
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-
-  const whatsappMsg = encodeURIComponent("Hi! I'm interested in your products");
-
   return (
-    <div className="min-h-screen bg-white">
-
-      {/* ── Hero ─────────────────────────────────────────────────── */}
-      <section className="relative pt-24 pb-16 overflow-hidden">
-        <div
-          className="absolute inset-0 animate-gradient"
-          style={{
-            background: 'linear-gradient(-45deg, #0f172a, #0c3644, #0d5e52, #0d9488)',
-            backgroundSize: '400% 400%',
-          }}
-        />
-        <div className="absolute inset-0 opacity-[0.04]"
-          style={{
-            backgroundImage: `
-              linear-gradient(to right,  rgba(255,255,255,1) 1px, transparent 1px),
-              linear-gradient(to bottom, rgba(255,255,255,1) 1px, transparent 1px)
-            `,
-            backgroundSize: '60px 60px',
-          }}
-        />
-        <div className="absolute right-0 top-0 w-1/2 h-full opacity-20 pointer-events-none"
-          style={{ background: 'radial-gradient(ellipse at 80% 40%, rgba(6,182,212,0.5) 0%, transparent 60%)' }}
-        />
-
-        <div className="max-w-4xl mx-auto relative z-10 text-center px-4">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/15 bg-white/5 backdrop-blur-sm mb-6">
-              <motion.div
-                animate={{ scale: [1, 1.4, 1], opacity: [0.6, 1, 0.6] }}
-                transition={{ duration: 2, repeat: Infinity }}
-                className="w-1.5 h-1.5 rounded-full bg-emerald-400"
-              />
-              <span className="text-white/80 text-sm font-medium">We&apos;d love to hear from you</span>
-            </div>
-            <h1 className="text-4xl md:text-6xl font-bold text-white mb-4 tracking-tight">Contact Us</h1>
-            <p className="text-lg text-white/60 max-w-xl mx-auto">
-              Get in touch with our team for inquiries, custom orders, and support
+    <div>
+      {/* ── Editorial header ── */}
+      <section className="border-b border-[rgba(196,166,107,0.15)]">
+        <div className="max-w-[1400px] mx-auto px-6 sm:px-8 py-16 sm:py-24">
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: E }}
+            className="max-w-3xl"
+          >
+            <p className="eyebrow mb-5">In Conversation</p>
+            <h1 className="font-display text-[2.6rem] sm:text-[3.6rem] lg:text-[4.2rem] leading-[1.05] text-brand-ivory">
+              We would{' '}
+              <em className="italic text-brand-gold font-light">love</em> to hear from you.
+            </h1>
+            <p className="mt-6 text-brand-muted leading-relaxed max-w-xl">
+              Tell us about your requirements, request a quote, or visit the atelier
+              in Naroda. Our team responds within one working day.
             </p>
           </motion.div>
         </div>
-
-        <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-white to-transparent" />
       </section>
 
-      {/* ── Main Content ─────────────────────────────────────────── */}
-      <section className="py-16 px-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid lg:grid-cols-5 gap-8">
+      {/* ── Main grid ── */}
+      <section className="py-16 sm:py-24">
+        <div className="max-w-[1400px] mx-auto px-6 sm:px-8">
+          <div className="grid lg:grid-cols-[1.4fr_1fr] gap-12 lg:gap-20">
 
-            {/* ── Contact Form ── */}
+            {/* ── Form ── */}
             <motion.div
-              variants={fadeInUp} initial="hidden" animate="visible"
-              className="lg:col-span-3"
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, ease: E }}
             >
-              <div className={`bg-white rounded-2xl border border-gray-100 p-6 md:p-8 ${shake ? 'animate-shake' : ''}`}>
-                <h2 className="text-2xl font-bold text-gray-900 mb-6">Send a Message</h2>
+              <p className="eyebrow text-brand-muted mb-8">Send a Message</p>
 
-                <form onSubmit={handleSubmit} className="space-y-5">
-                  <div className="grid sm:grid-cols-2 gap-5">
-                    <FloatInput
-                      id="name" name="name" label="Your Name"
-                      value={formData.name} onChange={handleChange} required
-                    />
-                    <FloatInput
-                      id="email" name="email" type="email" label="Email Address"
-                      value={formData.email} onChange={handleChange} required
-                    />
-                  </div>
-
-                  <FloatInput
-                    id="phone" name="phone" type="tel" label="Phone Number"
-                    value={formData.phone} onChange={handleChange}
+              <form onSubmit={handleSubmit} className="space-y-8">
+                <div className="grid sm:grid-cols-2 gap-6 sm:gap-8">
+                  <LuxuryField
+                    id="name"
+                    name="name"
+                    label="Your Name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    required
                   />
-
-                  <FloatTextarea
-                    id="message" name="message" label="How can we help you?" rows={5}
-                    value={formData.message} onChange={handleChange} required
+                  <LuxuryField
+                    id="email"
+                    name="email"
+                    type="email"
+                    label="Email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
                   />
+                </div>
 
-                  {/* Success */}
-                  <AnimatePresence>
-                    {success && (
-                      <motion.div
-                        initial={{ opacity: 0, y: -8, scale: 0.97 }}
-                        animate={{ opacity: 1, y: 0, scale: 1 }}
-                        exit={{ opacity: 0, y: -4 }}
-                        className="bg-emerald-50 border border-emerald-200 text-emerald-700 px-4 py-3 rounded-xl text-sm font-medium flex items-center gap-2"
-                      >
-                        <motion.div
-                          initial={{ scale: 0 }}
-                          animate={{ scale: 1 }}
-                          transition={{ type: 'spring', stiffness: 400, delay: 0.1 }}
-                          className="w-5 h-5 rounded-full bg-emerald-500 flex items-center justify-center flex-shrink-0"
-                        >
-                          <FiCheck className="text-white text-xs" />
-                        </motion.div>
-                        Message sent! We&apos;ll get back to you soon.
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
+                <LuxuryField
+                  id="phone"
+                  name="phone"
+                  type="tel"
+                  label="Telephone"
+                  value={formData.phone}
+                  onChange={handleChange}
+                />
 
-                  {/* Error */}
-                  <AnimatePresence>
-                    {error && (
-                      <motion.div
-                        initial={{ opacity: 0, y: -8 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0 }}
-                        className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-xl text-sm font-medium"
-                      >
-                        {error}
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-
-                  <motion.button
-                    type="submit"
-                    disabled={loading}
-                    whileHover={{ scale: 1.02, y: -1 }}
-                    whileTap={{ scale: 0.98 }}
-                    className="w-full btn-primary py-3.5 text-base flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
+                <div>
+                  <label
+                    htmlFor="message"
+                    className="block label-sm text-brand-muted mb-3"
                   >
-                    {loading ? (
-                      <>
-                        <div className="spinner !w-5 !h-5 !border-2" />
-                        Sending…
-                      </>
-                    ) : (
-                      <>
-                        <FiSend /> Send Message
-                      </>
-                    )}
-                  </motion.button>
-                </form>
-              </div>
+                    How can we help you?
+                  </label>
+                  <textarea
+                    id="message"
+                    name="message"
+                    rows={5}
+                    required
+                    value={formData.message}
+                    onChange={handleChange}
+                    className="input-luxury"
+                    placeholder="Share details about your enquiry"
+                  />
+                </div>
+
+                <AnimatePresence>
+                  {success && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0 }}
+                      className="flex items-center gap-3 py-3 px-4 border border-brand-gold/40 bg-[rgba(196,166,107,0.06)]"
+                      style={{ borderRadius: 2 }}
+                    >
+                      <Check strokeWidth={1.25} size={16} className="text-brand-gold" />
+                      <p className="text-sm text-brand-ivory">
+                        Message received. We&apos;ll respond within one working day.
+                      </p>
+                    </motion.div>
+                  )}
+                  {error && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0 }}
+                      className="py-3 px-4 border border-red-500/30 bg-red-500/[0.05] text-sm text-red-300"
+                      style={{ borderRadius: 2 }}
+                    >
+                      {error}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="btn-gold"
+                >
+                  {loading ? (
+                    <>
+                      <div className="w-3.5 h-3.5 border border-brand-canvas/40 border-t-brand-canvas rounded-full animate-spin" />
+                      Sending
+                    </>
+                  ) : (
+                    <>
+                      <Send strokeWidth={1.25} size={14} />
+                      Send Message
+                    </>
+                  )}
+                </button>
+              </form>
             </motion.div>
 
-            {/* ── Contact Info ── */}
-            <motion.div
-              variants={fadeInUp} initial="hidden" animate="visible"
-              transition={{ delay: 0.12 }}
-              className="lg:col-span-2 space-y-5"
+            {/* ── Contact info ── */}
+            <motion.aside
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.1, ease: E }}
+              className="space-y-12 lg:pl-8 lg:border-l lg:border-[rgba(196,166,107,0.12)]"
             >
-              {/* Info cards */}
-              <div className="bg-white rounded-2xl border border-gray-100 p-6 space-y-5">
-                <h3 className="text-lg font-bold text-gray-900 mb-2">Get in Touch</h3>
-
-                {[
-                  { icon: <FiPhone className="text-lg" />,    label: 'Phone',     value: '98252 47312',                            href: 'tel:9825247312',                           color: 'bg-sky-50 text-sky-600',    hover: 'group-hover:text-sky-600' },
-                  { icon: <FiMail className="text-lg" />,     label: 'Email',     value: 'ommarketing.weighingscale1@gmail.com',    href: 'mailto:ommarketing.weighingscale1@gmail.com', color: 'bg-teal-50 text-teal-600',  hover: 'group-hover:text-teal-600' },
-                  { icon: <FiMapPin className="text-lg" />,   label: 'Location',  value: 'Shop 15, JB Plaza, Kathal, Kheda, Gujarat', href: 'https://maps.app.goo.gl/K3ACrfZPQM16rsh57', color: 'bg-violet-50 text-violet-600', hover: 'group-hover:text-violet-600' },
-                  { icon: <FiInstagram className="text-lg" />,label: 'Instagram', value: '@ommarketing_scales',                      href: 'https://instagram.com/ommarketing_scales',  color: 'bg-pink-50 text-pink-600',  hover: 'group-hover:text-pink-600' },
-                ].map((item, i) => (
-                  <motion.a
-                    key={i}
-                    href={item.href}
-                    target={item.href.startsWith('http') ? '_blank' : undefined}
-                    rel="noopener noreferrer"
-                    whileHover={{ x: 3 }}
-                    className="flex items-center gap-3.5 group"
-                  >
-                    <motion.div
-                      whileHover={{ scale: 1.15, rotate: 5 }}
-                      transition={{ type: 'spring', stiffness: 300 }}
-                      className={`w-10 h-10 rounded-xl ${item.color} flex items-center justify-center flex-shrink-0 transition-all group-hover:shadow-md`}
-                    >
-                      {item.icon}
-                    </motion.div>
-                    <div className="min-w-0">
-                      <div className="text-xs text-gray-400">{item.label}</div>
-                      <div className={`text-sm font-medium text-gray-700 ${item.hover} transition-colors truncate`}>
-                        {item.value}
-                      </div>
-                    </div>
-                  </motion.a>
-                ))}
+              {/* Atelier */}
+              <div>
+                <p className="eyebrow text-brand-muted mb-6">The Atelier</p>
+                <ul className="space-y-5">
+                  {contactDetails.map((item) => {
+                    const Icon = item.icon;
+                    const isExternal = item.href.startsWith('http');
+                    return (
+                      <li key={item.label}>
+                        <a
+                          href={item.href}
+                          target={isExternal ? '_blank' : undefined}
+                          rel="noopener noreferrer"
+                          className="flex items-start gap-4 group"
+                        >
+                          <span className="text-brand-gold mt-1 flex-shrink-0">
+                            <Icon strokeWidth={1} size={18} />
+                          </span>
+                          <span className="min-w-0">
+                            <span className="block label-sm text-brand-muted mb-1">
+                              {item.label}
+                            </span>
+                            <span className="block text-sm text-brand-ivory group-hover:text-brand-gold transition-colors break-words">
+                              {item.value}
+                            </span>
+                          </span>
+                        </a>
+                      </li>
+                    );
+                  })}
+                </ul>
               </div>
 
-              {/* WhatsApp CTA — with bounce pulse */}
-              <div className="rounded-2xl overflow-hidden"
-                style={{ background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)' }}
-              >
-                <div className="p-6 text-white">
-                  <motion.div
-                    animate={{ rotate: [0, -10, 10, -5, 5, 0] }}
-                    transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 3 }}
-                    className="inline-block mb-3"
-                  >
-                    <FaWhatsapp className="text-4xl" />
-                  </motion.div>
-                  <h3 className="text-xl font-bold mb-1.5">Chat on WhatsApp</h3>
-                  <p className="text-white/70 text-sm mb-4">Get instant responses to your queries</p>
-                  <a
-                    href={`https://wa.me/919825247312?text=${whatsappMsg}`}
-                    target="_blank" rel="noopener noreferrer"
-                  >
-                    <motion.button
-                      whileHover={{ scale: 1.05, y: -2 }}
-                      whileTap={{ scale: 0.97 }}
-                      className="bg-white text-green-700 px-6 py-2.5 rounded-xl font-bold text-sm shadow-lg hover:shadow-xl transition-all"
-                    >
-                      Start Chat →
-                    </motion.button>
-                  </a>
-                </div>
+              {/* WhatsApp */}
+              <div className="surface p-7">
+                <span className="text-brand-gold mb-5 inline-flex">
+                  <MessageCircle strokeWidth={1} size={26} />
+                </span>
+                <h3 className="font-display text-2xl text-brand-ivory mb-2">
+                  WhatsApp Concierge
+                </h3>
+                <p className="text-sm text-brand-muted leading-relaxed mb-6">
+                  For instant assistance during business hours, message our concierge.
+                </p>
+                <a
+                  href={`https://wa.me/${WHATSAPP_NUMBER}?text=${whatsappMessage}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="link-gold inline-flex items-center gap-2 text-[11px] tracking-[0.25em] uppercase text-brand-ivory/85 hover:text-brand-gold"
+                >
+                  Start Conversation
+                  <ArrowUpRight strokeWidth={1.25} size={14} />
+                </a>
               </div>
 
-              {/* Business hours */}
-              <div className="bg-white rounded-2xl border border-gray-100 p-5">
-                <h4 className="text-sm font-bold text-gray-900 mb-3 uppercase tracking-wider">Business Hours</h4>
-                <div className="space-y-2 text-sm">
-                  {[
-                    { day: 'Mon – Sat', hours: '9:00 AM – 7:00 PM' },
-                    { day: 'Sunday',    hours: '10:00 AM – 4:00 PM' },
-                  ].map((row) => (
-                    <div key={row.day} className="flex justify-between text-gray-500">
-                      <span>{row.day}</span>
-                      <span className="font-medium text-gray-700">{row.hours}</span>
+              {/* Hours */}
+              <div>
+                <p className="eyebrow text-brand-muted mb-5">Hours</p>
+                <dl className="space-y-3">
+                  {hours.map((row) => (
+                    <div
+                      key={row.day}
+                      className="flex justify-between text-sm border-b border-[rgba(196,166,107,0.12)] pb-3"
+                    >
+                      <dt className="text-brand-muted">{row.day}</dt>
+                      <dd className="text-brand-ivory font-mono tabular-nums">{row.range}</dd>
                     </div>
                   ))}
-                </div>
+                </dl>
               </div>
-            </motion.div>
+            </motion.aside>
           </div>
         </div>
       </section>
 
-      {/* ── Map ──────────────────────────────────────────────────── */}
-      <section className="py-16 px-4">
-        <div className="max-w-6xl mx-auto">
+      {/* ── Map ── */}
+      <section className="border-t border-[rgba(196,166,107,0.15)] py-16 sm:py-24">
+        <div className="max-w-[1400px] mx-auto px-6 sm:px-8">
           <motion.div
-            initial={{ opacity: 0, y: 24 }}
+            initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="bg-white rounded-2xl border border-gray-100 p-6 md:p-8"
+            viewport={{ once: true, margin: '-60px' }}
+            transition={{ duration: 0.8, ease: E }}
           >
-            <h2 className="text-2xl font-bold text-gray-900 mb-2 text-center">Visit Our Store</h2>
-            <p className="text-center text-gray-400 text-sm mb-6">
-              Shop 15, JB Plaza, Kathal, District Kheda, Gujarat
-            </p>
-            <motion.div
-              initial={{ opacity: 0, scale: 0.97 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.15 }}
-              className="aspect-video rounded-xl overflow-hidden bg-gray-100"
-            >
+            <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 mb-10">
+              <div>
+                <p className="eyebrow text-brand-muted mb-5">Visit Us</p>
+                <h2 className="font-display text-[2.2rem] sm:text-[2.8rem] leading-[1.05] text-brand-ivory">
+                  Shop 15, JB Plaza
+                  <br />
+                  <em className="italic text-brand-gold font-light">Naroda, Ahmedabad.</em>
+                </h2>
+              </div>
+              <a
+                href="https://maps.app.goo.gl/K3ACrfZPQM16rsh57"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-outline self-start"
+              >
+                Get Directions
+                <ArrowUpRight strokeWidth={1.25} size={16} />
+              </a>
+            </div>
+
+            <div className="surface overflow-hidden aspect-[16/8]">
               <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3683.8901234567!2d72.71234567890123!3d22.64567890123456!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e4e1234567890%3A0x1234567890abcdef!2sJB%20PLAZA!5e0!3m2!1sen!2sin!4v1234567890123"
-                width="100%" height="100%"
-                style={{ border: 0 }}
+                width="100%"
+                height="100%"
+                style={{ border: 0, filter: 'invert(0.92) hue-rotate(180deg)' }}
                 allowFullScreen
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
+                title="Atelier Location"
               />
-            </motion.div>
-            <div className="mt-5 text-center">
-              <a href="https://maps.app.goo.gl/K3ACrfZPQM16rsh57" target="_blank" rel="noopener noreferrer">
-                <motion.button
-                  whileHover={{ scale: 1.04, y: -2 }}
-                  whileTap={{ scale: 0.97 }}
-                  className="btn-primary px-6 py-2.5 text-sm inline-flex items-center gap-2"
-                >
-                  <FiMapPin /> Get Directions
-                </motion.button>
-              </a>
             </div>
           </motion.div>
         </div>
       </section>
+    </div>
+  );
+}
+
+/* ── Luxury underline field ────────────────────────────────────── */
+function LuxuryField({
+  id,
+  name,
+  type = 'text',
+  label,
+  value,
+  onChange,
+  required = false,
+}: {
+  id: string;
+  name: string;
+  type?: string;
+  label: string;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  required?: boolean;
+}) {
+  return (
+    <div>
+      <label htmlFor={id} className="block label-sm text-brand-muted mb-3">
+        {label}
+      </label>
+      <input
+        id={id}
+        name={name}
+        type={type}
+        value={value}
+        onChange={onChange}
+        required={required}
+        className="input-luxury"
+        placeholder=" "
+      />
     </div>
   );
 }

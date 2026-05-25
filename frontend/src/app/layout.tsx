@@ -1,30 +1,39 @@
 // frontend/app/layout.tsx
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { Inter, Cormorant_Garamond } from 'next/font/google';
 import './globals.css';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import PageLoader from '@/components/PageLoader';
-import PageTransitionWrapper from '@/components/PageTransitionWrapper';
 
-// ✅ Optimised font loading
+// Body / UI — Inter
 const inter = Inter({
   subsets: ['latin'],
   display: 'swap',
   preload: true,
   variable: '--font-inter',
-  weight: ['400', '500', '600', '700', '800', '900'],
+  weight: ['300', '400', '500', '600', '700'],
+});
+
+// Display / headings — Cormorant Garamond (with italics for accent words)
+const cormorant = Cormorant_Garamond({
+  subsets: ['latin'],
+  display: 'swap',
+  preload: true,
+  variable: '--font-cormorant',
+  weight: ['300', '400', '500', '600', '700'],
+  style: ['normal', 'italic'],
 });
 
 export const metadata: Metadata = {
-  title: 'OM Marketing - Premium Weighing Solutions',
+  title: 'OM Marketing — Precision Instruments | Naroda, Ahmedabad',
   description:
-    'Leading supplier of weighing scales, note counters, and mobile accessories in Naroda, Ahmedabad, Gujarat, India',
-  keywords: 'weighing scales, note counter, mobile accessories, OM Marketing, Ahmedabad',
+    'Curated weighing scales, note counters, and mobile accessories for India\'s most discerning retailers. Established 2010, Naroda, Ahmedabad.',
+  keywords:
+    'weighing scales, note counter, mobile accessories, OM Marketing, Ahmedabad, Naroda, precision instruments',
   openGraph: {
-    title: 'OM Marketing - Premium Weighing Solutions',
+    title: 'OM Marketing — Precision Instruments',
     description:
-      'Leading supplier of weighing scales, note counters, and mobile accessories',
+      'Curated weighing scales, note counters, and mobile accessories for India\'s most discerning retailers.',
     type: 'website',
     locale: 'en_IN',
     siteName: 'OM Marketing',
@@ -37,18 +46,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={inter.variable}>
-      <body className={inter.className}>
-        {/* Initial page load animation */}
-        <PageLoader />
-
+    <html lang="en" className={`${inter.variable} ${cormorant.variable}`}>
+      <body className="min-h-screen flex flex-col bg-brand-canvas text-brand-ivory antialiased">
         <Navbar />
-
-        {/* Page-level fade+slide transition on route change */}
-        <main className="min-h-screen">
-          <PageTransitionWrapper>{children}</PageTransitionWrapper>
-        </main>
-
+        <main className="flex-1">{children}</main>
         <Footer />
       </body>
     </html>

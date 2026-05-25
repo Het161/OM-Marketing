@@ -3,6 +3,7 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
+import { ImageOff } from 'lucide-react';
 
 interface ProductImageProps {
   src: string;
@@ -13,19 +14,21 @@ interface ProductImageProps {
 
 export default function ProductImage({ src, alt, fill, className }: ProductImageProps) {
   const [error, setError] = useState(false);
-  
-  // If image fails to load, show a placeholder
+
   if (error) {
     return (
-      <div className={`${fill ? 'absolute inset-0' : 'w-full h-full'} bg-gradient-to-br from-primary-100 to-primary-200 flex items-center justify-center ${className}`}>
-        <div className="text-center p-4">
-          <div className="text-6xl mb-2">⚖️</div>
-          <p className="text-sm text-gray-600 font-medium">{alt}</p>
+      <div
+        className={`${fill ? 'absolute inset-0' : 'w-full h-full'} bg-brand-surface border border-[rgba(196,166,107,0.18)] flex items-center justify-center ${className ?? ''}`}
+        style={{ borderRadius: 2 }}
+      >
+        <div className="text-center px-6">
+          <ImageOff strokeWidth={1} size={28} className="text-brand-dim mx-auto mb-3" />
+          <p className="text-xs tracking-[0.2em] uppercase text-brand-muted">{alt}</p>
         </div>
       </div>
     );
   }
-  
+
   return (
     <Image
       src={src}

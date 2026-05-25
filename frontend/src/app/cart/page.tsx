@@ -1,225 +1,319 @@
 // frontend/src/app/cart/page.tsx
-
-/**
- * Shopping Cart Page
- * Displays all items in cart with quantity controls and checkout
- * This is like a 'Cart' class that manages the cart view!
- */
-
 'use client';
 
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
-import { FiTrash2, FiMinus, FiPlus, FiShoppingBag, FiArrowLeft } from 'react-icons/fi';
+import {
+  ShoppingBag,
+  ArrowLeft,
+  Trash2,
+  Minus,
+  Plus,
+  MessageCircle,
+} from 'lucide-react';
 import { useCartStore } from '@/store/cartStore';
+
+const E: [number, number, number, number] = [0.16, 1, 0.3, 1];
+const WHATSAPP_NUMBER = '919825247312';
 
 export default function CartPage() {
   const { items, removeItem, updateQuantity, getTotalPrice, clearCart } = useCartStore();
-  const totalPrice = getTotalPrice();
-  
-  // If cart is empty
+  const [mounted, setMounted] = useState(false);
+
+  // Avoid Zustand-persist hydration mismatch
+  useEffect(() => {
+    const t = setTimeout(() => setMounted(true), 0);
+    return () => clearTimeout(t);
+  }, []);
+
+  if (!mounted) {
+    return (
+      <div className="min-h-[60vh] flex items-center justify-center">
+        <div className="w-8 h-8 border border-brand-gold/30 border-t-brand-gold rounded-full animate-spin" />
+      </div>
+    );
+  }
+
+  const subtotal = getTotalPrice();
+  const gst = subtotal * 0.18;
+  const total = subtotal + gst;
+
+  // ── Empty state ──
   if (items.length === 0) {
     return (
-      <div className="min-h-screen flex items-center justify-center px-4">
+      <div className="min-h-[60vh] flex items-center justify-center px-6 py-20">
         <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="text-center"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: E }}
+          className="text-center max-w-md"
         >
-          <motion.div
-            animate={{ rotate: [0, 10, -10, 0] }}
-            transition={{ repeat: Infinity, duration: 2 }}
-            className="text-8xl mb-6"
-          >
-            🛒
-          </motion.div>
-          <h2 className="text-3xl font-bold mb-4">Your Cart is Empty</h2>
-          <p className="text-gray-600 mb-8">
-            Looks like you haven't added any items to your cart yet.
+          <div className="w-16 h-16 mx-auto mb-8 flex items-center justify-center border border-[rgba(196,166,107,0.3)] text-brand-gold" style={{ borderRadius: 2 }}>
+            <ShoppingBag strokeWidth={1} size={28} />
+          </div>
+          <p className="eyebrow text-brand-muted mb-5">Your Bag</p>
+          <h2 className="font-display text-4xl text-brand-ivory mb-4">
+            Quietly <em className="italic text-brand-gold font-light">empty.</em>
+          </h2>
+          <p className="text-sm text-brand-muted leading-relaxed mb-10">
+            You haven&apos;t reserved any pieces yet. Browse the collection
+            and add something to your bag.
           </p>
-          <Link href="/products">
-            <button className="btn-primary">
-              Start Shopping
-            </button>
+          <Link href="/products" className="btn-gold">
+            Explore the Collection
           </Link>
         </motion.div>
       </div>
     );
   }
-  
+
+  // ── Filled state ──
+  const buildWhatsappMessage = () => {
+    const lines = [
+      'Hello, I would like to confirm the following order:',
+      '',
+      ...items.map(
+        (i) => `· ${i.name} × ${i.quantity}  —  ₹${(i.price * i.quantity).toLocaleString('en-IN')}`
+      ),
+      '',
+      `Subtotal: ₹${subtotal.toLocaleString('en-IN')}`,
+      `GST (18%): ₹${Math.round(gst).toLocaleString('en-IN')}`,
+      `Total: ₹${Math.round(total).toLocaleString('en-IN')}`,
+    ];
+    return encodeURIComponent(lines.join('\n'));
+  };
+
   return (
-    <div className="min-h-screen py-12 px-4 bg-gray-50">
-      <div className="max-w-6xl mx-auto">
-        {/* Header */}
-        <div className="flex items-center justify-between mb-8">
+    <div>
+      <div className="max-w-[1400px] mx-auto px-6 sm:px-8 py-12 sm:py-16">
+
+        {/* ── Header ── */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, ease: E }}
+          className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 mb-14"
+        >
           <div>
-            <h1 className="text-4xl font-bold mb-2">Shopping Cart</h1>
-            <p className="text-gray-600">{items.length} item(s) in your cart</p>
+            <p className="eyebrow text-brand-muted mb-4">Your Bag</p>
+            <h1 className="font-display text-[2.4rem] sm:text-[3.2rem] leading-[1.05] text-brand-ivory">
+              {items.length} {items.length === 1 ? 'piece' : 'pieces'}
+              <br />
+              <em className="italic text-brand-gold font-light">awaiting confirmation.</em>
+            </h1>
           </div>
-          <Link href="/products">
-            <button className="btn-outline flex items-center gap-2">
-              <FiArrowLeft /> Continue Shopping
-            </button>
+          <Link
+            href="/products"
+            className="link-gold text-[11px] tracking-[0.25em] uppercase text-brand-ivory/80 hover:text-brand-gold inline-flex items-center gap-2 self-start"
+          >
+            <ArrowLeft strokeWidth={1.25} size={14} />
+            Continue browsing
           </Link>
-        </div>
-        
-        <div className="grid lg:grid-cols-3 gap-8">
-          {/* Cart Items */}
-          <div className="lg:col-span-2 space-y-4">
-            <AnimatePresence>
+        </motion.div>
+
+        <div className="grid lg:grid-cols-[1.6fr_1fr] gap-10 lg:gap-16">
+
+          {/* ── Items ── */}
+          <div>
+            <div className="hairline-h mb-6" />
+            <AnimatePresence initial={false}>
               {items.map((item) => (
                 <motion.div
                   key={item.id}
-                  initial={{ opacity: 0, y: 20 }}
+                  layout
+                  initial={{ opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, x: -100 }}
-                  className="bg-white rounded-xl shadow-md p-6 flex gap-6"
+                  exit={{ opacity: 0, x: -40 }}
+                  transition={{ duration: 0.45, ease: E }}
+                  className="grid grid-cols-[88px_1fr] sm:grid-cols-[120px_1fr_auto] gap-5 sm:gap-8 py-8 border-b border-[rgba(196,166,107,0.12)]"
                 >
-                  {/* Product Image */}
-                  <div className="relative w-32 h-32 flex-shrink-0 rounded-lg overflow-hidden bg-gray-100">
+                  {/* Thumbnail */}
+                  <Link
+                    href={`/products/${item.id}`}
+                    className="relative aspect-square bg-[#0F0D0B] border border-[rgba(196,166,107,0.15)] overflow-hidden"
+                    style={{ borderRadius: 2 }}
+                  >
                     <Image
                       src={item.image_url || '/images/placeholder.jpg'}
                       alt={item.name}
                       fill
-                      className="object-cover"
+                      sizes="120px"
+                      className="object-contain p-3"
                     />
-                  </div>
-                  
-                  {/* Product Details */}
-                  <div className="flex-1">
-                    <div className="flex justify-between items-start mb-2">
-                      <div>
-                        <h3 className="text-lg font-semibold text-gray-800 mb-1">
-                          {item.name}
-                        </h3>
-                        <p className="text-sm text-gray-500 capitalize">
-                          {item.category.replace('_', ' ')}
-                        </p>
-                      </div>
+                  </Link>
+
+                  {/* Info */}
+                  <div className="min-w-0 flex flex-col">
+                    <p className="label-sm text-brand-muted mb-2">
+                      {item.category.replace(/_/g, ' ')}
+                    </p>
+                    <Link
+                      href={`/products/${item.id}`}
+                      className="font-display text-xl sm:text-2xl text-brand-ivory leading-tight hover:text-brand-gold transition-colors line-clamp-2"
+                    >
+                      {item.name}
+                    </Link>
+                    <p className="mt-2 text-xs text-brand-muted">
+                      ₹{item.price.toLocaleString('en-IN')} each
+                    </p>
+
+                    {/* Mobile actions */}
+                    <div className="sm:hidden mt-4 flex items-center justify-between">
+                      <QuantityControl
+                        value={item.quantity}
+                        onMinus={() => updateQuantity(item.id, item.quantity - 1)}
+                        onPlus={() => updateQuantity(item.id, item.quantity + 1)}
+                      />
                       <button
                         onClick={() => removeItem(item.id)}
-                        className="text-red-500 hover:text-red-700 p-2 hover:bg-red-50 rounded-lg transition-colors"
+                        className="btn-touch flex items-center justify-center text-brand-muted hover:text-brand-gold transition-colors"
+                        aria-label="Remove"
                       >
-                        <FiTrash2 size={20} />
+                        <Trash2 strokeWidth={1} size={16} />
                       </button>
                     </div>
-                    
-                    {/* Price and Quantity */}
-                    <div className="flex items-center justify-between mt-4">
-                      <div className="text-2xl font-bold text-primary-500">
-                        ₹{(item.price * item.quantity).toLocaleString('en-IN')}
-                      </div>
-                      
-                      {/* Quantity Controls */}
-                      <div className="flex items-center gap-3 bg-gray-100 rounded-lg p-1">
-                        <motion.button
-                          whileHover={{ scale: 1.1 }}
-                          whileTap={{ scale: 0.9 }}
-                          onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                          className="w-8 h-8 flex items-center justify-center bg-white rounded-lg hover:bg-primary-500 hover:text-white transition-colors"
-                        >
-                          <FiMinus />
-                        </motion.button>
-                        
-                        <span className="w-12 text-center font-semibold">
-                          {item.quantity}
-                        </span>
-                        
-                        <motion.button
-                          whileHover={{ scale: 1.1 }}
-                          whileTap={{ scale: 0.9 }}
-                          onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                          className="w-8 h-8 flex items-center justify-center bg-white rounded-lg hover:bg-primary-500 hover:text-white transition-colors"
-                        >
-                          <FiPlus />
-                        </motion.button>
-                      </div>
-                    </div>
-                    
-                    <p className="text-sm text-gray-500 mt-2">
-                      ₹{item.price.toLocaleString('en-IN')} each
+                  </div>
+
+                  {/* Desktop actions */}
+                  <div className="hidden sm:flex flex-col items-end justify-between min-w-[140px]">
+                    <button
+                      onClick={() => removeItem(item.id)}
+                      className="text-brand-dim hover:text-brand-gold transition-colors flex items-center gap-2 text-[10px] tracking-[0.2em] uppercase"
+                      aria-label="Remove"
+                    >
+                      <Trash2 strokeWidth={1} size={14} />
+                      Remove
+                    </button>
+                    <QuantityControl
+                      value={item.quantity}
+                      onMinus={() => updateQuantity(item.id, item.quantity - 1)}
+                      onPlus={() => updateQuantity(item.id, item.quantity + 1)}
+                    />
+                    <p className="font-display text-2xl text-brand-gold">
+                      ₹{(item.price * item.quantity).toLocaleString('en-IN')}
                     </p>
                   </div>
                 </motion.div>
               ))}
             </AnimatePresence>
-            
-            {/* Clear Cart Button */}
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
+
+            <button
               onClick={clearCart}
-              className="w-full py-3 text-red-500 border-2 border-red-500 rounded-lg hover:bg-red-50 transition-colors font-semibold"
+              className="mt-8 text-[10px] tracking-[0.25em] uppercase text-brand-dim hover:text-brand-gold transition-colors"
             >
-              Clear Cart
-            </motion.button>
+              Clear the bag
+            </button>
           </div>
-          
-          {/* Order Summary */}
-          <div className="lg:col-span-1">
+
+          {/* ── Summary ── */}
+          <aside>
             <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              className="bg-white rounded-xl shadow-md p-6 sticky top-24"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.1, ease: E }}
+              className="surface p-8 sticky top-32"
             >
-              <h3 className="text-2xl font-bold mb-6">Order Summary</h3>
-              
-              <div className="space-y-4 mb-6">
-                <div className="flex justify-between text-gray-600">
-                  <span>Subtotal</span>
-                  <span>₹{totalPrice.toLocaleString('en-IN')}</span>
+              <p className="eyebrow text-brand-muted mb-6">Summary</p>
+
+              <dl className="space-y-4 text-sm mb-8">
+                <div className="flex justify-between">
+                  <dt className="text-brand-muted">Subtotal</dt>
+                  <dd className="text-brand-ivory font-medium">
+                    ₹{subtotal.toLocaleString('en-IN')}
+                  </dd>
                 </div>
-                <div className="flex justify-between text-gray-600">
-                  <span>Shipping</span>
-                  <span className="text-green-600">Free</span>
+                <div className="flex justify-between">
+                  <dt className="text-brand-muted">Dispatch</dt>
+                  <dd className="text-brand-gold tracking-[0.15em] uppercase text-xs">
+                    Complimentary
+                  </dd>
                 </div>
-                <div className="flex justify-between text-gray-600">
-                  <span>GST (18%)</span>
-                  <span>₹{(totalPrice * 0.18).toLocaleString('en-IN')}</span>
+                <div className="flex justify-between">
+                  <dt className="text-brand-muted">GST · 18%</dt>
+                  <dd className="text-brand-ivory font-medium">
+                    ₹{Math.round(gst).toLocaleString('en-IN')}
+                  </dd>
                 </div>
-                
-                <div className="border-t pt-4">
-                  <div className="flex justify-between text-xl font-bold">
-                    <span>Total</span>
-                    <span className="text-primary-500">
-                      ₹{(totalPrice * 1.18).toLocaleString('en-IN')}
-                    </span>
-                  </div>
-                </div>
+              </dl>
+
+              <div className="hairline-h mb-6" />
+
+              <div className="flex justify-between items-baseline mb-8">
+                <span className="eyebrow text-brand-muted">Total</span>
+                <span className="font-display text-3xl text-brand-gold leading-none">
+                  ₹{Math.round(total).toLocaleString('en-IN')}
+                </span>
               </div>
-              
-              {/* Checkout Button */}
-              <Link href="/checkout">
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="w-full btn-primary flex items-center justify-center gap-2"
-                >
-                  <FiShoppingBag />
+
+              <div className="space-y-3">
+                <Link href="/checkout" className="btn-gold w-full">
+                  <ShoppingBag strokeWidth={1.25} size={16} />
                   Proceed to Checkout
-                </motion.button>
-              </Link>
-              
-              {/* Trust Badges */}
-              <div className="mt-6 pt-6 border-t space-y-3">
-                <div className="flex items-center gap-2 text-sm text-gray-600">
-                  <span className="text-green-500">✓</span>
-                  Secure Payment
-                </div>
-                <div className="flex items-center gap-2 text-sm text-gray-600">
-                  <span className="text-green-500">✓</span>
-                  Fast Delivery
-                </div>
-                <div className="flex items-center gap-2 text-sm text-gray-600">
-                  <span className="text-green-500">✓</span>
-                  Quality Guaranteed
-                </div>
+                </Link>
+                <a
+                  href={`https://wa.me/${WHATSAPP_NUMBER}?text=${buildWhatsappMessage()}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-outline w-full"
+                >
+                  <MessageCircle strokeWidth={1.25} size={16} />
+                  Confirm via WhatsApp
+                </a>
               </div>
+
+              <ul className="mt-8 pt-6 border-t border-[rgba(196,166,107,0.12)] space-y-2.5">
+                {[
+                  'Secure payment via your bank',
+                  'White-glove installation included',
+                  'Lifetime atelier service',
+                ].map((line) => (
+                  <li key={line} className="flex items-start gap-2 text-xs text-brand-muted">
+                    <span className="text-brand-gold mt-0.5">·</span>
+                    <span className="tracking-[0.05em]">{line}</span>
+                  </li>
+                ))}
+              </ul>
             </motion.div>
-          </div>
+          </aside>
         </div>
       </div>
+    </div>
+  );
+}
+
+function QuantityControl({
+  value,
+  onMinus,
+  onPlus,
+}: {
+  value: number;
+  onMinus: () => void;
+  onPlus: () => void;
+}) {
+  return (
+    <div
+      className="inline-flex items-center border border-[rgba(196,166,107,0.25)]"
+      style={{ borderRadius: 2 }}
+    >
+      <button
+        onClick={onMinus}
+        aria-label="Decrease quantity"
+        className="w-9 h-9 flex items-center justify-center text-brand-ivory/80 hover:text-brand-gold hover:bg-[rgba(196,166,107,0.08)] transition-colors"
+      >
+        <Minus strokeWidth={1} size={14} />
+      </button>
+      <span className="w-10 text-center font-mono text-sm text-brand-ivory tabular-nums select-none">
+        {value}
+      </span>
+      <button
+        onClick={onPlus}
+        aria-label="Increase quantity"
+        className="w-9 h-9 flex items-center justify-center text-brand-ivory/80 hover:text-brand-gold hover:bg-[rgba(196,166,107,0.08)] transition-colors"
+      >
+        <Plus strokeWidth={1} size={14} />
+      </button>
     </div>
   );
 }

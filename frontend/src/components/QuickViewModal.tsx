@@ -1,446 +1,213 @@
-// // frontend/src/components/QuickViewModal.tsx
-
-// 'use client'
-
-// import { useState, useEffect } from 'react'
-// import { motion, AnimatePresence } from 'framer-motion'
-// import Image from 'next/image'
-// import Link from 'next/link'
-// import { FiX, FiShoppingCart, FiEye } from 'react-icons/fi'
-// import { productApi } from '@/services/api'
-// import { useCartStore } from '@/store/cartStore'
-
-// interface QuickViewModalProps {
-//   productId: number
-//   onClose: () => void
-// }
-
-// export default function QuickViewModal({ productId, onClose }: QuickViewModalProps) {
-//   const [product, setProduct] = useState<any>(null)
-//   const [loading, setLoading] = useState(true)
-//   const [quantity, setQuantity] = useState(1)
-//   const [isAdding, setIsAdding] = useState(false)
-  
-//   const addItem = useCartStore((state) => state.addItem)
-  
-//   useEffect(() => {
-//     async function fetchProduct() {
-//       try {
-//         setLoading(true)
-//         const data = await productApi.getById(productId)
-//         setProduct(data)
-//       } catch (err) {
-//         console.error('Error fetching product:', err)
-//       } finally {
-//         setLoading(false)
-//       }
-//     }
-    
-//     fetchProduct()
-//   }, [productId])
-  
-//   const handleAddToCart = () => {
-//     if (!product) return
-    
-//     setIsAdding(true)
-    
-//     for (let i = 0; i < quantity; i++) {
-//       addItem({
-//         id: product.id,
-//         name: product.name,
-//         price: product.price,
-//         quantity: 1,
-//         image_url: product.image_url,
-//         category: product.category,
-//       })
-//     }
-    
-//     setTimeout(() => {
-//       setIsAdding(false)
-//       onClose()
-//     }, 1000)
-//   }
-  
-//   const specifications = product?.specifications 
-//     ? JSON.parse(product.specifications) 
-//     : {}
-  
-//   return (
-//     <AnimatePresence>
-//       <motion.div
-//         initial={{ opacity: 0 }}
-//         animate={{ opacity: 1 }}
-//         exit={{ opacity: 0 }}
-//         onClick={onClose}
-//         className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4"
-//       >
-//         <motion.div
-//           initial={{ scale: 0.9, opacity: 0 }}
-//           animate={{ scale: 1, opacity: 1 }}
-//           exit={{ scale: 0.9, opacity: 0 }}
-//           onClick={(e) => e.stopPropagation()}
-//           className="bg-white rounded-3xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto relative"
-//         >
-//           {/* Close Button */}
-//           <button
-//             onClick={onClose}
-//             className="absolute top-4 right-4 z-10 bg-white rounded-full p-2 shadow-lg hover:bg-gray-100 transition-colors"
-//           >
-//             <FiX size={24} />
-//           </button>
-          
-//           {loading ? (
-//             <div className="flex items-center justify-center p-12">
-//               <div className="animate-spin rounded-full h-12 w-12 border-4 border-cyan-500 border-t-transparent" />
-//             </div>
-//           ) : product ? (
-//             <div className="grid md:grid-cols-2 gap-8 p-8">
-//               {/* Product Image */}
-//               <div className="relative aspect-square rounded-2xl overflow-hidden bg-gray-100">
-//                 <Image
-//                   src={product.image_url || '/images/placeholder.jpg'}
-//                   alt={product.name}
-//                   fill
-//                   className="object-contain p-4"
-//                   sizes="(max-width: 768px) 100vw, 50vw"
-//                 />
-                
-//                 {/* Stock Badge */}
-//                 {product.stock_quantity === 0 && (
-//                   <div className="absolute top-4 left-4 bg-red-500 text-white px-4 py-2 rounded-full font-semibold">
-//                     Out of Stock
-//                   </div>
-//                 )}
-                
-//                 {product.stock_quantity > 0 && product.stock_quantity < 10 && (
-//                   <div className="absolute top-4 left-4 bg-orange-500 text-white px-4 py-2 rounded-full text-sm font-semibold">
-//                     Only {product.stock_quantity} left!
-//                   </div>
-//                 )}
-//               </div>
-              
-//               {/* Product Info */}
-//               <div className="flex flex-col">
-//                 {/* Category */}
-//                 <div className="inline-block bg-cyan-100 text-cyan-700 px-3 py-1 rounded-full text-xs font-semibold mb-3 self-start uppercase">
-//                   {product.category.replace('_', ' ')}
-//                 </div>
-                
-//                 <h2 className="text-3xl font-bold mb-4">{product.name}</h2>
-                
-//                 {/* Price */}
-//                 <div className="flex items-baseline gap-3 mb-6">
-//                   <span className="text-4xl font-bold text-cyan-600">
-//                     ₹{product.price.toLocaleString('en-IN')}
-//                   </span>
-//                   <span className="text-gray-400 line-through text-lg">
-//                     ₹{(product.price * 1.2).toLocaleString('en-IN')}
-//                   </span>
-//                   <span className="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs font-semibold">
-//                     Save 20%
-//                   </span>
-//                 </div>
-                
-//                 {/* Description */}
-//                 <p className="text-gray-600 mb-6 line-clamp-3">
-//                   {product.description || 'No description available.'}
-//                 </p>
-                
-//                 {/* Specifications (if any) */}
-//                 {Object.keys(specifications).length > 0 && (
-//                   <div className="mb-6">
-//                     <h4 className="font-semibold mb-2">Key Specifications:</h4>
-//                     <div className="space-y-2">
-//                       {Object.entries(specifications).slice(0, 3).map(([key, value]) => (
-//                         <div key={key} className="flex justify-between text-sm">
-//                           <span className="text-gray-600 capitalize">
-//                             {key.replace('_', ' ')}:
-//                           </span>
-//                           <span className="font-medium">{value as string}</span>
-//                         </div>
-//                       ))}
-//                     </div>
-//                   </div>
-//                 )}
-                
-//                 {/* Quantity Selector */}
-//                 <div className="mb-6">
-//                   <label className="block text-sm font-semibold mb-2">Quantity</label>
-//                   <div className="flex items-center gap-3">
-//                     <button
-//                       onClick={() => setQuantity(Math.max(1, quantity - 1))}
-//                       className="w-10 h-10 flex items-center justify-center border-2 border-gray-300 rounded-lg hover:border-cyan-500 transition-colors font-bold"
-//                       disabled={product.stock_quantity === 0}
-//                     >
-//                       -
-//                     </button>
-//                     <input
-//                       type="number"
-//                       min="1"
-//                       max={product.stock_quantity}
-//                       value={quantity}
-//                       onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
-//                       className="w-16 h-10 text-center border-2 border-gray-300 rounded-lg focus:border-cyan-500 focus:outline-none font-semibold"
-//                       disabled={product.stock_quantity === 0}
-//                     />
-//                     <button
-//                       onClick={() => setQuantity(Math.min(product.stock_quantity, quantity + 1))}
-//                       className="w-10 h-10 flex items-center justify-center border-2 border-gray-300 rounded-lg hover:border-cyan-500 transition-colors font-bold"
-//                       disabled={product.stock_quantity === 0}
-//                     >
-//                       +
-//                     </button>
-//                   </div>
-//                 </div>
-                
-//                 {/* Action Buttons */}
-//                 <div className="flex gap-3 mt-auto">
-//                   <motion.button
-//                     whileHover={{ scale: 1.02 }}
-//                     whileTap={{ scale: 0.98 }}
-//                     onClick={handleAddToCart}
-//                     disabled={product.stock_quantity === 0 || isAdding}
-//                     className="flex-1 bg-cyan-500 text-white py-3 rounded-xl font-semibold hover:bg-cyan-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-//                   >
-//                     {isAdding ? (
-//                       <>
-//                         <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent" />
-//                         Adding...
-//                       </>
-//                     ) : (
-//                       <>
-//                         <FiShoppingCart />
-//                         Add to Cart
-//                       </>
-//                     )}
-//                   </motion.button>
-                  
-//                   <Link href={`/products/${product.id}`}>
-//                     <motion.button
-//                       whileHover={{ scale: 1.05 }}
-//                       whileTap={{ scale: 0.95 }}
-//                       className="bg-gray-100 text-gray-700 px-6 py-3 rounded-xl font-semibold hover:bg-gray-200 transition-colors flex items-center gap-2"
-//                     >
-//                       <FiEye />
-//                       Details
-//                     </motion.button>
-//                   </Link>
-//                 </div>
-//               </div>
-//             </div>
-//           ) : (
-//             <div className="p-12 text-center">
-//               <p className="text-gray-600">Product not found</p>
-//             </div>
-//           )}
-//         </motion.div>
-//       </motion.div>
-//     </AnimatePresence>
-//   )
-// }
-
-
-
-
-
-
-
-
-
 // frontend/src/components/QuickViewModal.tsx
+'use client';
 
-'use client'
-
-import { useState, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import Image from 'next/image'
-import Link from 'next/link'
-import { FiX, FiEye, FiMessageCircle, FiPhone } from 'react-icons/fi'
-import { productApi } from '@/services/api'
+import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import Image from 'next/image';
+import Link from 'next/link';
+import { X, MessageCircle, Phone, ArrowUpRight } from 'lucide-react';
+import { productApi } from '@/services/api';
 
 interface QuickViewModalProps {
-  productId: number
-  onClose: () => void
+  productId: number;
+  onClose: () => void;
 }
 
+interface Product {
+  id: number;
+  name: string;
+  category: string;
+  price: number;
+  image_url: string;
+  description?: string;
+  stock_quantity: number;
+  specifications?: string;
+}
+
+const WHATSAPP_NUMBER = '919825247312';
+
 export default function QuickViewModal({ productId, onClose }: QuickViewModalProps) {
-  const [product, setProduct] = useState<any>(null)
-  const [loading, setLoading] = useState(true)
-  
+  const [product, setProduct] = useState<Product | null>(null);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-    async function fetchProduct() {
+    let alive = true;
+    (async () => {
       try {
-        setLoading(true)
-        const data = await productApi.getById(productId)
-        setProduct(data)
+        setLoading(true);
+        const data = await productApi.getById(productId);
+        if (alive) setProduct(data);
       } catch (err) {
-        console.error('Error fetching product:', err)
+        console.error('Error fetching product:', err);
       } finally {
-        setLoading(false)
+        if (alive) setLoading(false);
       }
+    })();
+    return () => {
+      alive = false;
+    };
+  }, [productId]);
+
+  // Lock body scroll while modal is open
+  useEffect(() => {
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, []);
+
+  let specifications: Record<string, string> = {};
+  if (product?.specifications) {
+    try {
+      specifications = JSON.parse(product.specifications);
+    } catch {
+      specifications = {};
     }
-    
-    fetchProduct()
-  }, [productId])
-  
-  const specifications = product?.specifications 
-    ? JSON.parse(product.specifications) 
-    : {}
-  
+  }
+
+  const whatsappHref = product
+    ? `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
+        `Hello, I am enquiring about ${product.name}. Could you share availability and pricing?`
+      )}`
+    : '#';
+
   return (
     <AnimatePresence>
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
+        transition={{ duration: 0.35 }}
         onClick={onClose}
-        className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+        className="fixed inset-0 bg-black/85 backdrop-blur-md z-[60] flex items-center justify-center p-4 sm:p-8"
       >
         <motion.div
-          initial={{ scale: 0.9, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          exit={{ scale: 0.9, opacity: 0 }}
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 20 }}
+          transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
           onClick={(e) => e.stopPropagation()}
-          className="bg-white rounded-3xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto relative"
+          className="bg-brand-canvas border border-[rgba(196,166,107,0.2)] max-w-5xl w-full max-h-[92vh] overflow-y-auto relative"
+          style={{ borderRadius: 2 }}
         >
-          {/* Close Button */}
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 z-10 bg-white rounded-full p-2 shadow-lg hover:bg-gray-100 transition-colors"
+            aria-label="Close"
+            className="absolute top-4 right-4 z-10 w-10 h-10 flex items-center justify-center border border-[rgba(196,166,107,0.25)] text-brand-ivory/80 hover:border-brand-gold hover:text-brand-gold transition-colors bg-brand-canvas/80"
+            style={{ borderRadius: 2 }}
           >
-            <FiX size={24} />
+            <X strokeWidth={1} size={18} />
           </button>
-          
+
           {loading ? (
-            <div className="flex items-center justify-center p-12">
-              <div className="animate-spin rounded-full h-12 w-12 border-4 border-cyan-500 border-t-transparent" />
+            <div className="flex items-center justify-center py-32">
+              <div className="w-10 h-10 border border-brand-gold/30 border-t-brand-gold rounded-full animate-spin" />
             </div>
           ) : product ? (
-            <div className="grid md:grid-cols-2 gap-8 p-8">
-              {/* Product Image */}
-              <div className="relative aspect-square rounded-2xl overflow-hidden bg-gray-100">
+            <div className="grid md:grid-cols-2">
+
+              {/* Image */}
+              <div className="relative aspect-square bg-[#0F0D0B] border-b md:border-b-0 md:border-r border-[rgba(196,166,107,0.15)]">
                 <Image
                   src={product.image_url || '/images/placeholder.jpg'}
                   alt={product.name}
                   fill
-                  className="object-contain p-4"
                   sizes="(max-width: 768px) 100vw, 50vw"
+                  className="object-contain p-10"
                 />
-                
-                {/* Stock Badge */}
+
                 {product.stock_quantity === 0 && (
-                  <div className="absolute top-4 left-4 bg-red-500 text-white px-4 py-2 rounded-full font-semibold">
-                    Out of Stock
+                  <div
+                    className="absolute top-5 left-5 px-3 py-1.5 border border-[rgba(196,166,107,0.4)] text-[10px] tracking-[0.25em] uppercase text-brand-muted bg-brand-canvas/80"
+                    style={{ borderRadius: 2 }}
+                  >
+                    Reserved
                   </div>
                 )}
-                
-                {product.stock_quantity > 0 && product.stock_quantity < 10 && (
-                  <div className="absolute top-4 left-4 bg-orange-500 text-white px-4 py-2 rounded-full text-sm font-semibold">
-                    Only {product.stock_quantity} left!
+                {product.stock_quantity > 0 && product.stock_quantity < 5 && (
+                  <div
+                    className="absolute top-5 left-5 px-3 py-1.5 border border-brand-gold/60 text-[10px] tracking-[0.25em] uppercase text-brand-gold bg-brand-canvas/80"
+                    style={{ borderRadius: 2 }}
+                  >
+                    Last {product.stock_quantity}
                   </div>
                 )}
               </div>
-              
-              {/* Product Info */}
-              <div className="flex flex-col">
-                {/* Category */}
-                <div className="inline-block bg-cyan-100 text-cyan-700 px-3 py-1 rounded-full text-xs font-semibold mb-3 self-start uppercase">
-                  {product.category.replace('_', ' ')}
+
+              {/* Info */}
+              <div className="p-8 sm:p-10 flex flex-col">
+                <span className="eyebrow text-brand-muted mb-4">
+                  {product.category.replace(/_/g, ' ')}
+                </span>
+
+                <h2 className="font-display text-3xl sm:text-[2.4rem] leading-[1.1] text-brand-ivory mb-6">
+                  {product.name}
+                </h2>
+
+                <div className="font-display text-4xl text-brand-gold mb-8">
+                  ₹{product.price.toLocaleString('en-IN')}
                 </div>
-                
-                <h2 className="text-3xl font-bold mb-4">{product.name}</h2>
-                
-                {/* Price */}
-                <div className="flex items-baseline gap-3 mb-6">
-                  <span className="text-4xl font-bold text-cyan-600">
-                    ₹{product.price.toLocaleString('en-IN')}
-                  </span>
-                  <span className="text-gray-400 line-through text-lg">
-                    ₹{(product.price * 1.2).toLocaleString('en-IN')}
-                  </span>
-                  <span className="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs font-semibold">
-                    Save 20%
-                  </span>
-                </div>
-                
-                {/* Description */}
-                <p className="text-gray-600 mb-6 line-clamp-3">
-                  {product.description || 'No description available.'}
-                </p>
-                
-                {/* Specifications (if any) */}
+
+                {product.description && (
+                  <p className="text-sm text-brand-muted leading-relaxed mb-8 line-clamp-4">
+                    {product.description}
+                  </p>
+                )}
+
                 {Object.keys(specifications).length > 0 && (
-                  <div className="mb-6 flex-1">
-                    <h4 className="font-semibold mb-3 text-lg">Key Specifications:</h4>
-                    <div className="space-y-2 bg-gray-50 p-4 rounded-xl">
+                  <div className="mb-8">
+                    <p className="eyebrow text-brand-muted mb-4">Specifications</p>
+                    <dl className="space-y-3">
                       {Object.entries(specifications).slice(0, 4).map(([key, value]) => (
-                        <div key={key} className="flex justify-between text-sm border-b border-gray-200 pb-2">
-                          <span className="text-gray-600 capitalize font-medium">
-                            {key.replace('_', ' ')}:
-                          </span>
-                          <span className="font-semibold text-gray-900">{value as string}</span>
+                        <div
+                          key={key}
+                          className="flex justify-between gap-4 py-2.5 border-b border-[rgba(196,166,107,0.12)] text-sm"
+                        >
+                          <dt className="text-brand-muted capitalize">
+                            {key.replace(/_/g, ' ')}
+                          </dt>
+                          <dd className="text-brand-ivory font-medium text-right">
+                            {String(value)}
+                          </dd>
                         </div>
                       ))}
-                    </div>
+                    </dl>
                   </div>
                 )}
-                
-                {/* Action Buttons */}
-                <div className="flex flex-col gap-3 mt-auto">
-                  {/* WhatsApp Inquiry */}
+
+                <div className="mt-auto pt-4 flex flex-col gap-3">
                   <a
-                    href={`https://wa.me/919825247312?text=${encodeURIComponent(
-                      `Hi! I'm interested in ${product.name}. Can you provide more details?`
-                    )}`}
+                    href={whatsappHref}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-full"
+                    className="btn-gold w-full"
                   >
-                    <motion.button
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      className="w-full bg-green-500 text-white py-3 rounded-xl font-semibold hover:bg-green-600 transition-colors flex items-center justify-center gap-2"
-                    >
-                      <FiMessageCircle size={20} />
-                      Inquire on WhatsApp
-                    </motion.button>
+                    <MessageCircle strokeWidth={1.25} size={16} />
+                    Enquire on WhatsApp
                   </a>
-                  
-                  <div className="flex gap-3">
-                    {/* Call Button */}
-                    <a href="tel:9825247312" className="flex-1">
-                      <motion.button
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
-                        className="w-full bg-cyan-500 text-white py-3 rounded-xl font-semibold hover:bg-cyan-600 transition-colors flex items-center justify-center gap-2"
-                      >
-                        <FiPhone size={18} />
-                        Call Now
-                      </motion.button>
+                  <div className="grid grid-cols-2 gap-3">
+                    <a href="tel:9825247312" className="btn-outline">
+                      <Phone strokeWidth={1.25} size={16} />
+                      Call
                     </a>
-                    
-                    {/* View Details */}
-                    <Link href={`/products/${product.id}`} className="flex-1">
-                      <motion.button
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
-                        className="w-full bg-gray-100 text-gray-700 py-3 rounded-xl font-semibold hover:bg-gray-200 transition-colors flex items-center justify-center gap-2"
-                      >
-                        <FiEye size={18} />
-                        Details
-                      </motion.button>
+                    <Link href={`/products/${product.id}`} className="btn-outline" onClick={onClose}>
+                      Full Detail
+                      <ArrowUpRight strokeWidth={1.25} size={16} />
                     </Link>
                   </div>
                 </div>
               </div>
             </div>
           ) : (
-            <div className="p-12 text-center">
-              <p className="text-gray-600">Product not found</p>
+            <div className="p-16 text-center">
+              <p className="text-brand-muted text-sm tracking-[0.15em] uppercase">
+                This piece could not be loaded.
+              </p>
             </div>
           )}
         </motion.div>
       </motion.div>
     </AnimatePresence>
-  )
+  );
 }
