@@ -5,19 +5,8 @@ import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Search, SlidersHorizontal, ChevronDown } from 'lucide-react';
-import { productApi } from '@/services/api';
 import ProductCard from '@/components/ProductCard';
-
-interface Product {
-  id: number;
-  name: string;
-  category: string;
-  description: string;
-  price: number;
-  stock_quantity: number;
-  image_url: string;
-  specifications: string;
-}
+import { getAllProducts } from '@/data/products';
 
 const categories = [
   { id: 'weighing_scale', name: 'Weighing Scales' },
@@ -33,44 +22,25 @@ const sortOptions = [
 
 const E: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
+// Static snapshot — committed at build time, never fetched from the backend.
+const PRODUCTS = getAllProducts();
+
 function ProductsContent() {
   const searchParams = useSearchParams();
   const categoryFromUrl = searchParams.get('category');
 
-  const [products, setProducts] = useState<Product[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(categoryFromUrl);
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 100000]);
   const [sortBy, setSortBy] = useState<string>('featured');
   const [searchTerm, setSearchTerm] = useState('');
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    setSelectedCategory(categoryFromUrl);
+    const t = setTimeout(() => setSelectedCategory(categoryFromUrl), 0);
+    return () => clearTimeout(t);
   }, [categoryFromUrl]);
 
-  useEffect(() => {
-    let alive = true;
-    (async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        const data = await productApi.getAll();
-        if (alive) setProducts(data);
-      } catch (err) {
-        console.error('Error fetching products:', err);
-        if (alive) setError('Unable to load the collection. Please try again.');
-      } finally {
-        if (alive) setLoading(false);
-      }
-    })();
-    return () => {
-      alive = false;
-    };
-  }, []);
-
   const filteredProducts = useMemo(() => {
-    let filtered = products;
+    let filtered = PRODUCTS;
     if (selectedCategory) {
       filtered = filtered.filter((p) => p.category === selectedCategory);
     }
@@ -90,7 +60,7 @@ function ProductsContent() {
     if (sortBy === 'price_high')
       filtered = [...filtered].sort((a, b) => b.price - a.price);
     return filtered;
-  }, [selectedCategory, searchTerm, priceRange, sortBy, products]);
+  }, [selectedCategory, searchTerm, priceRange, sortBy]);
 
   const clearFilters = () => {
     setSelectedCategory(null);
@@ -310,35 +280,11 @@ function ProductsContent() {
             <div>
               <div className="hidden lg:flex items-center justify-between mb-10 pb-6 border-b border-[rgba(196,166,107,0.12)]">
                 <p className="label-sm text-brand-muted">
-                  {loading ? 'Loading' : `${filteredProducts.length} ${filteredProducts.length === 1 ? 'piece' : 'pieces'}`}
+                  {filteredProducts.length} {filteredProducts.length === 1 ? 'piece' : 'pieces'}
                 </p>
               </div>
 
-              {loading ? (
-                <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-6 sm:gap-8">
-                  {[0, 1, 2, 3, 4, 5].map((i) => (
-                    <div
-                      key={i}
-                      className="surface aspect-[3/4] animate-pulse opacity-50"
-                      style={{ animationDelay: `${i * 80}ms` }}
-                    />
-                  ))}
-                </div>
-              ) : error ? (
-                <div className="surface p-20 text-center">
-                  <p className="eyebrow text-brand-muted mb-4">Connection</p>
-                  <h3 className="font-display text-2xl text-brand-ivory mb-3">
-                    The archive is unreachable
-                  </h3>
-                  <p className="text-sm text-brand-muted mb-8">{error}</p>
-                  <button
-                    onClick={() => window.location.reload()}
-                    className="btn-outline"
-                  >
-                    Retry
-                  </button>
-                </div>
-              ) : filteredProducts.length === 0 ? (
+              {filteredProducts.length === 0 ? (
                 <div className="surface p-20 text-center">
                   <p className="eyebrow text-brand-muted mb-4">No matches</p>
                   <h3 className="font-display text-2xl text-brand-ivory mb-3">

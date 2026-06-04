@@ -1,33 +1,22 @@
 import type { Metadata } from 'next';
-import { productApi } from '@/services/api';
+import { notFound } from 'next/navigation';
+import {
+  getAllProducts,
+  getProductById,
+  parseSpecifications,
+  type Product,
+} from '@/data/products';
 import ProductDetailClient from './ProductDetailClient';
 
 const SITE_URL = 'https://ommarketing.co.in';
 
-// Cache product detail pages for 1 hour at the edge.
-// New products + spec edits surface to crawlers within the hour without
-// hammering Render on every visitor.
-export const revalidate = 3600;
+// Fully static — every product page is pre-rendered at build time.
+// Refresh by running `node scripts/sync-products.mjs` then redeploying.
+export const dynamic = 'force-static';
+export const dynamicParams = false;
 
-interface Product {
-  id: number;
-  name: string;
-  category: string;
-  description: string;
-  price: number;
-  stock_quantity: number;
-  image_url: string;
-  specifications?: string;
-}
-
-async function fetchProduct(id: string): Promise<Product | null> {
-  const numeric = parseInt(id, 10);
-  if (!Number.isFinite(numeric)) return null;
-  try {
-    return await productApi.getById(numeric);
-  } catch {
-    return null;
-  }
+export function generateStaticParams() {
+  return getAllProducts().map((p) => ({ id: String(p.id) }));
 }
 
 export async function generateMetadata({
@@ -36,7 +25,7 @@ export async function generateMetadata({
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
   const { id } = await params;
-  const product = await fetchProduct(id);
+  const product = getProductById(parseInt(id, 10));
 
   if (!product) {
     return {
@@ -46,7 +35,8 @@ export async function generateMetadata({
   }
 
   const priceFmt = `₹${product.price.toLocaleString('en-IN')}`;
-  const title = `${product.name} — ${priceFmt} | OM Marketing Ahmedabad`;
+  // Layout template appends "| OM Marketing", so keep the per-page title compact.
+  const title = `${product.name} — ${priceFmt} · Ahmedabad`;
   const desc = (
     product.description ||
     `${product.name} from OM Marketing, Naroda Ahmedabad. Stamping certificate included, free installation.`
@@ -74,30 +64,22 @@ export default async function ProductDetailPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const product = await fetchProduct(id);
+  const product = getProductById(parseInt(id, 10));
+
+  if (!product) {
+    notFound();
+  }
 
   return (
     <>
-      {product && <ProductSchema product={product} id={id} />}
-      <ProductDetailClient />
+      <ProductSchema product={product} id={id} />
+      <ProductDetailClient product={product} />
     </>
   );
 }
 
 function ProductSchema({ product, id }: { product: Product; id: string }) {
-  let specifications: Record<string, string> = {};
-  try {
-    if (product.specifications) {
-      const parsed = JSON.parse(product.specifications);
-      if (parsed && typeof parsed === 'object') {
-        specifications = Object.fromEntries(
-          Object.entries(parsed).map(([k, v]) => [k, String(v)])
-        );
-      }
-    }
-  } catch {
-    // fall through with empty specifications
-  }
+  const specifications = parseSpecifications(product.specifications);
 
   const brand =
     specifications.brand || specifications.Brand || 'OM Marketing';

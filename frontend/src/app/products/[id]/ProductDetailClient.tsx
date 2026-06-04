@@ -1,7 +1,6 @@
 'use client';
 
-import { useState, useEffect, Suspense } from 'react';
-import { useParams } from 'next/navigation';
+import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
@@ -16,94 +15,15 @@ import {
   Truck,
   Wrench,
 } from 'lucide-react';
-import { productApi } from '@/services/api';
 import { useCartStore } from '@/store/cartStore';
-
-interface Product {
-  id: number;
-  name: string;
-  category: string;
-  description: string;
-  price: number;
-  stock_quantity: number;
-  image_url: string;
-  specifications?: string;
-}
+import { type Product, parseSpecifications } from '@/data/products';
 
 const E: [number, number, number, number] = [0.16, 1, 0.3, 1];
 const WHATSAPP_NUMBER = '919825247312';
 
-function parseSpecifications(raw?: string): Record<string, string> {
-  if (!raw) return {};
-  try {
-    const parsed = JSON.parse(raw);
-    if (parsed && typeof parsed === 'object') {
-      return Object.fromEntries(
-        Object.entries(parsed).map(([k, v]) => [k, String(v)])
-      );
-    }
-    return {};
-  } catch {
-    const specs = raw.split(',').map((s) => s.trim()).filter(Boolean);
-    return specs.length ? { Details: specs.join(', ') } : {};
-  }
-}
-
-function ProductDetailContent() {
-  const params = useParams();
-  const productId = parseInt(params.id as string);
-
-  const [product, setProduct] = useState<Product | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+export default function ProductDetailClient({ product }: { product: Product }) {
   const [added, setAdded] = useState(false);
-
   const addItem = useCartStore((s) => s.addItem);
-
-  useEffect(() => {
-    let alive = true;
-    (async () => {
-      try {
-        setLoading(true);
-        const data = await productApi.getById(productId);
-        if (alive) setProduct(data);
-      } catch (err) {
-        console.error(err);
-        if (alive) setError('This piece could not be located.');
-      } finally {
-        if (alive) setLoading(false);
-      }
-    })();
-    return () => {
-      alive = false;
-    };
-  }, [productId]);
-
-  if (loading) {
-    return (
-      <div className="min-h-[60vh] flex items-center justify-center">
-        <div className="w-8 h-8 border border-brand-gold/30 border-t-brand-gold rounded-full animate-spin" />
-      </div>
-    );
-  }
-
-  if (error || !product) {
-    return (
-      <div className="min-h-[60vh] flex items-center justify-center px-6">
-        <div className="text-center max-w-md">
-          <p className="eyebrow text-brand-muted mb-5">Not Found</p>
-          <h2 className="font-display text-3xl sm:text-4xl text-brand-ivory mb-4">
-            This piece could not be located.
-          </h2>
-          <p className="text-sm text-brand-muted mb-8">{error}</p>
-          <Link href="/products" className="btn-outline">
-            <ArrowLeft strokeWidth={1.25} size={16} />
-            Back to the Collection
-          </Link>
-        </div>
-      </div>
-    );
-  }
 
   const specifications = parseSpecifications(product.specifications);
   const inStock = product.stock_quantity > 0;
@@ -321,19 +241,5 @@ function ProductDetailContent() {
         </div>
       </div>
     </div>
-  );
-}
-
-export default function ProductDetailPage() {
-  return (
-    <Suspense
-      fallback={
-        <div className="min-h-[60vh] flex items-center justify-center">
-          <div className="w-8 h-8 border border-brand-gold/30 border-t-brand-gold rounded-full animate-spin" />
-        </div>
-      }
-    >
-      <ProductDetailContent />
-    </Suspense>
   );
 }

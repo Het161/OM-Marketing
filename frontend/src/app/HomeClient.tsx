@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { ShieldCheck, Wrench, BadgeCheck, ArrowRight } from 'lucide-react';
 import Hero3D from '@/components/Hero3D';
 import ProductCard from '@/components/ProductCard';
-import { useProducts } from '@/hooks/useProducts';
+import { getFeaturedProducts } from '@/data/products';
 
 const E: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
@@ -33,9 +33,8 @@ const trustItems = [
   },
 ];
 
-export default function HomePage() {
-  const { products, isLoading } = useProducts({ limit: 6 });
-  const featured = products.slice(0, 3);
+export default function HomeClient() {
+  const featured = getFeaturedProducts(3);
 
   return (
     <>
@@ -98,40 +97,21 @@ export default function HomePage() {
             </Link>
           </motion.div>
 
-          {/* Skeleton */}
-          {isLoading ? (
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-              {[0, 1, 2].map((i) => (
-                <div
-                  key={i}
-                  className="surface aspect-[3/4] animate-pulse"
-                  style={{ animationDelay: `${i * 100}ms` }}
-                />
-              ))}
-            </div>
-          ) : featured.length === 0 ? (
-            <div className="surface p-16 text-center">
-              <p className="text-brand-muted text-sm tracking-[0.15em] uppercase">
-                Loading the archive…
-              </p>
-            </div>
-          ) : (
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-              {featured.map((product, idx) => (
-                <ProductCard
-                  key={product.id}
-                  id={product.id}
-                  name={product.name}
-                  category={product.category}
-                  price={product.price}
-                  image_url={product.image_url}
-                  description={product.description}
-                  stock_quantity={product.stock_quantity}
-                  priority={idx < 2}
-                />
-              ))}
-            </div>
-          )}
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+            {featured.map((product, idx) => (
+              <ProductCard
+                key={product.id}
+                id={product.id}
+                name={product.name}
+                category={product.category}
+                price={product.price}
+                image_url={product.image_url}
+                description={product.description}
+                stock_quantity={product.stock_quantity}
+                priority={idx < 2}
+              />
+            ))}
+          </div>
         </div>
       </section>
 

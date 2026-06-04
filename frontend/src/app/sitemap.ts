@@ -1,19 +1,12 @@
 import type { MetadataRoute } from 'next';
-import { productApi } from '@/services/api';
+import { getAllProducts } from '@/data/products';
 
 const SITE_URL = 'https://ommarketing.co.in';
 
-// Revalidate sitemap every hour so newly-added products surface promptly
-// without thrashing the backend on every request.
-export const revalidate = 3600;
+// Static sitemap — emitted at build time from the committed products snapshot.
+// Refresh by running `node scripts/sync-products.mjs` then redeploying.
 
-interface ProductLike {
-  id: number;
-  updated_at?: string;
-  created_at?: string;
-}
-
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
 
   const staticRoutes: MetadataRoute.Sitemap = [
@@ -49,7 +42,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ];
 
-  // Category landing pages (filtered listings)
   const categoryRoutes: MetadataRoute.Sitemap = [
     'weighing_scale',
     'note_counter',
@@ -61,24 +53,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }));
 
-  // Dynamic product detail pages — fail soft if the API is unreachable
-  // (sitemap still ships with static + category routes).
-  let productRoutes: MetadataRoute.Sitemap = [];
-  try {
-    const products = (await productApi.getAll()) as ProductLike[];
-    productRoutes = products.map((p) => ({
-      url: `${SITE_URL}/products/${p.id}`,
-      lastModified: p.updated_at
-        ? new Date(p.updated_at)
-        : p.created_at
-        ? new Date(p.created_at)
-        : now,
-      changeFrequency: 'weekly',
-      priority: 0.6,
-    }));
-  } catch (err) {
-    console.error('[sitemap] product fetch failed, omitting product URLs', err);
-  }
+  const productRoutes: MetadataRoute.Sitemap = getAllProducts().map((p) => ({
+    url: `${SITE_URL}/products/${p.id}`,
+    lastModified: p.updated_at
+      ? new Date(p.updated_at)
+      : p.created_at
+      ? new Date(p.created_at)
+      : now,
+    changeFrequency: 'monthly',
+    priority: 0.6,
+  }));
 
   return [...staticRoutes, ...categoryRoutes, ...productRoutes];
 }

@@ -1,52 +1,23 @@
 // frontend/src/components/QuickViewModal.tsx
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import { X, MessageCircle, Phone, ArrowUpRight } from 'lucide-react';
-import { productApi } from '@/services/api';
+import { getProductById, parseSpecifications } from '@/data/products';
 
 interface QuickViewModalProps {
   productId: number;
   onClose: () => void;
 }
 
-interface Product {
-  id: number;
-  name: string;
-  category: string;
-  price: number;
-  image_url: string;
-  description?: string;
-  stock_quantity: number;
-  specifications?: string;
-}
-
 const WHATSAPP_NUMBER = '919825247312';
 
 export default function QuickViewModal({ productId, onClose }: QuickViewModalProps) {
-  const [product, setProduct] = useState<Product | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    let alive = true;
-    (async () => {
-      try {
-        setLoading(true);
-        const data = await productApi.getById(productId);
-        if (alive) setProduct(data);
-      } catch (err) {
-        console.error('Error fetching product:', err);
-      } finally {
-        if (alive) setLoading(false);
-      }
-    })();
-    return () => {
-      alive = false;
-    };
-  }, [productId]);
+  const product = useMemo(() => getProductById(productId) ?? null, [productId]);
+  const loading = false;
 
   // Lock body scroll while modal is open
   useEffect(() => {
@@ -57,14 +28,9 @@ export default function QuickViewModal({ productId, onClose }: QuickViewModalPro
     };
   }, []);
 
-  let specifications: Record<string, string> = {};
-  if (product?.specifications) {
-    try {
-      specifications = JSON.parse(product.specifications);
-    } catch {
-      specifications = {};
-    }
-  }
+  const specifications = product?.specifications
+    ? parseSpecifications(product.specifications)
+    : {};
 
   const whatsappHref = product
     ? `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
