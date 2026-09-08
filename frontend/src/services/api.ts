@@ -1,88 +1,78 @@
-
 // frontend/src/services/api.ts
 
 /**
  * API Service for communicating with the backend
- * Enhanced with retry logic for Render cold starts
+ * This is like making HTTP requests from your FastAPI frontend!
+ * All backend communication goes through this file.
  */
 
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 
-// Base URL for your API
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://om-marketing.onrender.com';
+import catalogue from '@/data/products.json';
 
-// ✅ Retry configuration
-const MAX_RETRIES = 3;
-const RETRY_DELAY_MS = 1000; // Initial delay, increases exponentially
+// Base URL for your API (change this for production!)
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+
+/**
+ * Static snapshot of the catalogue, bundled at build time.
+ *
+ * The live site must never show an empty shop. If the backend is asleep,
+ * unreachable or not deployed yet, product browsing falls back to this so
+ * customers still see the range and can enquire by WhatsApp or phone.
+ * Regenerate it whenever products change (see README).
+ */
+const FALLBACK_PRODUCTS = catalogue as Array<{
+  id: number;
+  name: string;
+  category: string;
+  description: string | null;
+  price: number;
+  stock_quantity: number;
+  image_url: string | null;
+  specifications: string | null;
+}>;
+
+function logFallback(context: string, error: unknown) {
+  console.warn(
+    `[api] ${context} failed — serving the bundled catalogue snapshot instead.`,
+    error,
+  );
+}
 
 // Create axios instance with default config
 const api = axios.create({
   baseURL: API_BASE_URL,
-  timeout: 30000, // ✅ Increased to 30 seconds for cold starts
+  timeout: 10000, // 10 second timeout
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
-// ✅ Retry logic helper function
-async function axiosRetry<T>(
-  requestFn: () => Promise<T>,
-  retries: number = MAX_RETRIES
-): Promise<T> {
-  let lastError: Error | null = null;
-  
-  for (let i = 0; i < retries; i++) {
-    try {
-      return await requestFn();
-    } catch (error) {
-      lastError = error as Error;
-      
-      // Only retry on network errors or 5xx errors
-      const axiosError = error as AxiosError;
-      const shouldRetry = 
-        !axiosError.response || 
-        (axiosError.response.status >= 500 && axiosError.response.status < 600);
-      
-      if (!shouldRetry || i === retries - 1) {
-        throw error;
-      }
-      
-      // Exponential backoff
-      const waitTime = Math.min(RETRY_DELAY_MS * Math.pow(2, i), 10000);
-      console.log(`Retry ${i + 1}/${retries} after ${waitTime}ms...`);
-      await new Promise(resolve => setTimeout(resolve, waitTime));
-    }
-  }
-  
-  throw lastError || new Error('Failed to fetch after retries');
-}
-
 // Add request interceptor (runs before every request)
 api.interceptors.request.use(
   (config) => {
-    // Add auth token if available
-    const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+    // Attach the auth token when one exists. Guarded because this module can
+    // be imported during server rendering, where `localStorage` does not exist.
+    if (typeof window !== 'undefined') {
+      const token = window.localStorage.getItem('auth_token');
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
     }
     return config;
   },
-  (error) => {
-    return Promise.reject(error);
-  }
+  (error) => Promise.reject(error)
 );
 
 // Add response interceptor (runs after every response)
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    // Handle errors globally
-    if (error.response?.status === 401) {
-      // Unauthorized - clear token and redirect to login
-      if (typeof window !== 'undefined') {
-        localStorage.removeItem('auth_token');
-        window.location.href = '/login';
-      }
+    // An expired token should just be dropped. We deliberately do NOT redirect:
+    // the public pages (products, contact, quote) work fine signed-out, and a
+    // hard redirect would throw a customer out of a half-filled form.
+    if (error.response?.status === 401 && typeof window !== 'undefined') {
+      window.localStorage.removeItem('auth_token');
     }
     return Promise.reject(error);
   }
@@ -92,7 +82,7 @@ api.interceptors.response.use(
 
 export const productApi = {
   /**
-   * Get all products with optional filtering (with retry logic)
+   * Get all products with optional filtering
    * Example: productApi.getAll({ category: 'weighing_scale', limit: 20 })
    */
   getAll: async (params?: {
@@ -100,34 +90,56 @@ export const productApi = {
     limit?: number;
     category?: string;
   }) => {
-    return axiosRetry(async () => {
+    try {
       const response = await api.get('/api/products/', { params });
-      return response.data;
-    });
+      if (Array.isArray(response.data) && response.data.length > 0) {
+        return response.data;
+      }
+      throw new Error('empty catalogue response');
+    } catch (error) {
+      logFallback('products.getAll', error);
+      let items = FALLBACK_PRODUCTS;
+      if (params?.category) {
+        items = items.filter((p) => p.category === params.category);
+      }
+      const skip = params?.skip ?? 0;
+      return items.slice(skip, skip + (params?.limit ?? items.length));
+    }
   },
-  
+
   /**
-   * Get a single product by ID (with retry logic)
+   * Get a single product by ID
    * Example: productApi.getById(5)
    */
   getById: async (id: number) => {
-    return axiosRetry(async () => {
+    try {
       const response = await api.get(`/api/products/${id}`);
       return response.data;
-    });
+    } catch (error) {
+      const match = FALLBACK_PRODUCTS.find((p) => p.id === id);
+      if (!match) throw error; // genuinely unknown product — let the page 404
+      logFallback(`products.getById(${id})`, error);
+      return match;
+    }
   },
-  
+
   /**
    * Search products by name or description
    * Example: productApi.search('digital scale')
    */
   search: async (query: string) => {
-    return axiosRetry(async () => {
+    try {
       const response = await api.get('/api/products/search/', {
         params: { q: query },
       });
       return response.data;
-    });
+    } catch (error) {
+      logFallback('products.search', error);
+      const needle = query.trim().toLowerCase();
+      return FALLBACK_PRODUCTS.filter((p) =>
+        `${p.name} ${p.description ?? ''}`.toLowerCase().includes(needle),
+      );
+    }
   },
   
   /**
@@ -173,20 +185,16 @@ export const orderApi = {
    * Get user's orders
    */
   getMyOrders: async () => {
-    return axiosRetry(async () => {
-      const response = await api.get('/api/orders/my-orders');
-      return response.data;
-    });
+    const response = await api.get('/api/orders/my-orders');
+    return response.data;
   },
   
   /**
    * Get a specific order by ID
    */
   getById: async (id: number) => {
-    return axiosRetry(async () => {
-      const response = await api.get(`/api/orders/${id}`);
-      return response.data;
-    });
+    const response = await api.get(`/api/orders/${id}`);
+    return response.data;
   },
 };
 
@@ -216,7 +224,7 @@ export const authApi = {
   }) => {
     const response = await api.post('/api/auth/login', credentials);
     // Store token in localStorage
-    if (response.data.access_token && typeof window !== 'undefined') {
+    if (response.data.access_token) {
       localStorage.setItem('auth_token', response.data.access_token);
     }
     return response.data;
@@ -226,19 +234,15 @@ export const authApi = {
    * User logout
    */
   logout: () => {
-    if (typeof window !== 'undefined') {
-      localStorage.removeItem('auth_token');
-    }
+    localStorage.removeItem('auth_token');
   },
   
   /**
    * Get current user info
    */
   getCurrentUser: async () => {
-    return axiosRetry(async () => {
-      const response = await api.get('/api/auth/me');
-      return response.data;
-    });
+    const response = await api.get('/api/auth/me');
+    return response.data;
   },
 };
 

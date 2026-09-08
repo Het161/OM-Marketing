@@ -1,104 +1,128 @@
-// frontend/app/layout.tsx
-import type { Metadata } from 'next';
-import { Inter, Cormorant_Garamond } from 'next/font/google';
+// frontend/src/app/layout.tsx
+
+/**
+ * Root layout — wraps every page.
+ *
+ * Fonts are self-hosted via @fontsource so builds never depend on a network
+ * round-trip to Google Fonts.
+ */
+
+import type { Metadata, Viewport } from 'next';
+
+import '@fontsource-variable/inter';
+import '@fontsource-variable/plus-jakarta-sans';
 import './globals.css';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
-import SiteSchema from '@/components/SiteSchema';
 
-// Body / UI — Inter
-const inter = Inter({
-  subsets: ['latin'],
-  display: 'swap',
-  preload: true,
-  variable: '--font-inter',
-  weight: ['300', '400', '500', '600', '700'],
-});
+import Footer from '@/components/layout/Footer';
+import Navbar from '@/components/layout/Navbar';
+import FloatingContact from '@/components/ui/FloatingContact';
+import { site } from '@/lib/site';
 
-// Display / headings — Cormorant Garamond (with italics for accent words)
-const cormorant = Cormorant_Garamond({
-  subsets: ['latin'],
-  display: 'swap',
-  preload: true,
-  variable: '--font-cormorant',
-  weight: ['300', '400', '500', '600', '700'],
-  style: ['normal', 'italic'],
-});
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://ommarketing.vercel.app';
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://ommarketing.co.in'),
+  metadataBase: new URL(SITE_URL),
   title: {
-    default:
-      'Weighing Scales, Note Counters & Mobile Accessories in Ahmedabad | OM Marketing',
-    template: '%s | OM Marketing',
+    default: 'OM Marketing — Weighing Scales & Note Counters in Ahmedabad',
+    template: '%s · OM Marketing',
   },
   description:
-    'Authorised dealer of weighing scales, note counters & mobile accessories in Naroda, Ahmedabad. ISO 9001:2008. Free installation, stamping certificate included, pan-India dispatch.',
+    'ISO 9001:2008 certified supplier of weighing scales, note counters and mobile accessories in Naroda, Ahmedabad. Sales, calibration, repair and AMC across Gujarat since 2008.',
   keywords: [
     'weighing scale Ahmedabad',
-    'weighing scale dealer Naroda',
     'platform scale Gujarat',
-    'note counter Ahmedabad',
+    'crane scale supplier',
+    'note counter machine',
+    'weighing scale calibration',
+    'weighing scale repair Naroda',
     'OM Marketing',
-    'Unique scale dealer',
-    'Deluxe scale',
-    'JB scale',
-    'jewellery scale Ahmedabad',
-    'crane scale India',
   ],
-  applicationName: 'OM Marketing',
-  authors: [{ name: 'OM Marketing' }],
-  creator: 'OM Marketing',
-  publisher: 'OM Marketing',
-  formatDetection: {
-    telephone: true,
-    address: true,
-    email: true,
-  },
-  alternates: {
-    canonical: '/',
-  },
+  authors: [{ name: site.name }],
+  applicationName: site.name,
+  category: 'business',
+  alternates: { canonical: '/' },
   openGraph: {
     type: 'website',
     locale: 'en_IN',
-    url: 'https://ommarketing.co.in',
-    siteName: 'OM Marketing',
-    title:
-      'Weighing Scales, Note Counters & Mobile Accessories in Ahmedabad | OM Marketing',
+    url: SITE_URL,
+    siteName: site.name,
+    title: 'OM Marketing — Weighing Scales & Note Counters in Ahmedabad',
     description:
-      'Authorised dealer of weighing scales, note counters & mobile accessories in Naroda, Ahmedabad. ISO 9001:2008 certified. Free installation, stamping certificate, pan-India dispatch.',
+      'ISO 9001:2008 certified weighing solutions: scales from 10 kg to 15 ton, note counters, plus calibration, repair and AMC across Gujarat.',
     images: [
       {
-        url: '/om-logo.jpg',
+        url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'OM Marketing — Weighing Solutions Ahmedabad',
+        alt: 'OM Marketing — weighing scales, note counters and service in Ahmedabad',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title:
-      'Weighing Scales, Note Counters & Mobile Accessories in Ahmedabad | OM Marketing',
+    title: 'OM Marketing — Weighing Scales & Note Counters in Ahmedabad',
     description:
-      'Authorised dealer of weighing scales in Naroda, Ahmedabad. ISO 9001:2008, free installation, pan-India dispatch.',
-    images: ['/om-logo.jpg'],
+      'ISO 9001:2008 certified weighing solutions, calibration, repair and AMC across Gujarat.',
+    images: ['/og-image.png'],
   },
+  manifest: '/manifest.webmanifest',
   robots: {
     index: true,
     follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
-      'max-video-preview': -1,
+    googleBot: { index: true, follow: true, 'max-image-preview': 'large' },
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#008080' },
+    { media: '(prefers-color-scheme: dark)', color: '#0f1619' },
+  ],
+  width: 'device-width',
+  initialScale: 1,
+};
+
+/** Structured data so Google can show the shop in local results. */
+const localBusinessSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'HardwareStore',
+  '@id': `${SITE_URL}/#business`,
+  name: site.name,
+  description:
+    'Supplier of weighing scales, note counters and mobile accessories, with calibration, repair and AMC services.',
+  url: SITE_URL,
+  logo: `${SITE_URL}/images/om-mark.png`,
+  image: `${SITE_URL}/og-image.png`,
+  telephone: site.phoneDial,
+  email: site.email,
+  foundingDate: String(site.established),
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: 'Naroda',
+    addressLocality: 'Ahmedabad',
+    addressRegion: 'Gujarat',
+    addressCountry: 'IN',
+  },
+  areaServed: [
+    { '@type': 'AdministrativeArea', name: 'Gujarat' },
+    { '@type': 'City', name: 'Ahmedabad' },
+  ],
+  openingHoursSpecification: [
+    {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: [
+        'Monday',
+        'Tuesday',
+        'Wednesday',
+        'Thursday',
+        'Friday',
+        'Saturday',
+      ],
+      opens: '09:00',
+      closes: '19:00',
     },
-  },
-  verification: {
-    // Add your Google Search Console verification token here when ready:
-    // google: 'xxx',
-  },
+  ],
+  sameAs: [site.instagramUrl],
 };
 
 export default function RootLayout({
@@ -107,12 +131,34 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en-IN" className={`${inter.variable} ${cormorant.variable}`}>
-      <body className="min-h-screen flex flex-col bg-brand-canvas text-brand-ivory antialiased">
-        <SiteSchema />
+    <html lang="en-IN">
+      <head>
+        {/*
+          Scroll-reveal sections are server-rendered with inline opacity:0 and
+          only animate in once JavaScript observes them. Without JS they would
+          stay invisible, so force everything visible in that case.
+        */}
+        <noscript>
+          <style>{`[style*="opacity:0"],[style*="opacity: 0"]{opacity:1!important;transform:none!important}`}</style>
+        </noscript>
+      </head>
+      <body>
+        <script
+          type="application/ld+json"
+          // Static, developer-authored JSON — no user input reaches this.
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
+        />
+
+        <a href="#main" className="skip-link">
+          Skip to main content
+        </a>
+
         <Navbar />
-        <main className="flex-1">{children}</main>
+        <main id="main" className="min-h-screen">
+          {children}
+        </main>
         <Footer />
+        <FloatingContact />
       </body>
     </html>
   );

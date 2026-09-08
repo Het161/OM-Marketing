@@ -99,6 +99,48 @@ class Order(Base):
     order_items = relationship("OrderItem", back_populates="order")
 
 
+class Enquiry(Base):
+    """
+    Every lead the website captures — contact messages, quote requests and
+    service/AMC bookings all land in this one table so nothing gets lost if
+    an email fails to send.
+    """
+
+    __tablename__ = "enquiries"
+
+    id = Column(Integer, primary_key=True, index=True)
+
+    # contact | quote | service
+    enquiry_type = Column(String(20), nullable=False, default="contact", index=True)
+
+    # Who is asking
+    name = Column(String(120), nullable=False)
+    email = Column(String(255), nullable=False, index=True)
+    phone = Column(String(30), nullable=True)
+    company = Column(String(180), nullable=True)
+
+    # What they want
+    subject = Column(String(200), nullable=True)
+    message = Column(Text, nullable=True)
+
+    # Quote requests: a readable list of the items in their quote cart
+    items_summary = Column(Text, nullable=True)
+    # Raw JSON of the cart / form payload, kept for reference
+    payload = Column(Text, nullable=True)
+
+    # Service bookings
+    service_type = Column(String(80), nullable=True)
+    preferred_date = Column(String(40), nullable=True)
+
+    # Which page the enquiry came from
+    source = Column(String(200), nullable=True)
+
+    # new | contacted | quoted | closed
+    status = Column(String(20), nullable=False, default="new", index=True)
+
+    created_at = Column(DateTime, default=datetime.utcnow, index=True)
+
+
 class OrderItem(Base):
     __tablename__ = "order_items"
     

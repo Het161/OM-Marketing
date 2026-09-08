@@ -1,17 +1,12 @@
-import type { Metadata } from 'next';
-import CartClient from './CartClient';
+// frontend/src/app/cart/page.tsx
 
-export const metadata: Metadata = {
-  title: 'Your Bag',
-  description: 'Review the weighing scales and accessories in your bag and confirm your order.',
-  alternates: { canonical: '/cart' },
-  robots: {
-    // Cart is per-user state, never indexed.
-    index: false,
-    follow: false,
-  },
-};
+/**
+ * The cart became the quote list when we moved to a quotation flow.
+ * This redirect keeps any old links, bookmarks and search results working.
+ */
+
+import { redirect } from 'next/navigation';
 
 export default function CartPage() {
-  return <CartClient />;
+  redirect('/quote');
 }

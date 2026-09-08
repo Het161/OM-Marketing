@@ -1,20 +1,71 @@
+# render.yaml — FastAPI backend for OM Marketing
+#
+# Serves the product catalogue and receives contact / quote / service
+# enquiries, saving each as a lead and emailing both the customer and the owner.
+#
+# Values marked `sync: false` are secrets — set them in the Render dashboard,
+# never in this file. See backend/.env.example for what each one does.
+
 services:
   - type: web
     name: om-marketing-backend
-    env: python
-    region: oregon
-    buildCommand: pip install -r backend/requirements.txt
+    runtime: python
+    region: singapore # closest region to Gujarat
+    plan: free
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
     startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
     envVars:
+      # pydantic 2.9 has no wheels for 3.14 — pin the runtime
+      - key: PYTHON_VERSION
+        value: "3.13.4"
+
+      - key: APP_NAME
+        value: OM Marketing API
+      - key: DEBUG
+        value: "False"
+
+      # Comma separated, no trailing slash. Must include the live site or the
+      # browser will block every request from it.
+      - key: CORS_ORIGINS
+        value: https://www.ommarketing.co.in,https://ommarketing.co.in,https://om-marketing.vercel.app,http://localhost:3000
+
+      # Enquiries are stored here. NOTE: Render's free tier has an ephemeral
+      # filesystem, so a redeploy wipes SQLite. Notification emails still send.
+      # Attach a disk or move to Postgres to retain leads long term.
       - key: DATABASE_URL
-        sync: false
+        value: sqlite:///./om_marketing.db
+
+      - key: SECRET_KEY
+        generateValue: true
+
+      # --- Email (Gmail SMTP) ------------------------------------------------
       - key: SMTP_HOST
         value: smtp.gmail.com
       - key: SMTP_PORT
-        value: 587
+        value: "587"
       - key: SMTP_USER
-        sync: false
+        sync: false # your Gmail address
       - key: SMTP_PASSWORD
-        sync: false
-      - key: RECEIVER_EMAIL
-        sync: false
+        sync: false # Google App Password, NOT the account password
+      - key: MAIL_FROM
+        sync: false # usually the same as SMTP_USER
+      - key: MAIL_FROM_NAME
+        value: OM Marketing
+      - key: OWNER_EMAIL
+        sync: false # where new-enquiry alerts are delivered
+
+      # --- Business details shown in emails ---------------------------------
+      - key: BUSINESS_NAME
+        value: OM Marketing
+      - key: BUSINESS_PHONE
+        value: "+919825247312"
+      - key: BUSINESS_PHONE_DISPLAY
+        value: 98252 47312
+      - key: BUSINESS_EMAIL
+        value: ommarketing.weighingscale1@gmail.com
+      - key: BUSINESS_ADDRESS
+        value: Naroda, Ahmedabad, Gujarat, India
+      - key: SITE_URL
+        value: https://www.ommarketing.co.in
