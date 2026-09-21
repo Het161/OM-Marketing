@@ -8,6 +8,7 @@ development and from real environment variables in production.
 """
 
 import os
+from pathlib import Path
 from functools import lru_cache
 
 from dotenv import load_dotenv
@@ -22,6 +23,18 @@ def _bool(name: str, default: bool = False) -> bool:
 def _list(name: str, default: str = "") -> list[str]:
     raw = os.getenv(name, default)
     return [item.strip() for item in raw.split(",") if item.strip()]
+
+
+def _path(name: str, default: Path) -> str:
+    """
+    Read a filesystem path from the environment.
+
+    A variable that is present but empty (`SIGNATURE_PATH=` in a .env file)
+    must fall back to the default — otherwise it resolves to `Path("")`, which
+    is the current directory, and `.exists()` happily returns True for it.
+    """
+    value = (os.getenv(name) or "").strip()
+    return value or str(default)
 
 
 class Settings:
@@ -77,6 +90,25 @@ class Settings:
     # OM Marketing is MSME (Udyam) registered but NOT registered under GST, so
     # invoices carry no GSTIN and must not collect tax.
     UDYAM_NUMBER: str = os.getenv("UDYAM_NUMBER", "")
+
+    # A bill is a legal document, so it carries the address registered on the
+    # Udyam certificate — which is not the same as the Naroda shop address the
+    # website shows customers. Falls back to the shop address if unset.
+    REGISTERED_ADDRESS: str = os.getenv("REGISTERED_ADDRESS", "") or os.getenv(
+        "BUSINESS_ADDRESS", "Naroda, Ahmedabad, Gujarat, India"
+    )
+    # Enterprise name exactly as registered
+    REGISTERED_NAME: str = os.getenv("REGISTERED_NAME", "OM Marketing")
+
+    # Scanned signature printed on invoices. Kept out of the repo because it is
+    # public; supplied in production as a Render Secret File.
+    SIGNATURE_PATH: str = _path(
+        "SIGNATURE_PATH", Path(__file__).parent / "assets" / "signature.png"
+    )
+    # Logo printed on invoices (safe to commit — it is public branding)
+    INVOICE_LOGO_PATH: str = _path(
+        "INVOICE_LOGO_PATH", Path(__file__).parent / "assets" / "invoice-logo.png"
+    )
     BANK_NAME: str = os.getenv("BANK_NAME", "")
     BANK_ACCOUNT: str = os.getenv("BANK_ACCOUNT", "")
     BANK_IFSC: str = os.getenv("BANK_IFSC", "")

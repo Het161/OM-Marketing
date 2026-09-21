@@ -38,12 +38,16 @@ export default function Footer() {
             </div>
             <p className="mb-4 text-sm leading-relaxed text-ink-300">
               {site.certification} supplier of weighing scales, note counters and
-              mobile accessories — serving businesses across Gujarat since{' '}
-              {site.established}.
+              mobile accessories — serving businesses across Gujarat.
             </p>
-            <span className="inline-flex items-center gap-2 rounded-full border border-accent-500/30 bg-accent-500/10 px-3 py-1 text-xs font-bold tracking-wide text-accent-300">
-              ⚖️ {site.certification}
-            </span>
+            <div className="flex flex-wrap gap-2">
+              <span className="inline-flex items-center gap-2 rounded-full border border-accent-500/30 bg-accent-500/10 px-3 py-1 text-xs font-bold tracking-wide text-accent-300">
+                ⚖️ {site.certification}
+              </span>
+              <span className="inline-flex items-center gap-2 rounded-full border border-primary-400/30 bg-primary-400/10 px-3 py-1 text-xs font-bold tracking-wide text-primary-200">
+                {site.msme}
+              </span>
+            </div>
 
             <div className="mt-5">
               <a

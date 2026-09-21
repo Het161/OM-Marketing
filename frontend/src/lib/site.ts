@@ -9,7 +9,11 @@ export const site = {
   name: 'OM Marketing',
   tagline: 'Weighing Solutions You Can Trust',
   owner: 'Het Patel',
-  established: 2008,
+
+  /** Legal entity as registered under Udyam (MSME). Printed on invoices. */
+  registeredName: 'OM Marketing',
+  registeredAddress: 'A-104, Het Patel Building, Nikol, Ahmedabad, Gujarat 382350',
+  udyam: 'UDYAM-GJ-01-0593027',
 
   phoneDisplay: '98252 47312',
   phoneDial: '+919825247312',
@@ -25,6 +29,7 @@ export const site = {
   mapsUrl: 'https://www.google.com/maps/search/?api=1&query=OM+Marketing+Weighing+Scales+Naroda+Ahmedabad',
 
   certification: 'ISO 9001:2008 Certified',
+  msme: 'MSME / Udyam Registered',
 
   hours: [
     { days: 'Monday – Saturday', time: '9:00 AM – 7:00 PM' },

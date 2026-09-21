@@ -56,9 +56,19 @@ services:
       - key: ADMIN_NAME
         value: Het Patel
 
-      # Printed on invoices. Leave UDYAM_NUMBER blank to omit that row.
+      # --- Printed on invoices ----------------------------------------------
       - key: UDYAM_NUMBER
-        sync: false
+        value: UDYAM-GJ-01-0593027
+      - key: REGISTERED_NAME
+        value: OM Marketing
+      # The address on the Udyam certificate. An invoice is a legal document,
+      # so it carries this rather than the Naroda shop address on the website.
+      - key: REGISTERED_ADDRESS
+        value: A-104, Het Patel Building, Nikol, Ahmedabad, Gujarat 382350
+      # The handwritten signature is NOT in the repo (it is public). Upload it
+      # in Render as a Secret File named signature.png, then this path resolves.
+      - key: SIGNATURE_PATH
+        value: /etc/secrets/signature.png
 
       # --- Email (Gmail SMTP) ------------------------------------------------
       - key: SMTP_HOST

@@ -168,7 +168,7 @@ export default function Navbar() {
                   OM MARKETING
                 </span>
                 <span className="block text-[11px] font-medium tracking-wide text-subtle">
-                  Weighing Solutions Since {site.established}
+                  Weighing Solutions & Service
                 </span>
               </span>
             </Link>

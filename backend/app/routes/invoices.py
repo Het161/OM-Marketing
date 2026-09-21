@@ -10,6 +10,7 @@ rather than a login, so a customer can open the bill we send them.
 
 import logging
 from datetime import datetime
+from pathlib import Path
 from typing import Optional
 
 from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Query, Response
@@ -359,3 +360,33 @@ async def public_invoice_pdf(
     db: Session = Depends(get_db),
 ):
     return _pdf_response(_load_public(db, token), download)
+
+
+@public_router.get("/bill/{token}/signature")
+async def public_invoice_signature(token: str, db: Session = Depends(get_db)):
+    """
+    The signature image for the on-screen bill.
+
+    Deliberately gated behind a bill token rather than served from the public
+    site: the owner's handwritten signature should not sit on a guessable URL
+    for anyone to scrape. Whoever holds the token already receives the same
+    signature on the PDF, so this grants nothing extra.
+
+    Unlike the other public routes this accepts any real token, including a
+    draft's, so the admin's own preview renders correctly before sending.
+    """
+    exists = (
+        db.query(Invoice.id).filter(Invoice.public_token == token).first() is not None
+    )
+    if not exists:
+        raise HTTPException(status_code=404, detail="Not found.")
+
+    path = Path(settings.SIGNATURE_PATH)
+    if not path.is_file():
+        raise HTTPException(status_code=404, detail="No signature is configured.")
+
+    return Response(
+        content=path.read_bytes(),
+        media_type="image/png",
+        headers={"Cache-Control": "private, max-age=3600"},
+    )

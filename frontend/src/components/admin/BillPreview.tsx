@@ -1,5 +1,7 @@
 // frontend/src/components/admin/BillPreview.tsx
 
+import Image from 'next/image';
+
 import { site } from '@/lib/site';
 import type { Invoice } from '@/services/admin';
 
@@ -23,16 +25,32 @@ export default function BillPreview({ invoice }: { invoice: Invoice }) {
 
   return (
     <article className="bill-sheet mx-auto w-full max-w-[210mm] overflow-hidden rounded-2xl border border-line bg-white text-ink-900 shadow-sm">
+      {/* Logo band — the mark is dark navy artwork, so it needs a white ground */}
+      <div className="bg-white px-6 pb-2 pt-5">
+        <Image
+          src="/images/om-solutions-logo.png"
+          alt="OM Marketing Solutions"
+          width={982}
+          height={503}
+          priority
+          className="h-14 w-auto object-contain"
+        />
+      </div>
+
       {/* Masthead */}
       <header className="flex flex-wrap items-start justify-between gap-4 bg-primary-700 px-7 py-6 text-white">
         <div>
           <p className="font-[family-name:var(--font-display)] text-2xl font-extrabold tracking-tight">
-            OM MARKETING
+            {site.registeredName.toUpperCase()}
           </p>
+          {/* A bill is a legal document, so it carries the registered address
+              rather than the Naroda shop address shown on the website. */}
           <p className="mt-1.5 text-[12px] leading-relaxed text-primary-100">
-            {site.addressFull}
+            {site.registeredAddress}
             <br />
             {site.phoneDisplay} · {site.email}
+            <br />
+            Udyam Reg. No. {site.udyam}
           </p>
         </div>
         <div className="text-right">
@@ -219,14 +237,23 @@ export default function BillPreview({ invoice }: { invoice: Invoice }) {
             <div className="mt-10 w-44 border-t border-ink-300" />
           </div>
           <div className="text-right">
-            For <strong className="text-ink-900">OM MARKETING</strong>
-            <div className="ml-auto mt-10 w-44 border-t border-ink-300" />
+            For <strong className="text-ink-900">{site.registeredName.toUpperCase()}</strong>
+            <Image
+              src={`${process.env.NEXT_PUBLIC_API_URL ?? ''}/api/public/bill/${invoice.public_token}/signature`}
+              alt=""
+              width={560}
+              height={424}
+              unoptimized
+              className="ml-auto mt-1 h-14 w-auto object-contain"
+            />
+            <div className="ml-auto w-44 border-t border-ink-300" />
             <span className="mt-1 block">Authorised Signatory</span>
           </div>
         </div>
 
         <p className="mt-8 border-t border-ink-100 pt-4 text-center text-[11px] text-ink-500">
-          This is a computer-generated invoice and is valid without a signature.
+          Computer-generated invoice. GST is not applicable — {site.registeredName} is
+          not registered under GST.
         </p>
       </div>
     </article>

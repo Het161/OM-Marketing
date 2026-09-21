@@ -4,6 +4,12 @@
 !.env.example
 !frontend/.env.example
 
+# The owner's handwritten signature. This repo is public — the image must not
+# be downloadable from it. In production it is supplied as a Render Secret File
+# mounted at /etc/secrets/signature.png (see SIGNATURE_PATH).
+backend/app/assets/signature.png
+**/signature.png
+
 # --- Python -----------------------------------------------------------------
 venv/
 .venv/

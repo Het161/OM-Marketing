@@ -18,17 +18,16 @@ import { site } from '@/lib/site';
 
 export const metadata: Metadata = {
   title: 'About Us',
-  description: `OM Marketing is an ISO 9001:2008 certified weighing scale supplier in Naroda, Ahmedabad, serving businesses across Gujarat since ${site.established}.`,
+  description: `OM Marketing is an ISO 9001:2008 certified, MSME-registered weighing scale supplier in Naroda, Ahmedabad, serving businesses across Gujarat.`,
   alternates: { canonical: '/about' },
 };
 
-const years = new Date().getFullYear() - site.established;
-
+/* Only figures we can stand behind — no invented customer counts. */
 const stats = [
-  { value: `${years}+`, label: 'Years in business', icon: FiTrendingUp },
-  { value: '1000+', label: 'Businesses served', icon: FiUsers },
+  { value: '10 kg – 15 T', label: 'Capacity range', icon: FiTrendingUp },
   { value: 'ISO', label: '9001:2008 certified', icon: FiAward },
-  { value: '24 hr', label: 'Typical service response', icon: FiHeart },
+  { value: 'MSME', label: 'Udyam registered', icon: FiUsers },
+  { value: 'Gujarat', label: 'Service coverage', icon: FiHeart },
 ];
 
 const values = [
@@ -71,14 +70,14 @@ export default function AboutPage() {
         />
         <div className="relative mx-auto max-w-3xl text-center">
           <span className="mb-3 inline-block text-[13px] font-bold uppercase tracking-[0.14em] text-accent-300">
-            Since {site.established} · Naroda, Ahmedabad
+            {site.msme} · Naroda, Ahmedabad
           </span>
           <h1 className="text-4xl font-extrabold text-white sm:text-5xl">
             The people behind the scales
           </h1>
           <p className="mx-auto mt-4 max-w-xl text-lg leading-relaxed text-primary-100">
-            {site.name} has spent {years} years helping Gujarat&apos;s shops,
-            warehouses and factories weigh accurately — and stay that way.
+            {site.name} helps Gujarat&apos;s shops, warehouses and factories
+            weigh accurately — and keeps them that way.
           </p>
         </div>
       </header>
@@ -114,10 +113,10 @@ export default function AboutPage() {
             />
             <div className="mt-6 space-y-4 text-[16px] leading-relaxed text-muted">
               <p>
-                {site.name} started in {site.established} with a simple idea: sell
-                weighing equipment that actually suits the job, then look after it
-                properly. Two decades on, most of our business still comes from
-                customers who came back, or who were sent by someone who did.
+                {site.name} runs on a simple idea: sell weighing equipment that
+                actually suits the job, then look after it properly. Most of our
+                business comes from customers who came back, or who were sent by
+                someone who did.
               </p>
               <p>
                 From our base in Naroda, Ahmedabad we supply the full range — 10 kg
@@ -127,10 +126,11 @@ export default function AboutPage() {
                 handling cash.
               </p>
               <p>
-                Being {site.certification} means our processes are audited, and the
-                equipment we supply is ready for Legal Metrology verification and
-                stamping. But the part customers mention most is simpler: when
-                something goes wrong, someone picks up the phone and turns up.
+                We are {site.certification} and registered as a micro enterprise
+                under Udyam ({site.udyam}), and the equipment we supply is ready
+                for Legal Metrology verification and stamping. But the part
+                customers mention most is simpler: when something goes wrong,
+                someone picks up the phone and turns up.
               </p>
             </div>
 

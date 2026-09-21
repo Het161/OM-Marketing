@@ -15,11 +15,12 @@ const highlights = [
   'Same-day support in Ahmedabad',
 ];
 
+/* Every figure here must be verifiable. No invented customer counts. */
 const stats = [
-  { value: `${new Date().getFullYear() - site.established}+`, label: 'Years in business' },
-  { value: '1000+', label: 'Businesses served' },
-  { value: '15 T', label: 'Max capacity' },
-  { value: 'ISO', label: '9001:2008' },
+  { value: '10 kg – 15 T', label: 'Capacity range' },
+  { value: 'ISO', label: '9001:2008 certified' },
+  { value: 'MSME', label: 'Udyam registered' },
+  { value: 'Gujarat', label: 'Service coverage' },
 ];
 
 export default function Hero() {
@@ -48,7 +49,7 @@ export default function Hero() {
             transition={{ duration: 0.5 }}
             className="mb-6 inline-flex items-center gap-2 rounded-full border border-accent-500/30 bg-accent-500/10 px-4 py-1.5 text-[13px] font-bold tracking-wide text-accent-300"
           >
-            ⚖️ {site.certification} · Since {site.established}
+            ⚖️ {site.certification} · {site.msme}
           </motion.span>
 
           <motion.h1

@@ -20,8 +20,10 @@ from reportlab.lib.enums import TA_CENTER, TA_RIGHT
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
 from reportlab.lib.units import mm
+from reportlab.lib.utils import ImageReader
 from reportlab.platypus import (
     HRFlowable,
+    Image as RLImage,
     KeepTogether,
     Paragraph,
     SimpleDocTemplate,
@@ -126,13 +128,35 @@ def _esc(value) -> str:
     )
 
 
+def _logo_flowable(max_w_mm: float, max_h_mm: float):
+    """The invoice logo, scaled to fit. Returns None if the file is missing."""
+    path = Path(settings.INVOICE_LOGO_PATH)
+    if not path.is_file():
+        return None
+    try:
+        reader = ImageReader(str(path))
+        iw, ih = reader.getSize()
+        scale = min((max_w_mm * mm) / iw, (max_h_mm * mm) / ih)
+        return RLImage(str(path), width=iw * scale, height=ih * scale, mask="auto")
+    except Exception:
+        logger.exception("Could not load the invoice logo at %s", path)
+        return None
+
+
 def _header(invoice):
     """Teal masthead: business identity on the left, invoice meta on the right."""
+    # The registered address goes on the bill, not the shop address — an
+    # invoice is a legal document and must match the Udyam registration.
+    registration = []
+    if settings.UDYAM_NUMBER:
+        registration.append(f"Udyam Reg. No. {_esc(settings.UDYAM_NUMBER)}")
+
     left = [
-        Paragraph("OM MARKETING", S["brand"]),
+        Paragraph(_esc(settings.REGISTERED_NAME).upper(), S["brand"]),
         Paragraph(
-            f"{_esc(settings.BUSINESS_ADDRESS)}<br/>"
-            f"{_esc(settings.BUSINESS_PHONE_DISPLAY)} &nbsp;·&nbsp; {_esc(settings.BUSINESS_EMAIL)}",
+            f"{_esc(settings.REGISTERED_ADDRESS)}<br/>"
+            f"{_esc(settings.BUSINESS_PHONE_DISPLAY)} &nbsp;·&nbsp; {_esc(settings.BUSINESS_EMAIL)}"
+            + (f"<br/>{registration[0]}" if registration else ""),
             S["brand_sub"],
         ),
     ]
@@ -158,7 +182,27 @@ def _header(invoice):
             ]
         )
     )
-    return table
+
+    # The logo is dark navy artwork on white, so it sits on its own white band
+    # above the teal masthead rather than disappearing into it.
+    logo = _logo_flowable(52, 18)
+    if logo is None:
+        return [table]
+
+    band = Table([[logo]], colWidths=[170 * mm])
+    band.setStyle(
+        TableStyle(
+            [
+                ("BACKGROUND", (0, 0), (-1, -1), colors.white),
+                ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
+                ("ALIGN", (0, 0), (-1, -1), "LEFT"),
+                ("LEFTPADDING", (0, 0), (-1, -1), 10),
+                ("TOPPADDING", (0, 0), (-1, -1), 2),
+                ("BOTTOMPADDING", (0, 0), (-1, -1), 8),
+            ]
+        )
+    )
+    return [band, table]
 
 
 def _parties(invoice):
@@ -193,9 +237,6 @@ def _parties(invoice):
     ]
     if invoice.payment_mode:
         rows.append(("Payment", invoice.payment_mode))
-    if settings.UDYAM_NUMBER:
-        rows.append(("Udyam", settings.UDYAM_NUMBER))
-
     meta = Table(
         [[Paragraph(f"{k}", S["small"]), Paragraph(_esc(v), S["body_bold"])] for k, v in rows],
         colWidths=[24 * mm, 44 * mm],
@@ -353,6 +394,35 @@ def _footer_blocks(invoice):
             Paragraph(_esc(terms).replace("\n", "<br/>"), S["terms"]),
         ]
 
+    # The scanned signature sits above the rule when the file is available.
+    signature_image = None
+    sig_path = Path(settings.SIGNATURE_PATH)
+    if sig_path.is_file():
+        try:
+            reader = ImageReader(str(sig_path))
+            iw, ih = reader.getSize()
+            scale = min((42 * mm) / iw, (16 * mm) / ih)
+            signature_image = RLImage(
+                str(sig_path), width=iw * scale, height=ih * scale, mask="auto"
+            )
+            signature_image.hAlign = "RIGHT"
+        except Exception:
+            logger.exception("Could not load the signature at %s", sig_path)
+    else:
+        logger.info("No signature file at %s — printing a blank signing line.", sig_path)
+
+    ours = [Paragraph(f"For <b>{_esc(settings.REGISTERED_NAME).upper()}</b>", S["small"])]
+    if signature_image is not None:
+        ours += [Spacer(1, 4), signature_image, Spacer(1, 1)]
+    else:
+        ours.append(Spacer(1, 20))
+    ours.append(
+        Paragraph(
+            '<para align="right">______________________<br/>Authorised Signatory</para>',
+            S["small"],
+        )
+    )
+
     signature = Table(
         [
             [
@@ -360,11 +430,7 @@ def _footer_blocks(invoice):
                     "Customer's acknowledgement<br/><br/><br/>______________________",
                     S["small"],
                 ),
-                Paragraph(
-                    "For <b>OM MARKETING</b><br/><br/><br/>______________________<br/>"
-                    "Authorised Signatory",
-                    S["small"],
-                ),
+                ours,
             ]
         ],
         colWidths=[85 * mm, 85 * mm],
@@ -394,11 +460,11 @@ def _page_furniture(canvas, doc):
 
     canvas.setFont(FONT_REGULAR, 7.2)
     canvas.setFillColor(MUTED)
-    canvas.drawString(
-        20 * mm,
-        11.5 * mm,
-        f"{settings.BUSINESS_NAME} · {settings.BUSINESS_ADDRESS} · {settings.BUSINESS_PHONE_DISPLAY}",
-    )
+    footer_bits = [settings.REGISTERED_NAME, settings.REGISTERED_ADDRESS,
+                   settings.BUSINESS_PHONE_DISPLAY]
+    if settings.UDYAM_NUMBER:
+        footer_bits.append(f"Udyam {settings.UDYAM_NUMBER}")
+    canvas.drawString(20 * mm, 11.5 * mm, " · ".join(b for b in footer_bits if b))
     canvas.drawRightString(width - 20 * mm, 11.5 * mm, f"Page {doc.page}")
     canvas.restoreState()
 
@@ -419,7 +485,7 @@ def build_invoice_pdf(invoice) -> bytes:
     )
 
     story = [
-        _header(invoice),
+        *_header(invoice),
         _parties(invoice),
         HRFlowable(width="100%", thickness=0.6, color=LINE, spaceAfter=8),
         _items(invoice),
@@ -429,7 +495,8 @@ def build_invoice_pdf(invoice) -> bytes:
     story += [
         Spacer(1, 12),
         Paragraph(
-            "This is a computer-generated invoice and is valid without a signature.",
+            "Computer-generated invoice. GST is not applicable — "
+            f"{_esc(settings.REGISTERED_NAME)} is not registered under GST.",
             S["foot"],
         ),
     ]

@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     template: '%s · OM Marketing',
   },
   description:
-    'ISO 9001:2008 certified supplier of weighing scales, note counters and mobile accessories in Naroda, Ahmedabad. Sales, calibration, repair and AMC across Gujarat since 2008.',
+    'ISO 9001:2008 certified supplier of weighing scales, note counters and mobile accessories in Naroda, Ahmedabad. MSME registered. Sales, calibration, repair and AMC across Gujarat.',
   keywords: [
     'weighing scale Ahmedabad',
     'platform scale Gujarat',
@@ -93,7 +93,6 @@ const localBusinessSchema = {
   image: `${SITE_URL}/og-image.png`,
   telephone: site.phoneDial,
   email: site.email,
-  foundingDate: String(site.established),
   address: {
     '@type': 'PostalAddress',
     streetAddress: 'Naroda',

@@ -453,10 +453,11 @@ export default function HomePage() {
               />
             </div>
             <div className="p-6">
-              <h3 className="mb-1.5 font-bold">Certified since {site.established}</h3>
+              <h3 className="mb-1.5 font-bold">Certified &amp; registered</h3>
               <p className="text-sm leading-relaxed text-muted">
-                {site.certification} — quality systems audited, so the equipment you
-                buy is consistent and ready for Legal Metrology verification.
+                {site.certification}, and registered as a micro enterprise under
+                Udyam — so the equipment you buy is consistent and ready for
+                Legal Metrology verification.
               </p>
             </div>
           </motion.div>
