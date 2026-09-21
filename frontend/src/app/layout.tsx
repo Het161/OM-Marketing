@@ -13,9 +13,7 @@ import '@fontsource-variable/inter';
 import '@fontsource-variable/plus-jakarta-sans';
 import './globals.css';
 
-import Footer from '@/components/layout/Footer';
-import Navbar from '@/components/layout/Navbar';
-import FloatingContact from '@/components/ui/FloatingContact';
+import SiteChrome from '@/components/layout/SiteChrome';
 import { site } from '@/lib/site';
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://ommarketing.vercel.app';
@@ -153,12 +151,7 @@ export default function RootLayout({
           Skip to main content
         </a>
 
-        <Navbar />
-        <main id="main" className="min-h-screen">
-          {children}
-        </main>
-        <Footer />
-        <FloatingContact />
+        <SiteChrome>{children}</SiteChrome>
       </body>
     </html>
   );

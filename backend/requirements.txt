@@ -23,5 +23,10 @@ pydantic==2.9.0
 pydantic[email]==2.9.0
 email-validator==2.2.0
 
+# PDF invoices (pure Python — no system libraries, so it builds on Render)
+reportlab==5.0.1
 
-
+# Password hashing for the billing portal.
+# NOTE: passlib 1.7.4 breaks with bcrypt 5.x (it reads bcrypt.__about__), so
+# app/security.py uses the bcrypt library directly.
+bcrypt==5.0.0

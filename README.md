@@ -100,6 +100,56 @@ sqlite3 om_marketing.db "select id, enquiry_type, name, phone, email, created_at
 
 ---
 
+## Billing portal
+
+Sign in at **`/admin`** to raise bills.
+
+### First sign-in
+
+The account is created from `ADMIN_USERNAME` / `ADMIN_PASSWORD` in
+`backend/.env` the first time the backend starts with an empty user table.
+**Change the password from `/admin/settings` straight after your first
+sign-in** — after that, editing `.env` has no effect on it.
+
+### Raising a bill
+
+1. `/admin/bills/new` — enter the customer (name is the only required field;
+   add a phone for WhatsApp and an email to send it by email)
+2. Add items — start typing and your catalogue autocompletes with its price,
+   or type anything (services, delivery, labour)
+3. Discount, delivery charge, payment mode, notes, and editable terms
+4. Save — the invoice number (`OM/2026-27/0001`) and the exact date and time
+   are stamped automatically
+
+Numbering restarts each Indian financial year and is never reused.
+
+### Sending it
+
+On the bill page:
+
+- **Send on WhatsApp** — opens WhatsApp to the customer's number with a
+  ready-made message containing the bill number, date, amount and a private
+  link
+- **Email bill with PDF** — sends it from your Gmail with the PDF attached and
+  a branded HTML summary in the body
+- **PDF** / **Print** — download or print an A4 invoice
+- The **bill link** (`/bill/<token>`) lets the customer view and download it
+  without signing in. The token is unguessable, the page is never indexed, and
+  the link only goes live once the bill is marked *sent*.
+
+### Rules worth knowing
+
+- **No GST.** OM Marketing is MSME (Udyam) registered but not registered under
+  GST, so bills carry no GSTIN of ours, no tax columns, and collect no tax.
+  Every bill states this. A customer's own GSTIN can be recorded for their
+  records.
+- Totals are always recomputed on the server — a total sent by the browser is
+  ignored.
+- Only **drafts** can be deleted. An issued bill is cancelled instead, so its
+  number stays in your records.
+
+---
+
 ## Endpoints
 
 | Method | Path | Purpose |
@@ -110,6 +160,12 @@ sqlite3 om_marketing.db "select id, enquiry_type, name, phone, email, created_at
 | `POST` | `/api/enquiries/contact` | Contact form |
 | `POST` | `/api/enquiries/quote` | Quote request (with item list) |
 | `POST` | `/api/enquiries/service` | Repair / calibration / AMC booking |
+| `POST` | `/api/auth/login` | Admin sign-in (returns a JWT) |
+| `GET` | `/api/invoices/` | List bills (admin) |
+| `POST` | `/api/invoices/` | Create a bill (admin) |
+| `GET` | `/api/invoices/{id}/pdf` | Download the PDF (admin) |
+| `POST` | `/api/invoices/{id}/email` | Email the bill with PDF (admin) |
+| `GET` | `/api/public/bill/{token}` | The customer's private bill link |
 
 All three enquiry endpoints are rate limited to 5 submissions per IP per
 10 minutes and reject bot submissions via a hidden honeypot field.

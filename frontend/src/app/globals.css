@@ -560,6 +560,54 @@ p {
 }
 
 /* ==========================================================================
+   PRINT — a bill should come out of the printer as a clean A4 document
+   ========================================================================== */
+
+@media print {
+  /* Site chrome never belongs on a printed bill */
+  header:not(.bill-sheet header),
+  footer:not(.bill-sheet footer),
+  nav,
+  .print\:hidden {
+    display: none !important;
+  }
+
+  html,
+  body {
+    background: #fff !important;
+    color: #000 !important;
+  }
+
+  /* The bill itself fills the page with no card styling */
+  .bill-sheet {
+    max-width: none !important;
+    width: 100% !important;
+    margin: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+  }
+
+  /* Keep the teal masthead and totals — printers honour this when the user
+     enables background graphics, and it degrades to plain text if not. */
+  .bill-sheet * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Never split a row or the terms across pages */
+  .bill-sheet tr,
+  .bill-sheet dl {
+    break-inside: avoid;
+  }
+
+  @page {
+    size: A4;
+    margin: 12mm;
+  }
+}
+
+/* ==========================================================================
    REDUCED MOTION — respect the OS setting
    ========================================================================== */
 

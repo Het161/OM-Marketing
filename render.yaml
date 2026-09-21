@@ -37,8 +37,28 @@ services:
       - key: DATABASE_URL
         value: sqlite:///./om_marketing.db
 
+      # Signs admin session tokens. Generated once and kept — changing it signs
+      # everyone out.
       - key: SECRET_KEY
         generateValue: true
+      - key: ACCESS_TOKEN_EXPIRE_MINUTES
+        value: "480" # a working day
+
+      # --- Billing portal admin ---------------------------------------------
+      # Used ONCE, on first boot, to create the admin account. Change the
+      # password from inside the portal afterwards.
+      - key: ADMIN_USERNAME
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: ADMIN_EMAIL
+        sync: false
+      - key: ADMIN_NAME
+        value: Het Patel
+
+      # Printed on invoices. Leave UDYAM_NUMBER blank to omit that row.
+      - key: UDYAM_NUMBER
+        sync: false
 
       # --- Email (Gmail SMTP) ------------------------------------------------
       - key: SMTP_HOST

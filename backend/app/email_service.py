@@ -33,8 +33,20 @@ MUTED = "#4a5f69"
 # low-level send
 # ---------------------------------------------------------------------------
 
-def _send(to: str, subject: str, html: str, text: str, reply_to: str | None = None) -> bool:
-    """Send one email. Returns True on success, never raises."""
+def _send(
+    to: str,
+    subject: str,
+    html: str,
+    text: str,
+    reply_to: str | None = None,
+    attachment: tuple[str, bytes, str] | None = None,
+) -> bool:
+    """
+    Send one email. Returns True on success, never raises.
+
+    `attachment` is (filename, content, mime_subtype), e.g.
+    ("Invoice-OM-2026-27-0001.pdf", b"...", "pdf").
+    """
     if not settings.email_enabled:
         logger.warning(
             "Email not configured (SMTP_USER / SMTP_PASSWORD / OWNER_EMAIL missing) "
@@ -52,6 +64,12 @@ def _send(to: str, subject: str, html: str, text: str, reply_to: str | None = No
 
     message.set_content(text)
     message.add_alternative(html, subtype="html")
+
+    if attachment:
+        filename, content, subtype = attachment
+        message.add_attachment(
+            content, maintype="application", subtype=subtype, filename=filename
+        )
 
     try:
         context = ssl.create_default_context()
@@ -344,3 +362,112 @@ def send_enquiry_emails(enquiry) -> None:
     """Fire both emails. Used as a FastAPI BackgroundTask."""
     send_customer_welcome(enquiry)
     send_owner_notification(enquiry)
+
+
+# ---------------------------------------------------------------------------
+# 3. invoice to the customer, with the PDF attached
+# ---------------------------------------------------------------------------
+
+def send_invoice_email(invoice: dict, pdf_bytes: bytes) -> bool:
+    """
+    Email a bill to the customer.
+
+    Takes a plain dict rather than the ORM row, so it is safe to run in a
+    background task after the database session has closed.
+    """
+    from .invoicing import format_inr  # local import avoids a circular import
+
+    number = invoice["invoice_number"]
+    name = invoice["customer_name"]
+    first_name = (name or "there").split()[0]
+    total = format_inr(invoice["total"])
+    issued = invoice["issued_at"]
+
+    lines = "".join(
+        f'<tr>'
+        f'<td style="padding:9px 12px;border-bottom:1px solid #e3e8ea;font-size:14px;color:{INK};">'
+        f'{str(item["description"]).replace("&", "&amp;").replace("<", "&lt;")}</td>'
+        f'<td style="padding:9px 12px;border-bottom:1px solid #e3e8ea;font-size:14px;'
+        f'color:{MUTED};text-align:right;white-space:nowrap;">{item["quantity"]:g}</td>'
+        f'<td style="padding:9px 12px;border-bottom:1px solid #e3e8ea;font-size:14px;'
+        f'color:{INK};text-align:right;white-space:nowrap;">₹{format_inr(item["amount"])}</td>'
+        f'</tr>'
+        for item in invoice["items"]
+    )
+
+    body = f"""
+<div style="font-size:13px;font-weight:700;color:{BRAND};letter-spacing:.6px;">YOUR BILL IS READY</div>
+<h1 style="margin:8px 0 16px;font-size:26px;line-height:1.25;color:{INK};">Invoice {number}</h1>
+<p style="margin:0 0 20px;font-size:15px;line-height:1.7;color:{MUTED};">
+  Hello {first_name}, thank you for your business. Your invoice is attached as a
+  PDF, and the details are below for quick reference.
+</p>
+
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0"
+       style="border:1px solid #e3e8ea;border-radius:10px;overflow:hidden;margin-bottom:18px;">
+  <tr style="background:{BRAND};">
+    <th align="left" style="padding:10px 12px;font-size:12px;color:#fff;letter-spacing:.4px;">ITEM</th>
+    <th align="right" style="padding:10px 12px;font-size:12px;color:#fff;letter-spacing:.4px;">QTY</th>
+    <th align="right" style="padding:10px 12px;font-size:12px;color:#fff;letter-spacing:.4px;">AMOUNT</th>
+  </tr>
+  {lines}
+  <tr style="background:#e6f6f6;">
+    <td colspan="2" style="padding:12px;font-size:15px;font-weight:700;color:{INK};">TOTAL</td>
+    <td style="padding:12px;font-size:17px;font-weight:800;color:{BRAND_DARK};text-align:right;">₹{total}</td>
+  </tr>
+</table>
+
+{_rows([
+    ("Invoice No.", number),
+    ("Date", f"{issued:%d %b %Y}"),
+    ("Time", f"{issued:%I:%M %p}"),
+    ("Billed to", invoice.get("business_name") or name),
+    ("In words", invoice.get("amount_in_words")),
+])}
+
+<div style="margin-top:26px;">
+  {_button(invoice["public_url"], "📄 View bill online")}
+  {_button(f"tel:{settings.BUSINESS_PHONE}", "📞 Call us", BRAND_DARK)}
+</div>
+
+<p style="margin:24px 0 0;font-size:13px;line-height:1.7;color:{MUTED};">
+  Payment is due within 45 days as per the MSMED Act, 2006. GST is not
+  applicable — OM Marketing is not registered under GST.<br>
+  Any questions about this bill? Just reply to this email.
+</p>
+
+<p style="margin:20px 0 0;font-size:14px;line-height:1.7;color:{MUTED};">
+  Thank you,<br><strong style="color:{INK};">Het Patel</strong><br>
+  <span style="font-size:13px;">OM Marketing</span>
+</p>
+"""
+
+    text = f"""Invoice {number}
+
+Hello {first_name}, thank you for your business. Your invoice is attached as a PDF.
+
+Date:     {issued:%d %b %Y} at {issued:%I:%M %p}
+Billed to: {invoice.get('business_name') or name}
+Total:     Rs. {total}
+In words:  {invoice.get('amount_in_words') or ''}
+
+View it online: {invoice['public_url']}
+
+Payment is due within 45 days as per the MSMED Act, 2006.
+GST is not applicable - OM Marketing is not registered under GST.
+
+Thank you,
+Het Patel
+{settings.BUSINESS_NAME}
+{settings.BUSINESS_ADDRESS}
+{settings.BUSINESS_PHONE_DISPLAY}
+"""
+
+    return _send(
+        to=invoice["customer_email"],
+        subject=f"Invoice {number} from OM Marketing — ₹{total}",
+        html=_shell(f"Invoice {number}", f"Your bill for ₹{total} is attached.", body),
+        text=text,
+        reply_to=settings.BUSINESS_EMAIL,
+        attachment=(f"Invoice-{number.replace('/', '-')}.pdf", pdf_bytes, "pdf"),
+    )

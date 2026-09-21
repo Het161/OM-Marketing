@@ -224,3 +224,125 @@ class EnquiryAck(BaseModel):
     id: int
     reference: str
     message: str
+
+
+# ============ ADMIN / AUTH SCHEMAS ============
+
+
+class LoginRequest(BaseModel):
+    username: str = Field(..., min_length=3, max_length=100)
+    password: str = Field(..., min_length=1, max_length=200)
+
+
+class TokenResponse(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
+    username: str
+    full_name: Optional[str] = None
+
+
+# ============ INVOICE SCHEMAS ============
+
+
+class InvoiceItemIn(BaseModel):
+    description: str = Field(..., min_length=1, max_length=400)
+    unit: Optional[str] = Field("Nos", max_length=20)
+    quantity: float = Field(..., gt=0, le=100000)
+    rate: float = Field(..., ge=0, le=100_000_000)
+
+
+class InvoiceItemOut(InvoiceItemIn):
+    id: int
+    position: int
+    amount: float
+
+    class Config:
+        from_attributes = True
+
+
+class InvoiceBase(BaseModel):
+    customer_name: str = Field(..., min_length=2, max_length=160)
+    customer_email: Optional[EmailStr] = None
+    customer_phone: Optional[str] = Field(None, max_length=30)
+    customer_address: Optional[str] = Field(None, max_length=1000)
+
+    business_name: Optional[str] = Field(None, max_length=200)
+    business_gstin: Optional[str] = Field(None, max_length=20)
+    business_notes: Optional[str] = Field(None, max_length=1000)
+
+    discount_amount: float = Field(0, ge=0)
+    delivery_charge: float = Field(0, ge=0)
+
+    payment_mode: Optional[str] = Field(None, max_length=40)
+    notes: Optional[str] = Field(None, max_length=2000)
+    terms: Optional[str] = Field(None, max_length=4000)
+
+    @field_validator("customer_phone")
+    @classmethod
+    def check_phone(cls, value: Optional[str]) -> Optional[str]:
+        if value is None or not value.strip():
+            return None
+        normalised = normalise_indian_mobile(value)
+        if normalised is None:
+            raise ValueError("Enter a valid 10-digit Indian mobile number")
+        return normalised
+
+    @field_validator("business_gstin")
+    @classmethod
+    def check_gstin(cls, value: Optional[str]) -> Optional[str]:
+        """The customer's GSTIN, kept for their records. 15 chars, e.g. 24ABCDE1234F1Z5."""
+        if value is None or not value.strip():
+            return None
+        cleaned = value.strip().upper()
+        if not re.fullmatch(r"\d{2}[A-Z]{5}\d{4}[A-Z]\d[A-Z][0-9A-Z]", cleaned):
+            raise ValueError("That doesn't look like a valid 15-character GSTIN")
+        return cleaned
+
+
+class InvoiceCreate(InvoiceBase):
+    items: List[InvoiceItemIn] = Field(..., min_length=1, max_length=50)
+    status: Optional[str] = Field("draft", max_length=20)
+
+
+class InvoiceUpdate(InvoiceCreate):
+    pass
+
+
+class InvoiceResponse(InvoiceBase):
+    id: int
+    invoice_number: str
+    public_token: str
+    subtotal: float
+    total: float
+    amount_in_words: Optional[str] = None
+    status: str
+    issued_at: datetime
+    created_at: datetime
+    emailed_at: Optional[datetime] = None
+    items: List[InvoiceItemOut] = []
+
+    class Config:
+        from_attributes = True
+
+
+class InvoiceSummary(BaseModel):
+    """Lightweight row for the bills list."""
+
+    id: int
+    invoice_number: str
+    public_token: str
+    customer_name: str
+    business_name: Optional[str] = None
+    customer_phone: Optional[str] = None
+    customer_email: Optional[EmailStr] = None
+    total: float
+    status: str
+    issued_at: datetime
+    emailed_at: Optional[datetime] = None
+
+    class Config:
+        from_attributes = True
+
+
+class InvoiceStatusUpdate(BaseModel):
+    status: str = Field(..., pattern="^(draft|sent|paid|cancelled)$")

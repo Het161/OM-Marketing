@@ -73,6 +73,22 @@ class Settings:
     )
     SITE_URL: str = os.getenv("SITE_URL", "http://localhost:3000")
 
+    # --- Registrations shown on invoices -------------------------------------
+    # OM Marketing is MSME (Udyam) registered but NOT registered under GST, so
+    # invoices carry no GSTIN and must not collect tax.
+    UDYAM_NUMBER: str = os.getenv("UDYAM_NUMBER", "")
+    BANK_NAME: str = os.getenv("BANK_NAME", "")
+    BANK_ACCOUNT: str = os.getenv("BANK_ACCOUNT", "")
+    BANK_IFSC: str = os.getenv("BANK_IFSC", "")
+    UPI_ID: str = os.getenv("UPI_ID", "")
+
+    # --- Admin bootstrap -----------------------------------------------------
+    # Used once at startup to create the first admin account if none exists.
+    ADMIN_USERNAME: str = os.getenv("ADMIN_USERNAME", "")
+    ADMIN_PASSWORD: str = os.getenv("ADMIN_PASSWORD", "")
+    ADMIN_EMAIL: str = os.getenv("ADMIN_EMAIL", "")
+    ADMIN_NAME: str = os.getenv("ADMIN_NAME", "Het Patel")
+
     @property
     def email_enabled(self) -> bool:
         """Email is only attempted when SMTP is actually configured."""

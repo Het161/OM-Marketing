@@ -9,8 +9,9 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: '*',
       allow: '/',
-      // The quote list is personal to the visitor and has nothing to index.
-      disallow: ['/quote', '/cart', '/account'],
+      // The quote list is personal to the visitor; the billing portal and the
+      // private bill links must never be indexed.
+      disallow: ['/quote', '/cart', '/account', '/admin', '/bill'],
     },
     sitemap: `${SITE_URL}/sitemap.xml`,
   };

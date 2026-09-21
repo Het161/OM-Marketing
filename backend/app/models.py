@@ -99,6 +99,83 @@ class Order(Base):
     order_items = relationship("OrderItem", back_populates="order")
 
 
+class Invoice(Base):
+    """
+    A bill issued to a customer.
+
+    OM Marketing is MSME (Udyam) registered but NOT registered under GST, so
+    these are plain invoices / bills of supply: no GSTIN, no tax columns, and
+    no tax may be collected on them.
+    """
+
+    __tablename__ = "invoices"
+
+    id = Column(Integer, primary_key=True, index=True)
+
+    # Human-facing number, e.g. OM/2026-27/0001 — unique and never reused
+    invoice_number = Column(String(40), unique=True, nullable=False, index=True)
+
+    # Unguessable token for the shareable public link
+    public_token = Column(String(64), unique=True, nullable=False, index=True)
+
+    # --- Customer -----------------------------------------------------------
+    customer_name = Column(String(160), nullable=False)
+    customer_email = Column(String(255), nullable=True)
+    customer_phone = Column(String(30), nullable=True)
+    customer_address = Column(Text, nullable=True)
+
+    # Optional business details
+    business_name = Column(String(200), nullable=True)
+    business_gstin = Column(String(20), nullable=True)  # the customer's, for their records
+    business_notes = Column(Text, nullable=True)
+
+    # --- Money (all rupees) -------------------------------------------------
+    subtotal = Column(Float, nullable=False, default=0)
+    discount_amount = Column(Float, nullable=False, default=0)
+    delivery_charge = Column(Float, nullable=False, default=0)
+    total = Column(Float, nullable=False, default=0)
+    amount_in_words = Column(String(400), nullable=True)
+
+    # --- Terms --------------------------------------------------------------
+    payment_mode = Column(String(40), nullable=True)  # Cash, UPI, Bank transfer, Cheque
+    notes = Column(Text, nullable=True)
+    terms = Column(Text, nullable=True)
+
+    # draft | sent | paid | cancelled
+    status = Column(String(20), nullable=False, default="draft", index=True)
+
+    # The exact moment the bill was raised — shown on the invoice
+    issued_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    emailed_at = Column(DateTime, nullable=True)
+
+    items = relationship(
+        "InvoiceItem",
+        back_populates="invoice",
+        cascade="all, delete-orphan",
+        order_by="InvoiceItem.position",
+    )
+
+
+class InvoiceItem(Base):
+    """One line on an invoice."""
+
+    __tablename__ = "invoice_items"
+
+    id = Column(Integer, primary_key=True, index=True)
+    invoice_id = Column(Integer, ForeignKey("invoices.id"), nullable=False, index=True)
+
+    position = Column(Integer, nullable=False, default=0)
+    description = Column(String(400), nullable=False)
+    unit = Column(String(20), nullable=True, default="Nos")
+    quantity = Column(Float, nullable=False, default=1)
+    rate = Column(Float, nullable=False, default=0)
+    amount = Column(Float, nullable=False, default=0)
+
+    invoice = relationship("Invoice", back_populates="items")
+
+
 class Enquiry(Base):
     """
     Every lead the website captures — contact messages, quote requests and

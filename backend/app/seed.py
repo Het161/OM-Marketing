@@ -21,7 +21,7 @@ from .models import Product
 
 logger = logging.getLogger(__name__)
 
-SEED_FILE = Path(__file__).parent / "seed" / "products.json"
+SEED_FILE = Path(__file__).parent / "data" / "products.json"
 
 
 def seed_products(db: Session) -> int:
