@@ -25,6 +25,7 @@ from ..invoicing import DEFAULT_TERMS, compute_totals, new_public_token, next_in
 from ..models import Invoice, InvoiceItem, User
 from ..schemas import (
     InvoiceCreate,
+    PaymentDetail,
     InvoiceResponse,
     InvoiceStatusUpdate,
     InvoiceSummary,
@@ -36,6 +37,15 @@ logger = logging.getLogger(__name__)
 router = APIRouter()
 
 PUBLIC_STATUSES = {"sent", "paid"}
+
+
+def _with_payment(invoice: Invoice) -> InvoiceResponse:
+    """Serialise an invoice and attach the payment details from settings."""
+    payload = InvoiceResponse.model_validate(invoice)
+    payload.payment_details = [
+        PaymentDetail(label=label, value=value) for label, value in settings.bank_details
+    ]
+    return payload
 
 
 def _load(db: Session, invoice_id: int) -> Invoice:
@@ -177,7 +187,7 @@ async def create_invoice(
     db.refresh(invoice)
 
     logger.info("Created invoice %s for %s", invoice.invoice_number, invoice.customer_name)
-    return invoice
+    return _with_payment(invoice)
 
 
 @router.get("/{invoice_id}", response_model=InvoiceResponse)
@@ -186,7 +196,7 @@ async def get_invoice(
     db: Session = Depends(get_db),
     _: User = Depends(get_current_user),
 ):
-    return _load(db, invoice_id)
+    return _with_payment(_load(db, invoice_id))
 
 
 @router.put("/{invoice_id}", response_model=InvoiceResponse)
@@ -204,7 +214,7 @@ async def update_invoice(
 
     db.commit()
     db.refresh(invoice)
-    return invoice
+    return _with_payment(invoice)
 
 
 @router.patch("/{invoice_id}/status", response_model=InvoiceResponse)
@@ -218,7 +228,7 @@ async def set_status(
     invoice.status = payload.status
     db.commit()
     db.refresh(invoice)
-    return invoice
+    return _with_payment(invoice)
 
 
 @router.delete("/{invoice_id}", status_code=204)
@@ -350,7 +360,7 @@ def _load_public(db: Session, token: str) -> Invoice:
 
 @public_router.get("/bill/{token}", response_model=InvoiceResponse)
 async def public_invoice(token: str, db: Session = Depends(get_db)):
-    return _load_public(db, token)
+    return _with_payment(_load_public(db, token))
 
 
 @public_router.get("/bill/{token}/pdf")

@@ -109,10 +109,28 @@ class Settings:
     INVOICE_LOGO_PATH: str = _path(
         "INVOICE_LOGO_PATH", Path(__file__).parent / "assets" / "invoice-logo.png"
     )
+    # --- Where customers pay -------------------------------------------------
+    # Kept in the environment, never in the repo: this one is public.
     BANK_NAME: str = os.getenv("BANK_NAME", "")
+    BANK_BRANCH: str = os.getenv("BANK_BRANCH", "")
+    BANK_ACCOUNT_NAME: str = os.getenv("BANK_ACCOUNT_NAME", "")
     BANK_ACCOUNT: str = os.getenv("BANK_ACCOUNT", "")
+    BANK_ACCOUNT_TYPE: str = os.getenv("BANK_ACCOUNT_TYPE", "")
     BANK_IFSC: str = os.getenv("BANK_IFSC", "")
     UPI_ID: str = os.getenv("UPI_ID", "")
+
+    @property
+    def bank_details(self) -> list[tuple[str, str]]:
+        """Label/value rows for the payment box, skipping anything unset."""
+        rows = [
+            ("Account Name", self.BANK_ACCOUNT_NAME),
+            ("Account No.", self.BANK_ACCOUNT),
+            ("IFSC", self.BANK_IFSC),
+            ("Bank", " — ".join(b for b in (self.BANK_NAME, self.BANK_BRANCH) if b)),
+            ("Account Type", self.BANK_ACCOUNT_TYPE),
+            ("UPI", self.UPI_ID),
+        ]
+        return [(label, value) for label, value in rows if value]
 
     # --- Admin bootstrap -----------------------------------------------------
     # Used once at startup to create the first admin account if none exists.

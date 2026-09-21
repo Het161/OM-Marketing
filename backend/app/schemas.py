@@ -308,6 +308,11 @@ class InvoiceUpdate(InvoiceCreate):
     pass
 
 
+class PaymentDetail(BaseModel):
+    label: str
+    value: str
+
+
 class InvoiceResponse(InvoiceBase):
     id: int
     invoice_number: str
@@ -320,6 +325,9 @@ class InvoiceResponse(InvoiceBase):
     created_at: datetime
     emailed_at: Optional[datetime] = None
     items: List[InvoiceItemOut] = []
+    # Filled from server settings, never stored on the row — the bank details
+    # must not live in the (public) repository.
+    payment_details: List[PaymentDetail] = []
 
     class Config:
         from_attributes = True

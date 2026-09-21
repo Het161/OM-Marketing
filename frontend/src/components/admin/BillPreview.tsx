@@ -181,8 +181,25 @@ export default function BillPreview({ invoice }: { invoice: Invoice }) {
             </p>
             <p className="font-bold">{invoice.amount_in_words}</p>
             <p className="mt-3 text-[12px] text-ink-500">
-              GST is not applicable — OM Marketing is not registered under GST.
+              GST is not applicable — {site.registeredName} is not registered under GST.
             </p>
+
+            {invoice.payment_details && invoice.payment_details.length > 0 && (
+              <div className="mt-4 rounded-lg border border-primary-200 bg-primary-50 p-3">
+                <p className="mb-1.5 text-[10px] font-bold uppercase tracking-[0.1em] text-ink-500">
+                  Payment details
+                </p>
+                <p className="text-[11.5px] leading-relaxed text-ink-700">
+                  {invoice.payment_details.map((detail, index) => (
+                    <span key={detail.label}>
+                      {index > 0 && <span aria-hidden> · </span>}
+                      {detail.label}{' '}
+                      <strong className="text-ink-900">{detail.value}</strong>
+                    </span>
+                  ))}
+                </p>
+              </div>
+            )}
           </div>
 
           <dl className="space-y-0 self-start text-sm sm:justify-self-end sm:min-w-[16rem]">

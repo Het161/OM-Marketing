@@ -27,6 +27,11 @@ export interface InvoiceItem {
   amount?: number;
 }
 
+export interface PaymentDetail {
+  label: string;
+  value: string;
+}
+
 export interface Invoice {
   id: number;
   invoice_number: string;
@@ -51,6 +56,8 @@ export interface Invoice {
   created_at?: string;
   emailed_at?: string | null;
   items: InvoiceItem[];
+  /** Bank details, supplied by the server — never stored in this repo. */
+  payment_details?: PaymentDetail[];
 }
 
 export type InvoiceStatus = 'draft' | 'sent' | 'paid' | 'cancelled';

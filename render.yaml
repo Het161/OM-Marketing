@@ -70,6 +70,23 @@ services:
       - key: SIGNATURE_PATH
         value: /etc/secrets/signature.png
 
+      # Bank details printed on invoices. sync:false keeps the real values out
+      # of this file — set them in the Render dashboard.
+      - key: BANK_NAME
+        sync: false
+      - key: BANK_BRANCH
+        sync: false
+      - key: BANK_ACCOUNT_NAME
+        sync: false
+      - key: BANK_ACCOUNT
+        sync: false
+      - key: BANK_ACCOUNT_TYPE
+        sync: false
+      - key: BANK_IFSC
+        sync: false
+      - key: UPI_ID
+        sync: false
+
       # --- Email (Gmail SMTP) ------------------------------------------------
       - key: SMTP_HOST
         value: smtp.gmail.com

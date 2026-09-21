@@ -106,14 +106,14 @@ S = {
     "title": _style("title", 15, 18, colors.white, bold=True, align=TA_RIGHT),
     "title_sub": _style("title_sub", 8.5, 12, colors.HexColor("#bfe6e5"), align=TA_RIGHT),
     "label": _style("label", 7.5, 10, MUTED, bold=True),
-    "body": _style("body", 9, 12.5),
-    "body_bold": _style("body_bold", 9, 12.5, bold=True),
+    "body": _style("body", 9, 11.6),
+    "body_bold": _style("body_bold", 9, 11.6, bold=True),
     "small": _style("small", 8, 11, MUTED),
-    "right": _style("right", 9, 12.5, align=TA_RIGHT),
-    "right_bold": _style("right_bold", 9, 12.5, bold=True, align=TA_RIGHT),
+    "right": _style("right", 9, 11.6, align=TA_RIGHT),
+    "right_bold": _style("right_bold", 9, 11.6, bold=True, align=TA_RIGHT),
     "th": _style("th", 8.5, 11, colors.white, bold=True),
     "th_r": _style("th_r", 8.5, 11, colors.white, bold=True, align=TA_RIGHT),
-    "terms": _style("terms", 7.6, 10.5, MUTED),
+    "terms": _style("terms", 7.5, 9.8, MUTED),
     "foot": _style("foot", 7.5, 10, MUTED, align=TA_CENTER),
 }
 
@@ -197,8 +197,8 @@ def _header(invoice):
                 ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
                 ("ALIGN", (0, 0), (-1, -1), "LEFT"),
                 ("LEFTPADDING", (0, 0), (-1, -1), 10),
-                ("TOPPADDING", (0, 0), (-1, -1), 2),
-                ("BOTTOMPADDING", (0, 0), (-1, -1), 8),
+                ("TOPPADDING", (0, 0), (-1, -1), 0),
+                ("BOTTOMPADDING", (0, 0), (-1, -1), 5),
             ]
         )
     )
@@ -261,8 +261,8 @@ def _parties(invoice):
                 ("VALIGN", (0, 0), (-1, -1), "TOP"),
                 ("LEFTPADDING", (0, 0), (-1, -1), 0),
                 ("RIGHTPADDING", (0, 0), (-1, -1), 0),
-                ("TOPPADDING", (0, 0), (-1, -1), 10),
-                ("BOTTOMPADDING", (0, 0), (-1, -1), 6),
+                ("TOPPADDING", (0, 0), (-1, -1), 7),
+                ("BOTTOMPADDING", (0, 0), (-1, -1), 4),
             ]
         )
     )
@@ -302,8 +302,8 @@ def _items(invoice):
             [
                 ("BACKGROUND", (0, 0), (-1, 0), TEAL),
                 ("VALIGN", (0, 0), (-1, -1), "TOP"),
-                ("TOPPADDING", (0, 0), (-1, -1), 7),
-                ("BOTTOMPADDING", (0, 0), (-1, -1), 7),
+                ("TOPPADDING", (0, 0), (-1, -1), 5),
+                ("BOTTOMPADDING", (0, 0), (-1, -1), 5),
                 ("LEFTPADDING", (0, 0), (-1, -1), 7),
                 ("RIGHTPADDING", (0, 0), (-1, -1), 7),
                 ("LINEBELOW", (0, 1), (-1, -1), 0.4, LINE),
@@ -353,25 +353,67 @@ def _totals(invoice):
         Paragraph("AMOUNT IN WORDS", S["label"]),
         Spacer(1, 3),
         Paragraph(_esc(invoice.amount_in_words or ""), S["body_bold"]),
-        Spacer(1, 8),
+        Spacer(1, 6),
         Paragraph(
-            "GST is not applicable — OM Marketing is not registered under GST.",
+            f"GST is not applicable — {_esc(settings.REGISTERED_NAME)} is not "
+            "registered under GST.",
             S["small"],
         ),
     ]
+    # The payment box lives here rather than further down the page: this column
+    # is mostly empty next to the totals, so it costs no extra height.
+    words += _bank_block()
 
-    wrapper = Table([[words, totals]], colWidths=[95 * mm, 75 * mm])
+    wrapper = Table([[words, totals]], colWidths=[97 * mm, 73 * mm])
     wrapper.setStyle(
         TableStyle(
             [
                 ("VALIGN", (0, 0), (-1, -1), "TOP"),
                 ("LEFTPADDING", (0, 0), (-1, -1), 0),
                 ("RIGHTPADDING", (0, 0), (-1, -1), 0),
-                ("TOPPADDING", (0, 0), (-1, -1), 10),
+                ("TOPPADDING", (0, 0), (-1, -1), 7),
             ]
         )
     )
     return wrapper
+
+
+def _bank_block():
+    """
+    Payment details, so the customer can pay without having to ask.
+
+    Written as a compact flowing strip rather than a label/value table: as a
+    table it ran to ~40mm and pushed ordinary bills onto a second page.
+    """
+    rows = settings.bank_details
+    if not rows:
+        return []
+
+    text = " &nbsp;·&nbsp; ".join(
+        f"{_esc(label)} <b>{_esc(value)}</b>" for label, value in rows
+    )
+
+    box = Table(
+        [[[Paragraph("PAYMENT DETAILS", S["label"]),
+           Spacer(1, 3),
+           Paragraph(text, S["terms"])]]],
+        colWidths=[93 * mm],
+    )
+    box.setStyle(
+        TableStyle(
+            [
+                ("BACKGROUND", (0, 0), (-1, -1), TEAL_PALE),
+                ("BOX", (0, 0), (-1, -1), 0.6, colors.HexColor("#90d8d7")),
+                ("VALIGN", (0, 0), (-1, -1), "TOP"),
+                ("LEFTPADDING", (0, 0), (-1, -1), 9),
+                ("RIGHTPADDING", (0, 0), (-1, -1), 9),
+                ("TOPPADDING", (0, 0), (-1, -1), 7),
+                ("BOTTOMPADDING", (0, 0), (-1, -1), 8),
+            ]
+        )
+    )
+    box.hAlign = "LEFT"
+    return [Spacer(1, 8), box]
 
 
 def _footer_blocks(invoice):
@@ -379,7 +421,7 @@ def _footer_blocks(invoice):
 
     if invoice.notes:
         blocks += [
-            Spacer(1, 10),
+            Spacer(1, 8),
             Paragraph("NOTES", S["label"]),
             Spacer(1, 2),
             Paragraph(_esc(invoice.notes).replace("\n", "<br/>"), S["body"]),
@@ -387,11 +429,41 @@ def _footer_blocks(invoice):
 
     terms = invoice.terms
     if terms:
+        # Set the terms in two columns. As a single stacked list they run to
+        # eight lines and eat ~30mm, which pushed ordinary bills onto a second
+        # page; side by side they take roughly half that.
+        lines = [line.strip() for line in str(terms).splitlines() if line.strip()]
+        if len(lines) > 3:
+            half = (len(lines) + 1) // 2
+            columns = Table(
+                [[
+                    Paragraph("<br/>".join(_esc(l) for l in lines[:half]), S["terms"]),
+                    Paragraph("<br/>".join(_esc(l) for l in lines[half:]), S["terms"]),
+                ]],
+                colWidths=[85 * mm, 85 * mm],
+            )
+            columns.setStyle(
+                TableStyle(
+                    [
+                        ("VALIGN", (0, 0), (-1, -1), "TOP"),
+                        ("LEFTPADDING", (0, 0), (0, 0), 0),
+                        ("RIGHTPADDING", (0, 0), (0, 0), 8),
+                        ("LEFTPADDING", (1, 0), (1, 0), 0),
+                        ("RIGHTPADDING", (1, 0), (-1, -1), 0),
+                        ("TOPPADDING", (0, 0), (-1, -1), 0),
+                        ("BOTTOMPADDING", (0, 0), (-1, -1), 0),
+                    ]
+                )
+            )
+            body = columns
+        else:
+            body = Paragraph(_esc(terms).replace("\n", "<br/>"), S["terms"])
+
         blocks += [
-            Spacer(1, 10),
+            Spacer(1, 8),
             Paragraph("TERMS &amp; CONDITIONS", S["label"]),
             Spacer(1, 2),
-            Paragraph(_esc(terms).replace("\n", "<br/>"), S["terms"]),
+            body,
         ]
 
     # The scanned signature sits above the rule when the file is available.
@@ -401,7 +473,7 @@ def _footer_blocks(invoice):
         try:
             reader = ImageReader(str(sig_path))
             iw, ih = reader.getSize()
-            scale = min((42 * mm) / iw, (16 * mm) / ih)
+            scale = min((40 * mm) / iw, (13 * mm) / ih)
             signature_image = RLImage(
                 str(sig_path), width=iw * scale, height=ih * scale, mask="auto"
             )
@@ -442,11 +514,12 @@ def _footer_blocks(invoice):
                 ("ALIGN", (1, 0), (1, 0), "RIGHT"),
                 ("LEFTPADDING", (0, 0), (-1, -1), 0),
                 ("RIGHTPADDING", (0, 0), (-1, -1), 0),
-                ("TOPPADDING", (0, 0), (-1, -1), 18),
+                ("TOPPADDING", (0, 0), (-1, -1), 8),
             ]
         )
     )
-    blocks.append(signature)
+    # never let the signing block split across a page break
+    blocks.append(KeepTogether(signature))
     return blocks
 
 
@@ -487,19 +560,11 @@ def build_invoice_pdf(invoice) -> bytes:
     story = [
         *_header(invoice),
         _parties(invoice),
-        HRFlowable(width="100%", thickness=0.6, color=LINE, spaceAfter=8),
+        HRFlowable(width="100%", thickness=0.6, color=LINE, spaceAfter=4),
         _items(invoice),
         _totals(invoice),
     ]
     story += _footer_blocks(invoice)
-    story += [
-        Spacer(1, 12),
-        Paragraph(
-            "Computer-generated invoice. GST is not applicable — "
-            f"{_esc(settings.REGISTERED_NAME)} is not registered under GST.",
-            S["foot"],
-        ),
-    ]
 
     doc.build(story, onFirstPage=_page_furniture, onLaterPages=_page_furniture)
     return buffer.getvalue()
