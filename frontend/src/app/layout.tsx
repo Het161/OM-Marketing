@@ -16,7 +16,7 @@ import './globals.css';
 import SiteChrome from '@/components/layout/SiteChrome';
 import { site } from '@/lib/site';
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://ommarketing.vercel.app';
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.ommarketing.co.in';
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
