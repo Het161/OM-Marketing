@@ -90,7 +90,7 @@ export default function PrivacyPage() {
               delete it. Email{' '}
               <a
                 href={`mailto:${site.email}`}
-                className="font-semibold text-primary-600 underline"
+                className="font-semibold text-brand underline underline-offset-4 [overflow-wrap:anywhere]"
               >
                 {site.email}
               </a>{' '}
@@ -114,14 +114,14 @@ export default function PrivacyPage() {
               {site.addressFull}, email{' '}
               <a
                 href={`mailto:${site.email}`}
-                className="font-semibold text-primary-600 underline"
+                className="font-semibold text-brand underline underline-offset-4 [overflow-wrap:anywhere]"
               >
                 {site.email}
               </a>{' '}
               or call{' '}
               <a
                 href={`tel:${site.phoneDial}`}
-                className="font-semibold text-primary-600 underline"
+                className="font-semibold text-brand underline underline-offset-4 [overflow-wrap:anywhere]"
               >
                 {site.phoneDisplay}
               </a>

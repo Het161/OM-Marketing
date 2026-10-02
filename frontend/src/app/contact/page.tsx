@@ -11,6 +11,7 @@ import {
   FiPhone,
 } from 'react-icons/fi';
 
+import PageHeader from '@/components/layout/PageHeader';
 import EnquiryForm from '@/components/forms/EnquiryForm';
 import { site, whatsappLink } from '@/lib/site';
 
@@ -56,22 +57,18 @@ const channels = [
 export default function ContactPage() {
   return (
     <>
-      <header className="gradient-primary relative overflow-hidden px-4 py-16 sm:py-20">
-        <div
-          aria-hidden
-          className="pointer-events-none absolute -right-20 -top-28 h-80 w-80 rounded-full bg-accent-500/20 blur-3xl"
-        />
-        <div className="relative mx-auto max-w-3xl text-center">
-          <span className="mb-3 inline-block text-[13px] font-bold uppercase tracking-[0.14em] text-accent-300">
-            We&apos;d love to hear from you
-          </span>
-          <h1 className="text-4xl font-extrabold text-white sm:text-5xl">Contact Us</h1>
-          <p className="mx-auto mt-4 max-w-xl text-lg leading-relaxed text-primary-100">
-            Tell us what you need to weigh and we&apos;ll recommend the right
-            equipment — with honest pricing and no pressure.
-          </p>
-        </div>
-      </header>
+      <PageHeader
+        index="/ 01"
+        eyebrow="Contact"
+        title={<>Talk to us</>}
+        lead="Tell us what you need to weigh and we'll recommend the right equipment — with honest pricing and no pressure."
+        meta={[
+          { k: 'Telephone', v: site.phoneDisplay },
+          { k: 'Hours', v: site.hoursShort },
+          { k: 'Location', v: 'Nikol, Ahmedabad' },
+          { k: 'Reply', v: 'Same working day' },
+        ]}
+      />
 
       <section className="px-4 py-14 sm:py-16">
         <div className="mx-auto max-w-7xl">
@@ -83,18 +80,22 @@ export default function ContactPage() {
                 href={channel.href}
                 target={channel.external ? '_blank' : undefined}
                 rel={channel.external ? 'noopener noreferrer' : undefined}
-                className="card group flex flex-col p-5 transition-transform duration-300 hover:-translate-y-1"
+                className="group flex flex-col border border-line p-5 transition-colors duration-200 hover:border-ink-900"
               >
-                <span className="mb-3 flex h-11 w-11 items-center justify-center rounded-xl bg-primary-50 text-primary-600 transition-colors group-hover:bg-primary-500 group-hover:text-white">
-                  <channel.icon size={20} aria-hidden />
+                <span className="flex items-center justify-between">
+                  <span className="label">{channel.label}</span>
+                  <channel.icon
+                    size={15}
+                    aria-hidden
+                    className="text-subtle transition-colors group-hover:text-brand"
+                  />
                 </span>
-                <span className="text-[11px] font-bold uppercase tracking-wide text-subtle">
-                  {channel.label}
-                </span>
-                <span className="mt-0.5 break-words font-semibold text-content transition-colors group-hover:text-primary-600">
+                <span className="mt-4 text-[0.9375rem] font-semibold tracking-[-0.01em] text-content [overflow-wrap:anywhere]">
                   {channel.value}
                 </span>
-                <span className="mt-1 text-[13px] text-subtle">{channel.note}</span>
+                <span className="mt-1.5 text-[13px] leading-relaxed text-muted">
+                  {channel.note}
+                </span>
               </a>
             ))}
           </div>
@@ -103,10 +104,8 @@ export default function ContactPage() {
             <EnquiryForm variant="contact" title="Send us a message" />
 
             <aside className="space-y-5">
-              <div className="card p-6">
-                <h2 className="mb-4 flex items-center gap-2 text-lg font-bold">
-                  <FiClock aria-hidden className="text-primary-500" /> Business hours
-                </h2>
+              <div className="border border-line p-6">
+                <h2 className="label mb-5">Business hours</h2>
                 <dl className="space-y-2.5 text-sm">
                   {site.hours.map((entry) => (
                     <div
@@ -124,13 +123,13 @@ export default function ContactPage() {
                 </p>
               </div>
 
-              <div className="card overflow-hidden">
+              <div className="border border-line">
                 <iframe
                   title="Map showing OM Marketing in Nikol, Ahmedabad"
                   src="https://www.google.com/maps?q=Nikol,Ahmedabad,Gujarat+382350&output=embed"
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
-                  className="h-64 w-full border-0"
+                  className="h-64 w-full border-0 grayscale-[35%]"
                 />
                 <div className="p-5">
                   <h2 className="mb-1 font-bold">{site.addressLine}</h2>
@@ -146,9 +145,9 @@ export default function ContactPage() {
                 </div>
               </div>
 
-              <div className="rounded-2xl border border-accent-200 bg-accent-50 p-6">
-                <h2 className="mb-2 font-bold text-ink-900">Need service, not sales?</h2>
-                <p className="mb-4 text-sm leading-relaxed text-ink-700">
+              <div className="border border-line bg-surface-2 p-6">
+                <h2 className="label mb-3">Need service, not sales?</h2>
+                <p className="mb-5 text-[0.9375rem] leading-relaxed text-muted">
                   Book a calibration, repair, AMC or installation visit and we&apos;ll
                   call to confirm a slot.
                 </p>
@@ -161,14 +160,12 @@ export default function ContactPage() {
                 href={site.instagramUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="card flex items-center gap-4 p-5 transition-transform duration-300 hover:-translate-y-1"
+                className="flex items-center gap-4 border border-line p-5 transition-colors duration-200 hover:border-ink-900"
               >
-                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary-50 text-primary-600">
-                  <FiInstagram size={20} aria-hidden />
-                </span>
+                <FiInstagram size={18} aria-hidden className="shrink-0 text-subtle" />
                 <span>
-                  <span className="block font-semibold">See our latest stock</span>
-                  <span className="block text-sm text-muted">@{site.instagram}</span>
+                  <span className="block text-[0.9375rem] font-semibold">See our latest stock</span>
+                  <span className="data block text-[0.8125rem] text-muted">@{site.instagram}</span>
                 </span>
               </a>
             </aside>

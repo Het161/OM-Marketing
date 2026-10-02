@@ -2,38 +2,84 @@
 
 'use client';
 
-import { motion } from 'framer-motion';
+import Reveal from '@/components/ui/Reveal';
 
+/**
+ * Section masthead: an indexed rule, then the title.
+ *
+ * The numbered rule is doing the work a coloured eyebrow pill used to do —
+ * it gives the page a visible spine and reads as a document rather than a
+ * stack of marketing blocks.
+ */
 export default function SectionHeading({
+  index,
   eyebrow,
   title,
   description,
-  align = 'center',
+  align = 'left',
   as: Tag = 'h2',
+  tone = 'light',
+  action,
 }: {
+  index?: string;
   eyebrow?: string;
   title: React.ReactNode;
   description?: React.ReactNode;
-  align?: 'center' | 'left';
+  align?: 'left' | 'center';
   as?: 'h1' | 'h2' | 'h3';
+  tone?: 'light' | 'dark';
+  action?: React.ReactNode;
 }) {
+  const dark = tone === 'dark';
+
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 16 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-60px' }}
-      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-      className={align === 'center' ? 'mx-auto max-w-2xl text-center' : 'max-w-2xl'}
-    >
-      {eyebrow && (
-        <span className="mb-3 inline-block text-[13px] font-bold uppercase tracking-[0.14em] text-primary-600">
-          {eyebrow}
-        </span>
-      )}
-      <Tag className="text-3xl font-extrabold sm:text-4xl">{title}</Tag>
-      {description && (
-        <p className="mt-4 text-[17px] leading-relaxed text-muted">{description}</p>
-      )}
-    </motion.div>
+    <Reveal className={align === 'center' ? 'mx-auto max-w-2xl text-center' : ''}>
+      <div
+        className={`flex items-center gap-4 ${
+          align === 'center' ? 'justify-center' : ''
+        }`}
+      >
+        {index && (
+          <span className={`section-index ${dark ? 'text-steel-400' : ''}`}>
+            {index}
+          </span>
+        )}
+        {eyebrow && (
+          <span className={`label ${dark ? 'text-steel-400' : 'label-accent'}`}>
+            {eyebrow}
+          </span>
+        )}
+        <span
+          aria-hidden
+          className={`h-px flex-1 ${dark ? 'bg-white/15' : 'bg-line'}`}
+        />
+      </div>
+
+      <div
+        className={`mt-6 flex flex-wrap items-end justify-between gap-6 ${
+          align === 'center' ? 'justify-center' : ''
+        }`}
+      >
+        <div className={align === 'center' ? '' : 'max-w-2xl'}>
+          <Tag
+            className={`text-[clamp(1.875rem,3.4vw,2.875rem)] ${
+              dark ? 'text-white' : 'text-content'
+            }`}
+          >
+            {title}
+          </Tag>
+          {description && (
+            <p
+              className={`mt-4 max-w-xl text-[1.0625rem] leading-relaxed ${
+                dark ? 'text-steel-300' : 'text-muted'
+              }`}
+            >
+              {description}
+            </p>
+          )}
+        </div>
+        {action}
+      </div>
+    </Reveal>
   );
 }

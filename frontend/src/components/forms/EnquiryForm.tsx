@@ -144,9 +144,9 @@ export default function EnquiryForm({
         initial={{ opacity: 0, scale: 0.97 }}
         animate={{ opacity: 1, scale: 1 }}
         role="status"
-        className="card flex flex-col items-center p-8 text-center sm:p-10"
+        className="flex flex-col items-center border border-line p-8 text-center sm:p-10"
       >
-        <span className="mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-primary-50 text-primary-600">
+        <span className="mb-5 flex h-14 w-14 items-center justify-center border border-primary-200 bg-primary-50 text-primary-600">
           <FiCheckCircle size={34} aria-hidden />
         </span>
         <h3 className="mb-2 text-2xl font-bold">Thank you — we&apos;ve got it!</h3>
@@ -177,7 +177,7 @@ export default function EnquiryForm({
   const sending = status === 'sending';
 
   return (
-    <form onSubmit={handleSubmit} noValidate className="card relative p-6 sm:p-8">
+    <form onSubmit={handleSubmit} noValidate className="relative border border-line p-6 sm:p-8">
       {title && <h2 className="mb-1 text-2xl font-bold">{title}</h2>}
       <p className="mb-6 text-sm text-muted">
         Fields marked <span className="text-red-600">*</span> are required. We reply

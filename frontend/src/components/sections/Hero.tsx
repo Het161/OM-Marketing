@@ -2,185 +2,188 @@
 
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
-import { FiArrowRight, FiCheckCircle, FiPhone } from 'react-icons/fi';
+import { FiArrowRight, FiPhone } from 'react-icons/fi';
 
 import { site } from '@/lib/site';
 
-const highlights = [
-  'Scales from 10 kg to 15 ton',
-  'On-site calibration & repair',
-  'Same-day support in Ahmedabad',
+/* Capability strip — reads as factory signage, and every claim is checkable. */
+const capabilities = [
+  'Table-top scales',
+  'Platform scales',
+  'Crane scales 15 T',
+  'Explosion-proof indicators',
+  'Note counters',
+  'On-site calibration',
+  'Legal Metrology stamping',
+  'Load cell replacement',
+  'Annual maintenance',
+  'Scale on rent',
 ];
 
-/* Every figure here must be verifiable. No invented customer counts. */
-const stats = [
-  { value: '10 kg – 15 T', label: 'Capacity range' },
-  { value: 'ISO', label: '9001:2008 certified' },
-  { value: 'MSME', label: 'Udyam registered' },
-  { value: 'Gujarat', label: 'Service coverage' },
+/* The spec block. Figures only — no invented customer counts. */
+const specs = [
+  { k: 'Capacity', v: '10 kg – 15 T' },
+  { k: 'Quality', v: 'ISO 9001:2008' },
+  { k: 'Registered', v: 'MSME Udyam' },
+  { k: 'Coverage', v: 'Gujarat' },
 ];
 
 export default function Hero() {
+  const reduced = useReducedMotion();
+
+  const rise = (delay: number) =>
+    reduced
+      ? {}
+      : {
+          initial: { opacity: 0, y: 16 },
+          animate: { opacity: 1, y: 0 },
+          transition: { duration: 0.6, delay, ease: [0.16, 1, 0.3, 1] as const },
+        };
+
   return (
-    <section className="relative overflow-hidden bg-ink-950">
-      {/* Ambient brand glow */}
-      <div aria-hidden className="pointer-events-none absolute inset-0">
-        <div className="absolute -left-32 -top-32 h-[28rem] w-[28rem] rounded-full bg-primary-500/25 blur-3xl" />
-        <div className="absolute -bottom-40 right-[-10%] h-[30rem] w-[30rem] rounded-full bg-accent-500/12 blur-3xl" />
-        <div
-          className="absolute inset-0 opacity-[0.4]"
-          style={{
-            backgroundImage:
-              'linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px)',
-            backgroundSize: '56px 56px',
-          }}
-        />
+    <section className="relative bg-ink-950 text-steel-50">
+      {/* Engineering grid, not a colour blob */}
+      <div aria-hidden className="pointer-events-none absolute inset-0 text-white/70">
+        <div className="grid-rule absolute inset-0" />
+        <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-ink-950 to-transparent" />
       </div>
 
-      <div className="relative mx-auto grid max-w-7xl items-center gap-12 px-4 py-16 sm:py-20 lg:grid-cols-[1.05fr_1fr] lg:gap-16 lg:py-24">
-        {/* Copy */}
-        <div>
-          <motion.span
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="mb-6 inline-flex items-center gap-2 rounded-full border border-accent-500/30 bg-accent-500/10 px-4 py-1.5 text-[13px] font-bold tracking-wide text-accent-300"
-          >
-            ⚖️ {site.certification} · {site.msme}
-          </motion.span>
+      <div className="relative mx-auto max-w-[88rem] px-4 sm:px-6 lg:px-10">
+        <div className="grid grid-cols-1 border-x border-white/10 lg:grid-cols-12 lg:gap-x-10">
+          {/* ---------------------------------------------------- copy */}
+          <div className="px-4 pb-14 pt-14 sm:px-8 lg:col-span-7 lg:pb-24 lg:pt-20">
+            <motion.div {...rise(0)} className="flex items-center gap-3">
+              <span className="label label-accent text-primary-200">
+                Naroda &amp; Nikol, Ahmedabad
+              </span>
+              <span aria-hidden className="h-px flex-1 bg-white/15" />
+              <span className="label text-steel-400">Est. Gujarat</span>
+            </motion.div>
 
-          <motion.h1
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.55, delay: 0.06 }}
-            className="text-4xl font-extrabold leading-[1.08] text-white sm:text-5xl lg:text-6xl"
-          >
-            Weighing solutions
-            <br />
-            <span className="text-gradient">Ahmedabad trusts</span>
-          </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.55, delay: 0.14 }}
-            className="mt-5 max-w-xl text-lg leading-relaxed text-ink-200"
-          >
-            Table-top, platform and crane scales, note counters and mobile
-            accessories — supplied, installed, calibrated and serviced by a team
-            that answers the phone.
-          </motion.p>
-
-          <motion.ul
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.24 }}
-            className="mt-7 flex flex-wrap gap-x-6 gap-y-2.5"
-          >
-            {highlights.map((item) => (
-              <li key={item} className="flex items-center gap-2 text-sm text-ink-200">
-                <FiCheckCircle aria-hidden className="shrink-0 text-primary-400" />
-                {item}
-              </li>
-            ))}
-          </motion.ul>
-
-          <motion.div
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            className="mt-9 flex flex-wrap gap-3"
-          >
-            <Link href="/products" className="btn-primary">
-              Browse Products <FiArrowRight aria-hidden />
-            </Link>
-            <Link
-              href="/scale-finder"
-              className="btn-outline border-white/35 text-white hover:border-white hover:bg-white hover:text-ink-900"
+            <motion.h1
+              {...rise(0.06)}
+              className="display mt-8 text-[clamp(2.75rem,7.2vw,5.25rem)] text-white"
             >
-              Which scale do I need?
-            </Link>
-            <a
-              href={`tel:${site.phoneDial}`}
-              className="btn-ghost text-ink-200 hover:bg-white/10 hover:text-white"
+              Weighing equipment,
+              <br />
+              <span className="text-primary-300">supplied and serviced.</span>
+            </motion.h1>
+
+            <motion.p
+              {...rise(0.12)}
+              className="mt-7 max-w-xl text-[1.0625rem] leading-relaxed text-steel-300"
             >
-              <FiPhone aria-hidden /> {site.phoneDisplay}
-            </a>
-          </motion.div>
+              Table-top, platform and crane scales, note counters and
+              industrial indicators — installed, calibrated and repaired by our
+              own technicians across Gujarat.
+            </motion.p>
 
-          {/* Stats */}
-          <motion.dl
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-            className="mt-11 grid max-w-lg grid-cols-2 gap-x-6 gap-y-5 border-t border-white/10 pt-7 sm:grid-cols-4"
-          >
-            {stats.map((stat) => (
-              <div key={stat.label}>
-                <dt className="sr-only">{stat.label}</dt>
-                <dd>
-                  <span className="block font-[family-name:var(--font-display)] text-2xl font-extrabold text-white">
-                    {stat.value}
-                  </span>
-                  <span className="mt-0.5 block text-xs text-ink-400">{stat.label}</span>
-                </dd>
-              </div>
-            ))}
-          </motion.dl>
-        </div>
+            <motion.div {...rise(0.18)} className="mt-9 flex flex-wrap items-center gap-3">
+              <Link
+                href="/products"
+                className="btn-secondary group h-12 px-6 text-[0.9375rem]"
+              >
+                View the range
+                <FiArrowRight
+                  aria-hidden
+                  className="transition-transform duration-200 group-hover:translate-x-0.5"
+                />
+              </Link>
+              <Link
+                href="/scale-finder"
+                className="btn-outline h-12 border-white/25 px-6 text-[0.9375rem] text-white hover:border-white hover:bg-white hover:text-ink-950"
+              >
+                Specify my scale
+              </Link>
+              <a
+                href={`tel:${site.phoneDial}`}
+                className="data ml-1 inline-flex h-12 items-center gap-2 text-[0.9375rem] text-steel-300 transition-colors hover:text-white"
+              >
+                <FiPhone aria-hidden size={15} /> {site.phoneDisplay}
+              </a>
+            </motion.div>
 
-        {/* Imagery */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.94 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.7, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-          className="relative"
-        >
-          <div className="relative aspect-[4/5] overflow-hidden rounded-3xl border border-white/10 shadow-2xl sm:aspect-[4/3] lg:aspect-[4/5]">
-            <Image
-              src="/images/heavy-platform-scale.jpg"
-              alt="Heavy-duty chequered-plate platform scale with digital indicator, supplied by OM Marketing"
-              fill
-              priority
-              sizes="(max-width: 1024px) 100vw, 45vw"
-              className="object-cover"
-            />
-            <div
-              aria-hidden
-              className="absolute inset-0 bg-gradient-to-t from-ink-950/70 via-transparent to-transparent"
-            />
+            {/* Spec table — a drawing block, not stat cards */}
+            <motion.dl
+              {...rise(0.26)}
+              className="mt-14 grid max-w-xl grid-cols-2 border-t border-white/12 sm:grid-cols-4"
+            >
+              {specs.map((spec) => (
+                <div
+                  key={spec.k}
+                  className="border-b border-r border-white/12 py-4 pr-4 last:border-r-0 sm:border-b-0"
+                >
+                  <dt className="label text-steel-400">{spec.k}</dt>
+                  <dd className="data mt-2 text-[0.9375rem] font-medium text-white">
+                    {spec.v}
+                  </dd>
+                </div>
+              ))}
+            </motion.dl>
           </div>
 
-          {/* Floating spec chip */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.55 }}
-            className="absolute -bottom-5 -left-3 rounded-2xl border border-line bg-surface p-4 shadow-xl sm:-left-6"
+          {/* --------------------------------------------------- image */}
+          <motion.figure
+            {...rise(0.1)}
+            className="relative border-white/10 lg:col-span-5 lg:border-l"
           >
-            <span className="block text-[11px] font-bold uppercase tracking-wide text-subtle">
-              Platform scales from
-            </span>
-            <span className="font-[family-name:var(--font-display)] text-2xl font-extrabold text-primary-600">
-              ₹8,500
-            </span>
-          </motion.div>
+            <div className="relative h-full min-h-[22rem] overflow-hidden lg:min-h-full">
+              <Image
+                src="/images/heavy-platform-scale.jpg"
+                alt="Chequered-plate platform scale with pole-mounted digital indicator"
+                fill
+                priority
+                sizes="(max-width: 1024px) 100vw, 42vw"
+                className="object-cover"
+              />
+              {/* Unify an uneven phone photo: desaturate, deepen, cool it */}
+              <div
+                aria-hidden
+                className="absolute inset-0 bg-ink-950/35 mix-blend-multiply"
+              />
+              <div
+                aria-hidden
+                className="absolute inset-0 bg-gradient-to-t from-ink-950 via-ink-950/10 to-transparent"
+              />
 
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.65 }}
-            className="absolute -right-3 top-6 rounded-2xl border border-line bg-surface px-4 py-3 shadow-xl sm:-right-6"
-          >
-            <span className="flex items-center gap-2 text-sm font-bold text-content">
-              <span className="flex h-2.5 w-2.5 shrink-0 rounded-full bg-green-500" />
-              Service in 24 hrs
-            </span>
-          </motion.div>
-        </motion.div>
+              {/* Corner register marks — a drawing convention */}
+              <span aria-hidden className="absolute left-4 top-4 h-5 w-5 border-l border-t border-white/35" />
+              <span aria-hidden className="absolute right-4 top-4 h-5 w-5 border-r border-t border-white/35" />
+
+              <figcaption className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-5">
+                <span className="label text-steel-300">
+                  MS platform · 400×400 mm
+                </span>
+                <span className="data text-right text-sm text-white">
+                  <span className="label block text-steel-400">From</span>₹8,500
+                </span>
+              </figcaption>
+            </div>
+          </motion.figure>
+        </div>
+      </div>
+
+      {/* Capability ticker */}
+      <div className="marquee relative overflow-hidden border-y border-white/10 bg-ink-900/60 py-3.5">
+        <div className="marquee-track">
+          {[0, 1].map((copy) => (
+            <ul
+              key={copy}
+              aria-hidden={copy === 1}
+              className="flex shrink-0 items-center"
+            >
+              {capabilities.map((item) => (
+                <li key={item} className="flex items-center whitespace-nowrap px-6">
+                  <span className="label text-steel-400">{item}</span>
+                  <span aria-hidden className="ml-6 h-1 w-1 bg-primary-400" />
+                </li>
+              ))}
+            </ul>
+          ))}
+        </div>
       </div>
     </section>
   );

@@ -8,6 +8,7 @@ import { Suspense } from 'react';
 import { FiCheck, FiClock, FiPhone, FiShield, FiTool } from 'react-icons/fi';
 
 import EnquiryForm from '@/components/forms/EnquiryForm';
+import PageHeader from '@/components/layout/PageHeader';
 import SectionHeading from '@/components/ui/SectionHeading';
 import { serviceTypes, site } from '@/lib/site';
 
@@ -44,35 +45,12 @@ function ServicesContent() {
 
   return (
     <>
-      <header className="gradient-primary relative overflow-hidden px-4 py-16 sm:py-20">
-        <div
-          aria-hidden
-          className="pointer-events-none absolute -left-24 -bottom-28 h-80 w-80 rounded-full bg-accent-500/20 blur-3xl"
-        />
-        <div className="relative mx-auto max-w-3xl text-center">
-          <span className="mb-3 inline-block text-[13px] font-bold uppercase tracking-[0.14em] text-accent-300">
-            Service &amp; support
-          </span>
-          <h1 className="text-4xl font-extrabold text-white sm:text-5xl">
-            Calibration, repair &amp; AMC
-          </h1>
-          <p className="mx-auto mt-4 max-w-xl text-lg leading-relaxed text-primary-100">
-            An inaccurate scale quietly costs you money on every single
-            transaction. Keep yours accurate, compliant and working.
-          </p>
-          <div className="mt-8 flex flex-wrap justify-center gap-3">
-            <a href="#book" className="btn-secondary">
-              Book a service
-            </a>
-            <a
-              href={`tel:${site.phoneDial}`}
-              className="btn-outline border-white/40 text-white hover:border-white hover:bg-white hover:text-primary-700"
-            >
-              <FiPhone aria-hidden /> {site.phoneDisplay}
-            </a>
-          </div>
-        </div>
-      </header>
+      <PageHeader
+        index="/ 04"
+        eyebrow="Service & support"
+        title={<>Calibration, repair &amp; AMC</>}
+        lead="An inaccurate scale quietly costs you money on every transaction. Keep yours accurate, compliant and working."
+      />
 
       {/* Promises */}
       <section className="border-b border-line bg-surface-2 px-4 py-10">

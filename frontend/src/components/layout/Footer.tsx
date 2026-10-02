@@ -19,8 +19,8 @@ export default function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="bg-ink-950 text-ink-200">
-      <div className="mx-auto max-w-7xl px-4 py-14">
+    <footer className="border-t border-line bg-ink-950 text-steel-300">
+      <div className="mx-auto max-w-[88rem] px-4 py-16 sm:px-6 lg:px-10">
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
           {/* Company */}
           <div>
@@ -36,18 +36,22 @@ export default function Footer() {
                 OM MARKETING
               </span>
             </div>
-            <p className="mb-4 text-sm leading-relaxed text-ink-300">
+            <p className="mb-5 max-w-xs text-[0.9375rem] leading-relaxed text-steel-400">
               {site.certification} supplier of weighing scales, note counters and
               mobile accessories — serving businesses across Gujarat.
             </p>
-            <div className="flex flex-wrap gap-2">
-              <span className="inline-flex items-center gap-2 rounded-full border border-accent-500/30 bg-accent-500/10 px-3 py-1 text-xs font-bold tracking-wide text-accent-300">
-                ⚖️ {site.certification}
-              </span>
-              <span className="inline-flex items-center gap-2 rounded-full border border-primary-400/30 bg-primary-400/10 px-3 py-1 text-xs font-bold tracking-wide text-primary-200">
-                {site.msme}
-              </span>
-            </div>
+            <dl className="border-t border-white/10">
+              {[
+                ['Quality', site.certification],
+                ['Registered', site.msme],
+                ['Udyam', site.udyam],
+              ].map(([k, v]) => (
+                <div key={k} className="flex justify-between gap-4 border-b border-white/10 py-2.5">
+                  <dt className="label text-steel-500">{k}</dt>
+                  <dd className="data text-xs text-steel-300">{v}</dd>
+                </div>
+              ))}
+            </dl>
 
             <div className="mt-5">
               <a
@@ -55,7 +59,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="OM Marketing on Instagram"
-                className="inline-flex h-11 w-11 items-center justify-center rounded-lg bg-white/5 text-ink-200 transition-colors hover:bg-accent-500 hover:text-ink-900"
+                className="inline-flex h-10 w-10 items-center justify-center border border-white/15 text-steel-300 transition-colors hover:border-white hover:bg-white hover:text-ink-950"
               >
                 <FiInstagram size={19} aria-hidden />
               </a>
@@ -64,7 +68,7 @@ export default function Footer() {
 
           {/* Quick links */}
           <nav aria-labelledby="footer-links">
-            <h2 id="footer-links" className="mb-4 font-semibold text-white">
+            <h2 id="footer-links" className="label mb-5 text-steel-500">
               Quick Links
             </h2>
             <ul className="space-y-1">
@@ -72,7 +76,7 @@ export default function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="inline-flex min-h-[38px] items-center text-sm text-ink-300 transition-colors hover:text-accent-400"
+                    className="inline-flex min-h-[34px] items-center text-[0.9375rem] text-steel-300 transition-colors hover:text-white"
                   >
                     {link.label}
                   </Link>
@@ -83,7 +87,7 @@ export default function Footer() {
 
           {/* Products + services */}
           <nav aria-labelledby="footer-catalogue">
-            <h2 id="footer-catalogue" className="mb-4 font-semibold text-white">
+            <h2 id="footer-catalogue" className="label mb-5 text-steel-500">
               What We Do
             </h2>
             <ul className="space-y-1">
@@ -91,7 +95,7 @@ export default function Footer() {
                 <li key={category.value}>
                   <Link
                     href={`/products?category=${category.value}`}
-                    className="inline-flex min-h-[38px] items-center text-sm text-ink-300 transition-colors hover:text-accent-400"
+                    className="inline-flex min-h-[34px] items-center text-[0.9375rem] text-steel-300 transition-colors hover:text-white"
                   >
                     {category.label}
                   </Link>
@@ -101,7 +105,7 @@ export default function Footer() {
                 <li key={service.value}>
                   <Link
                     href={`/services?type=${service.value}`}
-                    className="inline-flex min-h-[38px] items-center text-sm text-ink-300 transition-colors hover:text-accent-400"
+                    className="inline-flex min-h-[34px] items-center text-[0.9375rem] text-steel-300 transition-colors hover:text-white"
                   >
                     {service.label}
                   </Link>
@@ -112,15 +116,15 @@ export default function Footer() {
 
           {/* Contact */}
           <div>
-            <h2 className="mb-4 font-semibold text-white">Get in Touch</h2>
+            <h2 className="label mb-5 text-steel-500">Get in Touch</h2>
             <ul className="space-y-3 text-sm">
               <li className="flex items-start gap-3">
-                <FiMapPin aria-hidden className="mt-0.5 shrink-0 text-accent-400" />
+                <FiMapPin aria-hidden className="mt-0.5 shrink-0 text-steel-500" />
                 <a
                   href={site.mapsUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-ink-300 transition-colors hover:text-accent-400"
+                  className="text-steel-300 transition-colors hover:text-white"
                 >
                   {site.addressLine}
                   <br />
@@ -128,26 +132,26 @@ export default function Footer() {
                 </a>
               </li>
               <li className="flex items-center gap-3">
-                <FiPhone aria-hidden className="shrink-0 text-accent-400" />
+                <FiPhone aria-hidden className="shrink-0 text-steel-500" />
                 <a
                   href={`tel:${site.phoneDial}`}
-                  className="text-ink-300 transition-colors hover:text-accent-400"
+                  className="text-steel-300 transition-colors hover:text-white"
                 >
                   {site.phoneDisplay}
                 </a>
               </li>
               <li className="flex items-start gap-3">
-                <FiMail aria-hidden className="mt-0.5 shrink-0 text-accent-400" />
+                <FiMail aria-hidden className="mt-0.5 shrink-0 text-steel-500" />
                 <a
                   href={`mailto:${site.email}`}
-                  className="break-all text-ink-300 transition-colors hover:text-accent-400"
+                  className="break-all text-steel-300 transition-colors hover:text-white"
                 >
                   {site.email}
                 </a>
               </li>
               <li className="flex items-start gap-3">
-                <FiClock aria-hidden className="mt-0.5 shrink-0 text-accent-400" />
-                <span className="text-ink-300">
+                <FiClock aria-hidden className="mt-0.5 shrink-0 text-steel-500" />
+                <span className="text-steel-300">
                   {site.hours.map((h) => (
                     <span key={h.days} className="block">
                       {h.days}: {h.time}
@@ -159,15 +163,15 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col items-center justify-between gap-3 border-t border-white/10 pt-7 text-sm text-ink-400 sm:flex-row">
+        <div className="mt-14 flex flex-col items-center justify-between gap-3 border-t border-white/10 pt-7 sm:flex-row">
           <p>
             © {year} {site.name}. All rights reserved.
           </p>
           <p className="flex items-center gap-4">
-            <Link href="/privacy" className="transition-colors hover:text-accent-400">
+            <Link href="/privacy" className="transition-colors hover:text-white">
               Privacy Policy
             </Link>
-            <Link href="/terms" className="transition-colors hover:text-accent-400">
+            <Link href="/terms" className="transition-colors hover:text-white">
               Terms &amp; Conditions
             </Link>
           </p>

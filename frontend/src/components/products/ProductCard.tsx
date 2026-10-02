@@ -2,10 +2,9 @@
 
 'use client';
 
-import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { useState } from 'react';
-import { FiCheck, FiFilePlus, FiMessageCircle } from 'react-icons/fi';
+import { useMemo, useState } from 'react';
+import { FiCheck, FiPlus } from 'react-icons/fi';
 
 import ProductImage from '@/components/products/ProductImage';
 import { categoryLabels, whatsappLink } from '@/lib/site';
@@ -22,17 +21,46 @@ export interface Product {
   specifications?: string;
 }
 
-const categoryStyles: Record<string, string> = {
-  weighing_scale: 'bg-primary-500 text-white',
-  note_counter: 'bg-accent-500 text-ink-900',
-  mobile_accessory: 'bg-purple-600 text-white',
-};
+/* Which spec keys are worth showing on a card, in priority order. A scale
+   buyer scans for capacity and platform size — not marketing prose. */
+const SPEC_PRIORITY = [
+  'capacity',
+  'platform_size',
+  'accuracy',
+  'accuracy_class',
+  'graduation',
+  'display',
+  'material',
+  'power',
+  'brand',
+  'model',
+];
+
+function readSpecs(raw?: string): Array<[string, string]> {
+  if (!raw) return [];
+  try {
+    const parsed = JSON.parse(raw);
+    if (!parsed || typeof parsed !== 'object') return [];
+    const entries = Object.entries(parsed as Record<string, unknown>);
+    entries.sort((a, b) => {
+      const ia = SPEC_PRIORITY.indexOf(a[0].toLowerCase());
+      const ib = SPEC_PRIORITY.indexOf(b[0].toLowerCase());
+      return (ia < 0 ? 99 : ia) - (ib < 0 ? 99 : ib);
+    });
+    return entries
+      .slice(0, 3)
+      .map(([k, v]) => [k.replace(/_/g, ' '), String(v)] as [string, string]);
+  } catch {
+    return [];
+  }
+}
 
 export default function ProductCard(product: Product) {
   const { id, name, category, price, image_url, description, stock_quantity } = product;
   const addItem = useQuoteStore((s) => s.addItem);
   const [added, setAdded] = useState(false);
 
+  const specs = useMemo(() => readSpecs(product.specifications), [product.specifications]);
   const inStock = stock_quantity > 0;
 
   const handleAdd = () => {
@@ -42,105 +70,115 @@ export default function ProductCard(product: Product) {
   };
 
   return (
-    <motion.article
-      whileHover={{ y: -6 }}
-      transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-      className="card group flex h-full flex-col"
-    >
+    <article className="group relative flex h-full flex-col border border-line bg-surface transition-colors duration-200 hover:border-ink-900">
+      {/* Image plate */}
       <Link
         href={`/products/${id}`}
-        className="relative block aspect-[4/3] overflow-hidden bg-surface-3"
         tabIndex={-1}
         aria-hidden
+        className="relative block aspect-[5/4] overflow-hidden bg-surface-3"
       >
         <ProductImage
           src={image_url}
           alt={name}
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
-          className="object-cover transition-transform duration-500 group-hover:scale-105"
+          className="object-cover transition-transform duration-[600ms] ease-[cubic-bezier(.16,1,.3,1)] group-hover:scale-[1.03]"
+        />
+        <span
+          aria-hidden
+          className="absolute inset-0 bg-ink-950/0 transition-colors duration-200 group-hover:bg-ink-950/5"
         />
 
-        <span
-          className={`pill absolute left-3 top-3 ${
-            categoryStyles[category] ?? 'bg-ink-700 text-white'
-          }`}
-        >
-          {categoryLabels[category] ?? category.replace(/_/g, ' ')}
+        {/* Reference code, bottom-left, like a part number */}
+        <span className="label absolute bottom-0 left-0 bg-ink-950 px-2.5 py-1.5 text-steel-300">
+          {categoryLabels[category]?.replace(/\s+/g, '-').toUpperCase() ?? category}
+          <span className="ml-1.5 text-white">·{String(id).padStart(3, '0')}</span>
         </span>
 
-        {!inStock && (
-          <span className="pill absolute right-3 top-3 bg-ink-900/85 text-white">
-            Made to order
+        {!inStock ? (
+          <span className="pill absolute right-3 top-3 bg-accent-300 text-ink-900">
+            To order
           </span>
-        )}
+        ) : stock_quantity < 10 ? (
+          <span className="pill absolute right-3 top-3 bg-ink-950/85 text-accent-200">
+            {stock_quantity} left
+          </span>
+        ) : null}
       </Link>
 
+      {/* Body */}
       <div className="flex flex-1 flex-col p-5">
-        <h3 className="mb-2 text-[17px] font-bold leading-snug">
-          <Link
-            href={`/products/${id}`}
-            className="line-clamp-2 transition-colors hover:text-primary-600"
-          >
+        <h3 className="text-[1.0625rem] font-semibold leading-snug tracking-[-0.01em]">
+          <Link href={`/products/${id}`} className="after:absolute after:inset-0">
             {name}
           </Link>
         </h3>
 
-        {description && (
-          <p className="mb-4 line-clamp-2 text-sm leading-relaxed text-muted">
-            {description}
-          </p>
+        {/* Spec rows — the real content */}
+        {specs.length > 0 ? (
+          <dl className="mt-4 border-t border-line">
+            {specs.map(([key, value]) => (
+              <div
+                key={key}
+                className="grid grid-cols-[minmax(0,1fr)_minmax(0,auto)] items-baseline gap-3 border-b border-line py-2"
+              >
+                <dt className="label">{key}</dt>
+                <dd className="data min-w-0 truncate text-right text-[0.8125rem] text-content">
+                  {value}
+                </dd>
+              </div>
+            ))}
+          </dl>
+        ) : (
+          description && (
+            <p className="mt-3 line-clamp-2 text-sm leading-relaxed text-muted">
+              {description}
+            </p>
+          )
         )}
 
-        <div className="mt-auto">
-          <div className="mb-4 flex items-end justify-between gap-2">
-            <div>
-              <span className="block text-[11px] font-semibold uppercase tracking-wide text-subtle">
-                Starting at
-              </span>
-              <span className="font-[family-name:var(--font-display)] text-2xl font-extrabold text-primary-600">
-                ₹{price.toLocaleString('en-IN')}
-              </span>
-            </div>
-            {inStock && stock_quantity < 10 && (
-              <span className="pill bg-accent-100 text-accent-800">
-                Only {stock_quantity} left
-              </span>
-            )}
+        {/* Price + action */}
+        <div className="mt-auto flex items-end justify-between gap-4 pt-5">
+          <div>
+            <span className="label block">From</span>
+            <span className="data mt-1 block text-[1.375rem] font-semibold tracking-tight">
+              ₹{price.toLocaleString('en-IN')}
+            </span>
           </div>
 
-          <div className="flex gap-2">
-            <button
-              type="button"
-              onClick={handleAdd}
-              className="btn-primary h-11 flex-1 px-3 text-sm"
-              aria-live="polite"
-            >
-              {added ? (
-                <>
-                  <FiCheck aria-hidden /> Added
-                </>
-              ) : (
-                <>
-                  <FiFilePlus aria-hidden /> Add to Quote
-                </>
-              )}
-            </button>
-
+          <div className="relative z-10 flex items-center gap-2">
             <a
               href={whatsappLink(
-                `Hello OM Marketing, I'm interested in "${name}" (₹${price.toLocaleString('en-IN')}). Could you share the best price and availability?`,
+                `Hello OM Marketing, I'd like details on "${name}" (ref ${String(id).padStart(3, '0')}).`,
               )}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label={`Enquire about ${name} on WhatsApp`}
-              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[0.625rem] bg-[#25D366] text-white transition-transform duration-200 hover:scale-105"
+              aria-label={`Ask about ${name} on WhatsApp`}
+              className="label flex h-10 items-center border border-line px-3 text-content transition-colors hover:border-ink-900 hover:bg-ink-950 hover:text-white"
             >
-              <FiMessageCircle size={19} aria-hidden />
+              Ask
             </a>
+            <button
+              type="button"
+              onClick={handleAdd}
+              aria-live="polite"
+              className="label flex h-10 items-center gap-1.5 bg-ink-950 px-3.5 text-white transition-colors hover:bg-primary-500"
+            >
+              {added ? (
+                <>
+                  <FiCheck aria-hidden size={13} /> Added
+                </>
+              ) : (
+                <>
+                  <FiPlus aria-hidden size={13} /> Quote
+                </>
+              )}
+            </button>
           </div>
         </div>
+
       </div>
-    </motion.article>
+    </article>
   );
 }

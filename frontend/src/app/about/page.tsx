@@ -13,6 +13,7 @@ import {
   FiUsers,
 } from 'react-icons/fi';
 
+import PageHeader from '@/components/layout/PageHeader';
 import SectionHeading from '@/components/ui/SectionHeading';
 import { site } from '@/lib/site';
 
@@ -63,24 +64,18 @@ const industries = [
 export default function AboutPage() {
   return (
     <>
-      <header className="gradient-primary relative overflow-hidden px-4 py-16 sm:py-20">
-        <div
-          aria-hidden
-          className="pointer-events-none absolute -right-24 -top-24 h-80 w-80 rounded-full bg-accent-500/20 blur-3xl"
-        />
-        <div className="relative mx-auto max-w-3xl text-center">
-          <span className="mb-3 inline-block text-[13px] font-bold uppercase tracking-[0.14em] text-accent-300">
-            {site.msme} · Nikol, Ahmedabad
-          </span>
-          <h1 className="text-4xl font-extrabold text-white sm:text-5xl">
-            The people behind the scales
-          </h1>
-          <p className="mx-auto mt-4 max-w-xl text-lg leading-relaxed text-primary-100">
-            {site.name} helps Gujarat&apos;s shops, warehouses and factories
-            weigh accurately — and keeps them that way.
-          </p>
-        </div>
-      </header>
+      <PageHeader
+        index="/ 03"
+        eyebrow="The company"
+        title={<>The people behind the scales</>}
+        lead="OM Marketing helps Gujarat's shops, warehouses and factories weigh accurately — and keeps them that way."
+        meta={[
+          { k: 'Registered', v: 'MSME Udyam' },
+          { k: 'Quality', v: 'ISO 9001:2008' },
+          { k: 'Udyam No.', v: site.udyam },
+          { k: 'Base', v: 'Nikol, Ahmedabad' },
+        ]}
+      />
 
       {/* Stats */}
       <section aria-label="Company at a glance" className="border-b border-line bg-surface-2 px-4 py-10">
@@ -217,16 +212,16 @@ export default function AboutPage() {
       {/* CTA */}
       <section className="px-4 pb-16 sm:pb-20">
         <div className="mx-auto max-w-7xl">
-          <div className="gradient-primary relative overflow-hidden rounded-3xl px-6 py-14 text-center sm:px-12">
+          <div className="relative overflow-hidden border border-line bg-ink-950 px-6 py-16 text-center sm:px-12">
             <div
               aria-hidden
-              className="pointer-events-none absolute -bottom-24 -left-24 h-80 w-80 rounded-full bg-accent-500/20 blur-3xl"
+              className="grid-rule pointer-events-none absolute inset-0 text-white/70"
             />
             <div className="relative mx-auto max-w-2xl">
-              <h2 className="mb-4 text-3xl font-extrabold text-white sm:text-4xl">
+              <h2 className="display mb-5 text-[clamp(1.875rem,3.6vw,3rem)] text-white">
                 Come and see us in Nikol
               </h2>
-              <p className="mb-8 text-lg leading-relaxed text-primary-100">
+              <p className="mx-auto mb-9 max-w-xl text-[1.0625rem] leading-relaxed text-steel-300">
                 Bring your requirement — or your faulty scale — and we&apos;ll tell
                 you honestly what it needs.
               </p>
@@ -241,7 +236,7 @@ export default function AboutPage() {
                 </a>
                 <Link
                   href="/contact"
-                  className="btn-outline border-white/40 text-white hover:border-white hover:bg-white hover:text-primary-700"
+                  className="btn-outline border-white/25 text-white hover:border-white hover:bg-white hover:text-ink-950"
                 >
                   Contact us
                 </Link>

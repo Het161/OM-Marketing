@@ -19,7 +19,7 @@ export default function Accordion({ items }: { items: AccordionItem[] }) {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
-    <div className="divide-y divide-line overflow-hidden rounded-2xl border border-line bg-surface">
+    <div className="border-t border-line">
       {items.map((item, index) => {
         const isOpen = openIndex === index;
 
@@ -32,13 +32,16 @@ export default function Accordion({ items }: { items: AccordionItem[] }) {
                 aria-expanded={isOpen}
                 aria-controls={`faq-panel-${index}`}
                 id={`faq-button-${index}`}
-                className="flex w-full items-center justify-between gap-4 px-5 py-5 text-left text-[15px] font-semibold transition-colors hover:bg-surface-2 sm:px-6"
+                className="group flex w-full items-center justify-between gap-6 border-b border-line py-5 text-left text-[0.9375rem] font-semibold tracking-[-0.01em] transition-colors hover:text-brand"
               >
-                <span>{item.question}</span>
+                <span className="flex items-baseline gap-5">
+                  <span className="section-index">{String(index + 1).padStart(2, '0')}</span>
+                  {item.question}
+                </span>
                 <motion.span
                   animate={{ rotate: isOpen ? 180 : 0 }}
                   transition={{ duration: 0.2 }}
-                  className="shrink-0 text-primary-500"
+                  className="shrink-0 text-subtle transition-colors group-hover:text-brand"
                 >
                   <FiChevronDown size={20} aria-hidden />
                 </motion.span>
@@ -58,7 +61,7 @@ export default function Accordion({ items }: { items: AccordionItem[] }) {
                   transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
                   className="overflow-hidden"
                 >
-                  <div className="px-5 pb-5 text-[15px] leading-relaxed text-muted sm:px-6">
+                  <div className="max-w-2xl border-b border-line pb-6 pr-10 text-[0.9375rem] leading-relaxed text-muted">
                     {item.answer}
                   </div>
                 </motion.div>

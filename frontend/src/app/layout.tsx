@@ -9,8 +9,10 @@
 
 import type { Metadata, Viewport } from 'next';
 
+import '@fontsource-variable/archivo';
 import '@fontsource-variable/inter';
-import '@fontsource-variable/plus-jakarta-sans';
+import '@fontsource/ibm-plex-mono/400.css';
+import '@fontsource/ibm-plex-mono/500.css';
 import './globals.css';
 
 import SiteChrome from '@/components/layout/SiteChrome';
@@ -74,8 +76,8 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#008080' },
-    { media: '(prefers-color-scheme: dark)', color: '#0f1619' },
+    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
+    { media: '(prefers-color-scheme: dark)', color: '#0b0b0a' },
   ],
   width: 'device-width',
   initialScale: 1,

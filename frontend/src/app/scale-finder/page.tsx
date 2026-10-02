@@ -9,6 +9,7 @@ import { FiArrowLeft, FiCheck, FiFilePlus, FiMessageCircle, FiRefreshCw } from '
 
 import ProductCard, { type Product } from '@/components/products/ProductCard';
 import { ProductGridSkeleton } from '@/components/products/ProductCardSkeleton';
+import PageHeader from '@/components/layout/PageHeader';
 import SectionHeading from '@/components/ui/SectionHeading';
 import { site, whatsappLink } from '@/lib/site';
 import { productApi } from '@/services/api';
@@ -243,24 +244,12 @@ export default function ScaleFinderPage() {
 
   return (
     <>
-      <header className="gradient-primary relative overflow-hidden px-4 py-14 sm:py-16">
-        <div
-          aria-hidden
-          className="pointer-events-none absolute -right-24 -top-24 h-80 w-80 rounded-full bg-accent-500/20 blur-3xl"
-        />
-        <div className="relative mx-auto max-w-3xl text-center">
-          <span className="mb-3 inline-block text-[13px] font-bold uppercase tracking-[0.14em] text-accent-300">
-            Takes under a minute
-          </span>
-          <h1 className="text-4xl font-extrabold text-white sm:text-5xl">
-            Which scale do I need?
-          </h1>
-          <p className="mx-auto mt-4 max-w-xl text-lg leading-relaxed text-primary-100">
-            Three quick questions and we&apos;ll shortlist the models that actually
-            fit your job — no jargon.
-          </p>
-        </div>
-      </header>
+      <PageHeader
+        index="/ 05"
+        eyebrow="Specify"
+        title={<>Which scale do I need?</>}
+        lead="Three quick questions and we'll shortlist the models that actually fit your job — no jargon."
+      />
 
       <section className="px-4 py-14 sm:py-16">
         <div className="mx-auto max-w-3xl">
