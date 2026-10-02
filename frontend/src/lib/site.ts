@@ -10,7 +10,12 @@ export const site = {
   tagline: 'Weighing Solutions You Can Trust',
   owner: 'Het Patel',
 
-  /** Legal entity as registered under Udyam (MSME). Printed on invoices. */
+  /**
+   * Legal entity as registered under Udyam (MSME). Printed on invoices.
+   * The shop address below is deliberately the same: Google's local ranking
+   * rewards an identical name/address/phone across the site, the bills and
+   * the Google Business Profile.
+   */
   registeredName: 'OM Marketing',
   registeredAddress: 'A-104, Het Patel Building, Nikol, Ahmedabad, Gujarat 382350',
   udyam: 'UDYAM-GJ-01-0593027',
@@ -23,18 +28,17 @@ export const site = {
   instagram: 'ommarketing_scales',
   instagramUrl: 'https://instagram.com/ommarketing_scales',
 
-  addressLine: 'Naroda, Ahmedabad',
-  addressRegion: 'Gujarat, India',
-  addressFull: 'Naroda, Ahmedabad, Gujarat, India',
-  mapsUrl: 'https://www.google.com/maps/search/?api=1&query=OM+Marketing+Weighing+Scales+Naroda+Ahmedabad',
+  addressLine: 'A-104, Het Patel Building, Nikol',
+  addressRegion: 'Ahmedabad, Gujarat 382350',
+  addressFull: 'A-104, Het Patel Building, Nikol, Ahmedabad, Gujarat 382350',
+  mapsUrl:
+    'https://www.google.com/maps/search/?api=1&query=OM+Marketing+Weighing+Scales+Nikol+Ahmedabad+382350',
 
   certification: 'ISO 9001:2008 Certified',
   msme: 'MSME / Udyam Registered',
 
-  hours: [
-    { days: 'Monday – Saturday', time: '9:00 AM – 7:00 PM' },
-    { days: 'Sunday', time: 'Closed' },
-  ],
+  hours: [{ days: 'Every day', time: 'Open 24 hours' }],
+  hoursShort: 'Open 24 hours',
 } as const;
 
 /** Build a WhatsApp deep link with a pre-filled message. */

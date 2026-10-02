@@ -121,7 +121,7 @@ export default function Navbar() {
           </div>
           <div className="flex items-center gap-6">
             <span className="flex items-center gap-2 text-primary-100">
-              <FiClock aria-hidden size={14} /> Mon–Sat, 9:00 AM – 7:00 PM
+              <FiClock aria-hidden size={14} /> {site.hoursShort} · 7 days
             </span>
             <span className="rounded-full bg-accent-500/20 px-3 py-0.5 font-semibold text-accent-200">
               {site.certification}

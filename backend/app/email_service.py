@@ -217,7 +217,7 @@ def send_customer_welcome(enquiry) -> bool:
 <div style="background:#e6f6f6;border-left:4px solid {BRAND};border-radius:8px;padding:14px 16px;margin:0 0 22px;">
   <div style="font-size:14px;color:{INK};line-height:1.6;">
     <strong>We usually reply within a few working hours.</strong><br>
-    Business hours: Monday–Saturday, 9:00&nbsp;AM – 7:00&nbsp;PM.
+    We're reachable round the clock, seven days a week.
   </div>
 </div>
 
@@ -259,7 +259,7 @@ Message: {enquiry.message or '-'}
 {enquiry.items_summary or ''}
 
 We usually reply within a few working hours.
-Business hours: Monday-Saturday, 9:00 AM - 7:00 PM.
+We're reachable round the clock, seven days a week.
 
 Call {settings.BUSINESS_PHONE_DISPLAY} or WhatsApp us any time.
 

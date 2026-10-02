@@ -43,7 +43,7 @@ const whyUs = [
   {
     icon: FiHeadphones,
     title: 'A real person answers',
-    body: `Call ${site.phoneDisplay} during business hours and speak to someone who knows the products.`,
+    body: `Call ${site.phoneDisplay} any time and speak to someone who knows the products.`,
   },
 ];
 
@@ -80,7 +80,7 @@ const faqs = [
   {
     question: 'Which areas do you serve?',
     answer:
-      'We are based in Naroda, Ahmedabad and serve customers across Gujarat. On-site service in and around Ahmedabad is usually arranged within 24 hours; elsewhere in Gujarat we schedule a visit or arrange courier repair.',
+      'We are based in Nikol, Ahmedabad and serve customers across Gujarat. On-site service in and around Ahmedabad is usually arranged within 24 hours; elsewhere in Gujarat we schedule a visit or arrange courier repair.',
   },
 ];
 
@@ -363,7 +363,7 @@ export default function HomePage() {
             <SectionHeading
               align="left"
               eyebrow="Come and see us"
-              title="Naroda, Ahmedabad"
+              title="Nikol, Ahmedabad"
               description="Drop in to see the scales in person, or call ahead and we'll have the models you're considering ready on the counter."
             />
 

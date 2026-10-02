@@ -43,8 +43,7 @@ export default function BillPreview({ invoice }: { invoice: Invoice }) {
           <p className="font-[family-name:var(--font-display)] text-2xl font-extrabold tracking-tight">
             {site.registeredName.toUpperCase()}
           </p>
-          {/* A bill is a legal document, so it carries the registered address
-              rather than the Naroda shop address shown on the website. */}
+          {/* The registered address, which is also the shop address. */}
           <p className="mt-1.5 text-[12px] leading-relaxed text-primary-100">
             {site.registeredAddress}
             <br />

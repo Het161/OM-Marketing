@@ -18,7 +18,7 @@ import { site } from '@/lib/site';
 
 export const metadata: Metadata = {
   title: 'About Us',
-  description: `OM Marketing is an ISO 9001:2008 certified, MSME-registered weighing scale supplier in Naroda, Ahmedabad, serving businesses across Gujarat.`,
+  description: `OM Marketing is an ISO 9001:2008 certified, MSME-registered weighing scale supplier in Nikol, Ahmedabad, serving businesses across Gujarat.`,
   alternates: { canonical: '/about' },
 };
 
@@ -45,7 +45,7 @@ const values = [
   },
   {
     title: 'Answer the phone',
-    body: `Call ${site.phoneDisplay} in business hours and you get a person who knows the products, not a call queue.`,
+    body: `Call ${site.phoneDisplay} at any hour and you get a person who knows the products, not a call queue.`,
   },
 ];
 
@@ -70,7 +70,7 @@ export default function AboutPage() {
         />
         <div className="relative mx-auto max-w-3xl text-center">
           <span className="mb-3 inline-block text-[13px] font-bold uppercase tracking-[0.14em] text-accent-300">
-            {site.msme} · Naroda, Ahmedabad
+            {site.msme} · Nikol, Ahmedabad
           </span>
           <h1 className="text-4xl font-extrabold text-white sm:text-5xl">
             The people behind the scales
@@ -119,7 +119,7 @@ export default function AboutPage() {
                 someone who did.
               </p>
               <p>
-                From our base in Naroda, Ahmedabad we supply the full range — 10 kg
+                From our base in Nikol, Ahmedabad we supply the full range — 10 kg
                 counter scales for a kirana shop, 500 kg platforms for a godown,
                 15-ton crane scales for a factory floor, explosion-proof indicators
                 for chemical plants, and high-speed note counters for anyone
@@ -224,7 +224,7 @@ export default function AboutPage() {
             />
             <div className="relative mx-auto max-w-2xl">
               <h2 className="mb-4 text-3xl font-extrabold text-white sm:text-4xl">
-                Come and see us in Naroda
+                Come and see us in Nikol
               </h2>
               <p className="mb-8 text-lg leading-relaxed text-primary-100">
                 Bring your requirement — or your faulty scale — and we&apos;ll tell

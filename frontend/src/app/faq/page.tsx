@@ -85,7 +85,7 @@ const groups = [
       {
         question: 'Which areas do you serve?',
         answer:
-          'We are based in Naroda, Ahmedabad and serve customers across Gujarat. On-site service in and around Ahmedabad is usually arranged within 24 hours; elsewhere in Gujarat we schedule a visit or arrange a courier repair.',
+          'We are based in Nikol, Ahmedabad and serve customers across Gujarat. On-site service in and around Ahmedabad is usually arranged within 24 hours; elsewhere in Gujarat we schedule a visit or arrange a courier repair.',
       },
       {
         question: 'How do I get a price?',

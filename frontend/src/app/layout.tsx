@@ -25,14 +25,15 @@ export const metadata: Metadata = {
     template: '%s · OM Marketing',
   },
   description:
-    'ISO 9001:2008 certified supplier of weighing scales, note counters and mobile accessories in Naroda, Ahmedabad. MSME registered. Sales, calibration, repair and AMC across Gujarat.',
+    'ISO 9001:2008 certified supplier of weighing scales, note counters and mobile accessories in Nikol, Ahmedabad. MSME registered. Sales, calibration, repair and AMC across Gujarat.',
   keywords: [
     'weighing scale Ahmedabad',
     'platform scale Gujarat',
     'crane scale supplier',
     'note counter machine',
     'weighing scale calibration',
-    'weighing scale repair Naroda',
+    'weighing scale repair Nikol Ahmedabad',
+    'weighing scale supplier Nikol',
     'OM Marketing',
   ],
   authors: [{ name: site.name }],
@@ -95,15 +96,17 @@ const localBusinessSchema = {
   email: site.email,
   address: {
     '@type': 'PostalAddress',
-    streetAddress: 'Naroda',
+    streetAddress: 'A-104, Het Patel Building, Nikol',
     addressLocality: 'Ahmedabad',
     addressRegion: 'Gujarat',
+    postalCode: '382350',
     addressCountry: 'IN',
   },
   areaServed: [
     { '@type': 'AdministrativeArea', name: 'Gujarat' },
     { '@type': 'City', name: 'Ahmedabad' },
   ],
+  // Open 24 hours, seven days — must match the Google Business Profile.
   openingHoursSpecification: [
     {
       '@type': 'OpeningHoursSpecification',
@@ -114,9 +117,10 @@ const localBusinessSchema = {
         'Thursday',
         'Friday',
         'Saturday',
+        'Sunday',
       ],
-      opens: '09:00',
-      closes: '19:00',
+      opens: '00:00',
+      closes: '23:59',
     },
   ],
   sameAs: [site.instagramUrl],

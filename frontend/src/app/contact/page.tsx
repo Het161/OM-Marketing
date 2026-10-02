@@ -16,7 +16,7 @@ import { site, whatsappLink } from '@/lib/site';
 
 export const metadata: Metadata = {
   title: 'Contact Us',
-  description: `Get in touch with OM Marketing in Naroda, Ahmedabad. Call ${site.phoneDisplay}, WhatsApp us, or send an enquiry — we reply within a few working hours.`,
+  description: `Get in touch with OM Marketing in Nikol, Ahmedabad. Call ${site.phoneDisplay}, WhatsApp us, or send an enquiry — we reply within a few working hours.`,
   alternates: { canonical: '/contact' },
 };
 
@@ -26,7 +26,7 @@ const channels = [
     label: 'Phone',
     value: site.phoneDisplay,
     href: `tel:${site.phoneDial}`,
-    note: 'Fastest during business hours',
+    note: 'We answer round the clock',
   },
   {
     icon: FiMessageCircle,
@@ -119,15 +119,15 @@ export default function ContactPage() {
                   ))}
                 </dl>
                 <p className="mt-4 text-[13px] leading-relaxed text-subtle">
-                  Outside these hours, send a message or WhatsApp — we pick it up
-                  first thing the next working morning.
+                  We answer the phone round the clock. For a detailed quote, a
+                  message or WhatsApp is often quicker.
                 </p>
               </div>
 
               <div className="card overflow-hidden">
                 <iframe
-                  title="Map showing OM Marketing in Naroda, Ahmedabad"
-                  src="https://www.google.com/maps?q=Naroda,Ahmedabad,Gujarat,India&output=embed"
+                  title="Map showing OM Marketing in Nikol, Ahmedabad"
+                  src="https://www.google.com/maps?q=Nikol,Ahmedabad,Gujarat+382350&output=embed"
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
                   className="h-64 w-full border-0"
