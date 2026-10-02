@@ -7,7 +7,45 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { FiArrowRight, FiPhone } from 'react-icons/fi';
 
+import HeroSlideshow, { type HeroSlide } from '@/components/sections/HeroSlideshow';
 import { site } from '@/lib/site';
+
+/* Each slide links to its catalogue entry; captions and prices come from it,
+   so nothing here can quietly drift from the real product data. */
+const slides: HeroSlide[] = [
+  {
+    id: 6,
+    src: '/images/heavy-platform-scale.jpg',
+    alt: 'Mild-steel chequered-plate platform scale with pole-mounted digital indicator',
+    model: 'MS platform scale',
+    spec: '600×600 mm · 100–500 kg',
+    price: '₹8,500',
+  },
+  {
+    id: 3,
+    src: '/images/crane-scale.jpeg',
+    alt: 'OCS crane scale with shackle and hook, digital display reading in kilograms',
+    model: 'OCS crane scale',
+    spec: '15 ton · class III',
+    price: '₹45,000',
+  },
+  {
+    id: 14,
+    src: '/images/Floor-Scale.jpeg',
+    alt: 'Industrial floor scale with roller platform and loading ramp',
+    model: 'Roller floor scale',
+    spec: '1–3 ton · with ramp',
+    price: '₹35,000',
+  },
+  {
+    id: 11,
+    src: '/images/Heavy-meter1.jpeg',
+    alt: 'Flameproof weighing indicator in a cast enclosure for hazardous areas',
+    model: 'Explosion-proof indicator',
+    spec: '2 ton · flameproof',
+    price: '₹18,500',
+  },
+];
 
 /* Capability strip — reads as factory signage, and every claim is checkable. */
 const capabilities = [
@@ -130,38 +168,7 @@ export default function Hero() {
             {...rise(0.1)}
             className="relative border-white/10 lg:col-span-5 lg:border-l"
           >
-            <div className="relative h-full min-h-[22rem] overflow-hidden lg:min-h-full">
-              <Image
-                src="/images/heavy-platform-scale.jpg"
-                alt="Chequered-plate platform scale with pole-mounted digital indicator"
-                fill
-                priority
-                sizes="(max-width: 1024px) 100vw, 42vw"
-                className="object-cover"
-              />
-              {/* Unify an uneven phone photo: desaturate, deepen, cool it */}
-              <div
-                aria-hidden
-                className="absolute inset-0 bg-ink-950/35 mix-blend-multiply"
-              />
-              <div
-                aria-hidden
-                className="absolute inset-0 bg-gradient-to-t from-ink-950 via-ink-950/10 to-transparent"
-              />
-
-              {/* Corner register marks — a drawing convention */}
-              <span aria-hidden className="absolute left-4 top-4 h-5 w-5 border-l border-t border-white/35" />
-              <span aria-hidden className="absolute right-4 top-4 h-5 w-5 border-r border-t border-white/35" />
-
-              <figcaption className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-5">
-                <span className="label text-steel-300">
-                  MS platform · 400×400 mm
-                </span>
-                <span className="data text-right text-sm text-white">
-                  <span className="label block text-steel-400">From</span>₹8,500
-                </span>
-              </figcaption>
-            </div>
+            <HeroSlideshow slides={slides} />
           </motion.figure>
         </div>
       </div>

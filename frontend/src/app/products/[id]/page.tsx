@@ -21,8 +21,9 @@ import {
 } from 'react-icons/fi';
 
 import ProductCard, { type Product } from '@/components/products/ProductCard';
-import ProductImage from '@/components/products/ProductImage';
+import ProductGallery from '@/components/products/ProductGallery';
 import { ProductGridSkeleton } from '@/components/products/ProductCardSkeleton';
+import { galleryFor } from '@/lib/gallery';
 import { categoryLabels, site, whatsappLink } from '@/lib/site';
 import { productApi } from '@/services/api';
 import { useQuoteStore } from '@/store/quoteStore';
@@ -138,7 +139,7 @@ export default function ProductDetailPage() {
     return (
       <div className="mx-auto max-w-7xl px-4 py-12">
         <div className="grid gap-10 lg:grid-cols-2">
-          <div className="skeleton aspect-[4/3] rounded-2xl" />
+          <div className="skeleton aspect-[4/3]" />
           <div>
             <div className="skeleton mb-4 h-6 w-32" />
             <div className="skeleton mb-3 h-9 w-full" />
@@ -218,33 +219,33 @@ export default function ProductDetailPage() {
         </nav>
 
         <div className="grid gap-10 lg:grid-cols-2 lg:gap-14">
-          {/* Image */}
+          {/* Photos */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.97 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.4 }}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
           >
-            <div className="card relative aspect-[4/3] overflow-hidden p-0">
-              <ProductImage
-                src={product.image_url}
-                alt={product.name}
-                fill
-                priority
-                sizes="(max-width: 1024px) 100vw, 50vw"
-                className="object-cover"
-              />
-              <span className="pill absolute left-4 top-4 bg-primary-500 text-white">
-                {categoryLabels[product.category] ?? product.category}
-              </span>
-            </div>
+            <ProductGallery
+              images={galleryFor(product.id, product.image_url)}
+              alt={product.name}
+              badge={
+                <span className="label absolute left-0 top-0 bg-ink-950 px-2.5 py-1.5 text-steel-300">
+                  {categoryLabels[product.category]?.replace(/\s+/g, '-').toUpperCase() ??
+                    product.category}
+                  <span className="ml-1.5 text-white">
+                    ·{String(product.id).padStart(3, '0')}
+                  </span>
+                </span>
+              }
+            />
 
             <div className="mt-4 grid gap-3 sm:grid-cols-3">
               {assurances.map((item) => (
                 <div
                   key={item.text}
-                  className="flex items-start gap-2.5 rounded-xl border border-line bg-surface-2 p-3"
+                  className="flex items-start gap-2.5 border border-line bg-surface-2 p-3"
                 >
-                  <item.icon aria-hidden className="mt-0.5 shrink-0 text-primary-500" />
+                  <item.icon aria-hidden className="mt-0.5 shrink-0 text-brand" />
                   <span className="text-[13px] leading-snug text-muted">{item.text}</span>
                 </div>
               ))}
