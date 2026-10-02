@@ -217,13 +217,13 @@
   },
   {
     "id": 30,
-    "name": "Kitchen Scale 10 kg — Economy",
+    "name": "Kitchen Scale 10 kg — DRV-400A",
     "category": "weighing_scale",
-    "description": "Entry-level compact kitchen scale. Imported economy model supplied without warranty — the budget option where a scale is needed occasionally rather than daily.",
+    "description": "Compact kitchen and counter scale with a backlit display and a removable stainless pan. Runs on batteries or mains, so it keeps working through a power cut.",
     "price": 550.0,
     "stock_quantity": 25,
-    "image_url": null,
-    "specifications": "{\"capacity\": \"10 kg\", \"type\": \"Kitchen / counter top\", \"brand\": \"Imported\", \"warranty\": \"Not covered\"}",
+    "image_url": "/images/10KG-china.jpeg",
+    "specifications": "{\"capacity\": \"10 kg\", \"graduation\": \"1 g\", \"model\": \"DRV-400A\", \"display\": \"Backlit LCD\", \"power\": \"Battery or mains adaptor\", \"origin\": \"Made in India\"}",
     "created_at": "2026-10-02 00:00:00",
     "updated_at": "2026-10-02 00:00:00"
   },
@@ -270,7 +270,7 @@
     "description": "The largest chicken-type platform, with the indicator joined to the base and a single display.",
     "price": 8500.0,
     "stock_quantity": 10,
-    "image_url": null,
+    "image_url": "/images/600*600mm-SS-chicken-top.jpeg",
     "specifications": "{\"capacity\": \"100 / 200 / 300 / 500 kg\", \"platform_size\": \"600\\u00d7600 mm\", \"construction\": \"Chicken type \\u2014 display at the base, joined to the platform\", \"material\": \"Stainless steel \\u2014 mild steel +\\u20b9550\", \"display\": \"Single display\", \"brand\": \"UNIQUE (Shiva Industries)\"}",
     "created_at": "2026-10-02 00:00:00",
     "updated_at": "2026-10-02 00:00:00"
@@ -308,6 +308,30 @@
     "stock_quantity": 3,
     "image_url": "/images/900*900mm-1200*1200mm.jpeg",
     "specifications": "{\"capacity\": \"2 / 3 ton\", \"platform_size\": \"1200\\u00d71200 mm\", \"construction\": \"Regular type \\u2014 pole-mounted display\", \"material\": \"Mild steel only\", \"brand\": \"UNIQUE (Shiva Industries)\"}",
+    "created_at": "2026-10-02 00:00:00",
+    "updated_at": "2026-10-02 00:00:00"
+  },
+  {
+    "id": 38,
+    "name": "Hanging Crane Scale 100 kg — 1 Year Warranty",
+    "category": "weighing_scale",
+    "description": "Hook-and-shackle hanging scale for sacks, bundles and anything that will not sit on a platform. Reads in kilograms with tare and hold, and carries a one-year warranty.",
+    "price": 3200.0,
+    "stock_quantity": 10,
+    "image_url": "/images/company-Crane-type-100KG-1year-gurantee-warranty.jpeg",
+    "specifications": "{\"capacity\": \"100 kg\", \"type\": \"Hanging / crane type, hook and shackle\", \"display\": \"Backlit LCD\", \"functions\": \"Tare, hold, memory recall\", \"warranty\": \"1 year\"}",
+    "created_at": "2026-10-02 00:00:00",
+    "updated_at": "2026-10-02 00:00:00"
+  },
+  {
+    "id": 39,
+    "name": "Portable Hanging Scale 50 kg — WH-A08",
+    "category": "weighing_scale",
+    "description": "Pocket hanging scale with a folding handle and a hook — for luggage, parcels and quick checks away from the counter. Graduates finer under 10 kg.",
+    "price": 750.0,
+    "stock_quantity": 25,
+    "image_url": "/images/small-crane-type-60KG-chinaModel.jpeg",
+    "specifications": "{\"capacity\": \"50 kg\", \"graduation\": \"5 g up to 10 kg, 10 g from 10 to 50 kg\", \"model\": \"WH-A08\", \"type\": \"Portable hanging, folding handle\", \"display\": \"Backlit LCD\"}",
     "created_at": "2026-10-02 00:00:00",
     "updated_at": "2026-10-02 00:00:00"
   }

@@ -25,6 +25,7 @@ const GALLERY: Record<number, string[]> = {
   10: ['/images/Jewellery.jpeg', '/images/Jewellery2.jpeg'],
   31: ['/images/10KG-Unique-company.jpg', '/images/Micro-mini.jpeg'],
   33: ['/images/500*500ms-chicken.jpeg', '/images/400*400mm-chicken-MS.jpeg'],
+  34: ['/images/600*600mm-SS-chicken-top.jpeg'],
   35: ['/images/400*400mm-MS.jpg', '/images/400*400mm.jpg'],
   36: ['/images/900*900mm-1200*1200mm.jpeg'],
   37: ['/images/900*900mm-1200*1200mm.jpeg'],
