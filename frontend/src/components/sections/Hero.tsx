@@ -13,39 +13,52 @@ import HeroSlideshow, {
 import { site } from '@/lib/site';
 
 /* Each slide links to its catalogue entry; captions and prices come from it,
-   so nothing here can quietly drift from the real product data. */
+   so nothing here can quietly drift from the real product data.
+
+   Several supplier photographs carry burned-in marketing text and an app
+   watermark, which a full-bleed hero crop slices through mid-word. The files
+   under /images/hero are the same photographs cropped to the product. The
+   catalogue still shows the originals, where the whole frame is visible. */
 const slides: HeroSlide[] = [
   {
-    id: 6,
-    src: '/images/heavy-platform-scale.jpg',
-    alt: 'Mild-steel chequered-plate platform scale with pole-mounted digital indicator',
-    model: 'Platform scale — regular',
-    spec: '600×600 mm · pole display',
-    price: '₹8,900',
+    id: 31,
+    src: '/images/hero/10kg.jpg',
+    alt: 'Micro mini table-top scale with stainless pan and green body, display front and back',
+    model: 'Micro mini scale',
+    spec: '10 kg · double display',
+    price: '₹2,500',
   },
   {
-    id: 3,
-    src: '/images/crane-scale.jpeg',
-    alt: 'OCS crane scale with shackle and hook, digital display reading in kilograms',
-    model: 'OCS crane scale',
-    spec: '15 ton · class III',
-    price: '₹45,000',
+    id: 4,
+    src: '/images/Mini-20KG1.jpeg',
+    alt: 'Mild-steel mini weighing scale with stainless pan and digital display',
+    model: 'Mini scale — MS body',
+    spec: '20 kg · table top',
+    price: '₹3,500',
   },
   {
-    id: 14,
-    src: '/images/Floor-Scale.jpeg',
-    alt: 'Industrial floor scale with roller platform and loading ramp',
-    model: 'Roller floor scale',
-    spec: '1–3 ton · with ramp',
-    price: '₹35,000',
+    id: 1,
+    src: '/images/hero/30kg.jpg',
+    alt: 'UNIQUE tebal-top scale with a large stainless pan and digital indicator',
+    model: 'Tebal top scale',
+    spec: '30 kg · 240×290 mm',
+    price: '₹4,000',
   },
   {
-    id: 11,
-    src: '/images/Heavy-meter1.jpeg',
-    alt: 'Flameproof weighing indicator in a cast enclosure for hazardous areas',
-    model: 'Explosion-proof indicator',
-    spec: '2 ton · flameproof',
-    price: '₹18,500',
+    id: 9,
+    src: '/images/hero/300x300.jpg',
+    alt: 'Stainless platform scale with the display built into the base, joined to the platform',
+    model: 'Platform scale — chicken',
+    spec: '100 kg · 300×300 mm',
+    price: '₹5,500',
+  },
+  {
+    id: 2,
+    src: '/images/hero/400x400.jpg',
+    alt: 'Stainless 400×400 mm platform scale with the indicator in the base unit',
+    model: 'Platform scale — chicken',
+    spec: '200 kg · 400×400 mm',
+    price: '₹6,500',
   },
 ];
 

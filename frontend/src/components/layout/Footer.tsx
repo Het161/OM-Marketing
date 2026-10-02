@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import {
   FiClock,
+  FiFacebook,
   FiInstagram,
   FiMail,
   FiMapPin,
@@ -43,8 +44,8 @@ export default function Footer() {
               </span>
             </div>
             <p className="mb-5 max-w-xs text-[0.9375rem] leading-relaxed text-steel-400">
-              {site.certification} supplier of weighing scales, note counters
-              and mobile accessories — serving businesses across Gujarat.
+              {site.certification} supplier of weighing scales and note
+              counters — serving businesses across Gujarat.
             </p>
             <dl className="border-t border-white/10">
               {[
@@ -62,16 +63,30 @@ export default function Footer() {
               ))}
             </dl>
 
-            <div className="mt-5">
-              <a
-                href={site.instagramUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="OM Marketing on Instagram"
-                className="inline-flex h-10 w-10 items-center justify-center border border-white/15 text-steel-300 transition-colors hover:border-white hover:bg-white hover:text-ink-950"
-              >
-                <FiInstagram size={19} aria-hidden />
-              </a>
+            <div className="mt-5 flex">
+              {[
+                {
+                  href: site.instagramUrl,
+                  label: 'OM Marketing on Instagram',
+                  Icon: FiInstagram,
+                },
+                {
+                  href: site.facebookUrl,
+                  label: 'OM Marketing on Facebook',
+                  Icon: FiFacebook,
+                },
+              ].map(({ href, label, Icon }) => (
+                <a
+                  key={href}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={label}
+                  className="-ml-px inline-flex h-10 w-10 items-center justify-center border border-white/15 text-steel-300 transition-colors first:ml-0 hover:border-white hover:bg-white hover:text-ink-950"
+                >
+                  <Icon size={19} aria-hidden />
+                </a>
+              ))}
             </div>
           </div>
 

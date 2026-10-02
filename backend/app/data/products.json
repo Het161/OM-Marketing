@@ -6,7 +6,7 @@
     "description": "Stainless-topped table scale for retail counters, kirana shops and kitchens. The everyday workhorse of the range.",
     "price": 4000.0,
     "stock_quantity": 30,
-    "image_url": "/images/30kg-tebal-scale.jpg",
+    "image_url": "/images/30KG-Table-Top.jpg",
     "specifications": "{\"capacity\": \"30 kg\", \"platform_size\": \"240\\u00d7290 mm\", \"top\": \"Stainless steel\", \"brand\": \"UNIQUE (Shiva Industries)\", \"warranty\": \"1 year\"}",
     "created_at": "2026-10-02 00:00:00",
     "updated_at": "2026-10-02 00:00:00"
@@ -18,7 +18,7 @@
     "description": "400×400 mm platform with the indicator joined to the base. Double display available as an option.",
     "price": 6500.0,
     "stock_quantity": 18,
-    "image_url": null,
+    "image_url": "/images/400*400mm-SS.jpg",
     "specifications": "{\"capacity\": \"100 / 200 kg\", \"platform_size\": \"400\\u00d7400 mm\", \"construction\": \"Chicken type \\u2014 display at the base, joined to the platform\", \"material\": \"Stainless steel \\u2014 mild steel +\\u20b9350\", \"display\": \"Single \\u2014 double display +\\u20b9500\", \"brand\": \"UNIQUE (Shiva Industries)\"}",
     "created_at": "2026-10-02 00:00:00",
     "updated_at": "2026-10-02 00:00:00"
@@ -54,7 +54,7 @@
     "description": "500×500 mm pole-display platform. Available with an MS chequered plate for warehouse floors.",
     "price": 7800.0,
     "stock_quantity": 14,
-    "image_url": "/images/chekar-platform.jpeg",
+    "image_url": "/images/ms-platform-500.jpg",
     "specifications": "{\"capacity\": \"200 / 300 / 500 kg\", \"platform_size\": \"500\\u00d7500 mm\", \"construction\": \"Regular type \\u2014 pole-mounted display\", \"material\": \"Stainless steel \\u2014 mild steel +\\u20b9450\", \"brand\": \"UNIQUE (Shiva Industries)\"}",
     "created_at": "2026-10-02 00:00:00",
     "updated_at": "2026-10-02 00:00:00"
@@ -113,7 +113,7 @@
     "description": "Industrial-grade explosion-proof weighing meter with digital LED display. Features robust cast iron construction with weatherproof enclosure. Ideal for hazardous environments, chemical plants, and heavy industrial applications. Multi-function buttons for tare, zero, and unit conversion.",
     "price": 18500.0,
     "stock_quantity": 8,
-    "image_url": "/images/Heavy-meter1.jpeg",
+    "image_url": "/images/explosion-proof.jpg",
     "specifications": "{\"display\": \"LED Digital Display\", \"construction\": \"Cast Iron Explosion Proof\", \"protection\": \"IP67 Weatherproof\", \"functions\": \"Tare, Zero, Hold, Unit Conversion\", \"power\": \"AC/DC Dual Power\", \"cable\": \"Heavy Duty Armored Cable\", \"mounting\": \"Wall/Panel Mount\", \"environment\": \"Hazardous Area Certified\", \"temperature_range\": \"-10°C to 50°C\", \"warranty\": \"2 Years\"}",
     "id": 11,
     "created_at": "2025-12-10T20:19:53.497969",
@@ -126,7 +126,7 @@
     "description": "Same 20 kg counter scale in a moulded ABS plastic body — lighter, and it will not rust in a damp shop.",
     "price": 3200.0,
     "stock_quantity": 35,
-    "image_url": "/images/ABS.jpeg",
+    "image_url": "/images/ABS-20KG.jpeg",
     "specifications": "{\"capacity\": \"20 kg\", \"body\": \"ABS plastic\", \"brand\": \"UNIQUE (Shiva Industries)\", \"warranty\": \"1 year\"}",
     "created_at": "2026-10-02 00:00:00",
     "updated_at": "2026-10-02 00:00:00"
@@ -137,7 +137,7 @@
     "description": "Premium precision weighing scale by CONTECH, specially designed for jewellery applications. Features ultra-high accuracy with 0.001g precision and bright green LED display. Perfect for gold, silver, diamonds, and precious stone weighing. Equipped with multiple function keys for tare, calibration, and unit conversion. Ideal for jewellers, gold traders, and laboratories.",
     "price": 25000.0,
     "stock_quantity": 12,
-    "image_url": "/images/Contech.jpeg",
+    "image_url": "",
     "specifications": "{\"precision\": \"0.001g (1mg)\", \"max_capacity\": \"500g / 1000g\", \"display\": \"Green LED - 5 Digit\", \"platform\": \"Circular Stainless Steel\", \"functions\": \"Tare, Zero, Calibration, Unit Conversion\", \"units\": \"g, ct, oz, gn, dwt\", \"power\": \"AC Adapter / Battery\", \"response_time\": \"2 seconds\", \"calibration\": \"External Calibration\", \"application\": \"Jewellery, Gold, Diamond, Laboratory\", \"warranty\": \"1 Year\"}",
     "id": 13,
     "created_at": "2025-12-10T20:43:48.475191",
@@ -210,7 +210,7 @@
     "description": "Heavy mild-steel platform for sacks, drums and pallets. Supplied in mild steel only.",
     "price": 12500.0,
     "stock_quantity": 8,
-    "image_url": "/images/750*750mm.jpeg",
+    "image_url": "/images/750*750mm-MS.jpeg",
     "specifications": "{\"capacity\": \"500 kg / 1 ton\", \"platform_size\": \"750\\u00d7750 mm\", \"construction\": \"Regular type \\u2014 pole-mounted display\", \"material\": \"Mild steel only\", \"brand\": \"UNIQUE (Shiva Industries)\"}",
     "created_at": "2026-10-02 00:00:00",
     "updated_at": "2026-10-02 00:00:00"
@@ -234,7 +234,7 @@
     "description": "UNIQUE kitchen and counter scale with a full one-year warranty. The model to buy where the scale is used every day and accuracy has to hold.",
     "price": 2500.0,
     "stock_quantity": 20,
-    "image_url": null,
+    "image_url": "/images/10KG-Unique-company.jpg",
     "specifications": "{\"capacity\": \"10 kg\", \"type\": \"Kitchen / counter top\", \"brand\": \"UNIQUE (Shiva Industries)\", \"warranty\": \"1 year\"}",
     "created_at": "2026-10-02 00:00:00",
     "updated_at": "2026-10-02 00:00:00"
@@ -258,7 +258,7 @@
     "description": "500×500 mm platform, indicator in the base frame, single display.",
     "price": 7500.0,
     "stock_quantity": 12,
-    "image_url": "/images/500*500ms.jpeg",
+    "image_url": "/images/500*500ms-chicken.jpeg",
     "specifications": "{\"capacity\": \"200 / 300 kg\", \"platform_size\": \"500\\u00d7500 mm\", \"construction\": \"Chicken type \\u2014 display at the base, joined to the platform\", \"material\": \"Stainless steel \\u2014 mild steel +\\u20b9450\", \"display\": \"Single display\", \"brand\": \"UNIQUE (Shiva Industries)\"}",
     "created_at": "2026-10-02 00:00:00",
     "updated_at": "2026-10-02 00:00:00"
@@ -282,7 +282,7 @@
     "description": "400×400 mm platform with the indicator on a pole at working height, so the reading is visible while loading.",
     "price": 6700.0,
     "stock_quantity": 16,
-    "image_url": "/images/platform-scale.jpg",
+    "image_url": "/images/400*400mm-MS.jpg",
     "specifications": "{\"capacity\": \"100 / 200 kg\", \"platform_size\": \"400\\u00d7400 mm\", \"construction\": \"Regular type \\u2014 pole-mounted display\", \"material\": \"Stainless steel \\u2014 mild steel +\\u20b9350\", \"brand\": \"UNIQUE (Shiva Industries)\"}",
     "created_at": "2026-10-02 00:00:00",
     "updated_at": "2026-10-02 00:00:00"
@@ -294,7 +294,7 @@
     "description": "900×900 mm mild-steel platform for larger loads and pallet work.",
     "price": 16500.0,
     "stock_quantity": 5,
-    "image_url": null,
+    "image_url": "/images/900*900mm-1200*1200mm.jpeg",
     "specifications": "{\"capacity\": \"1 / 2 ton\", \"platform_size\": \"900\\u00d7900 mm\", \"construction\": \"Regular type \\u2014 pole-mounted display\", \"material\": \"Mild steel only\", \"brand\": \"UNIQUE (Shiva Industries)\"}",
     "created_at": "2026-10-02 00:00:00",
     "updated_at": "2026-10-02 00:00:00"
@@ -306,7 +306,7 @@
     "description": "Full pallet-size mild-steel floor platform for industrial weighing.",
     "price": 25500.0,
     "stock_quantity": 3,
-    "image_url": null,
+    "image_url": "/images/900*900mm-1200*1200mm.jpeg",
     "specifications": "{\"capacity\": \"2 / 3 ton\", \"platform_size\": \"1200\\u00d71200 mm\", \"construction\": \"Regular type \\u2014 pole-mounted display\", \"material\": \"Mild steel only\", \"brand\": \"UNIQUE (Shiva Industries)\"}",
     "created_at": "2026-10-02 00:00:00",
     "updated_at": "2026-10-02 00:00:00"

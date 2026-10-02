@@ -6,6 +6,8 @@ import Image from 'next/image';
 import { useState } from 'react';
 import { TbScale } from 'react-icons/tb';
 
+import { blurFor } from '@/lib/blur';
+
 interface ProductImageProps {
   src?: string | null;
   alt: string;
@@ -61,6 +63,8 @@ export default function ProductImage({
       height={fill ? undefined : (height ?? 450)}
       sizes={sizes}
       priority={priority}
+      placeholder={blurFor(src) ? 'blur' : 'empty'}
+      blurDataURL={blurFor(src)}
       loading={priority ? undefined : 'lazy'}
       className={className}
       onError={() => setFailed(true)}

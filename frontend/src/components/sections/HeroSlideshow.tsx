@@ -8,6 +8,8 @@ import Link from 'next/link';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { FiArrowLeft, FiArrowRight, FiPause, FiPlay } from 'react-icons/fi';
 
+import { blurFor } from '@/lib/blur';
+
 export interface HeroSlide {
   /** Catalogue product id, so the slide links to the real item. */
   id: number;
@@ -85,6 +87,25 @@ export default function HeroSlideshow({ slides }: { slides: HeroSlide[] }) {
       onBlurCapture={() => setPaused(false)}
       className="relative h-full min-h-[24rem] overflow-hidden lg:min-h-full"
     >
+      {/* Fetch the next photograph while this one is still on screen. It is
+          laid out at the same size as the visible slide, so the browser picks
+          the same srcset entry and the advance costs nothing. Without this a
+          slide change starts from the blur placeholder every time. */}
+      {count > 1 && (
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 opacity-0"
+        >
+          <Image
+            src={slides[(index + 1) % count].src}
+            alt=""
+            fill
+            sizes="(max-width: 1024px) 100vw, 42vw"
+            className="object-cover"
+          />
+        </div>
+      )}
+
       {/* Slides */}
       <AnimatePresence initial={false} mode="sync">
         <motion.div
@@ -95,22 +116,45 @@ export default function HeroSlideshow({ slides }: { slides: HeroSlide[] }) {
           transition={{ duration: reduced ? 0 : 0.7, ease: [0.16, 1, 0.3, 1] }}
           className="absolute inset-0"
         >
+          {/* The panel is tall and narrow; the photographs are not, and several
+              are wider than they are high. Cropping them to fill would slice
+              the scale in half, so the sharp copy is contained — the whole
+              machine stays visible — over a blurred, darkened copy of itself
+              that fills the frame. Both use the same src, so it is one
+              download, and the backdrop is hidden from assistive tech. */}
           <Image
             src={slide.src}
-            alt={slide.alt}
+            alt=""
+            aria-hidden
             fill
             priority={index === 0}
             sizes="(max-width: 1024px) 100vw, 42vw"
-            className="object-cover"
+            placeholder={blurFor(slide.src) ? 'blur' : 'empty'}
+            blurDataURL={blurFor(slide.src)}
+            className="scale-110 object-cover blur-2xl saturate-50"
           />
+          <span aria-hidden className="absolute inset-0 bg-ink-950/55" />
+          {/* Centred in the space above the caption rather than the whole
+              panel, so the photograph is not stranded in the middle with the
+              model name a long way below it. */}
+          <div className="absolute inset-x-0 top-0 bottom-36 lg:bottom-40">
+            <Image
+              src={slide.src}
+              alt={slide.alt}
+              fill
+              priority={index === 0}
+              sizes="(max-width: 1024px) 100vw, 42vw"
+              className="object-contain p-5 lg:p-8"
+            />
+          </div>
           {/* Unify uneven phone photography: deepen and cool each frame */}
           <span
             aria-hidden
-            className="absolute inset-0 bg-ink-950/35 mix-blend-multiply"
+            className="absolute inset-0 bg-ink-950/20 mix-blend-multiply"
           />
           <span
             aria-hidden
-            className="absolute inset-0 bg-gradient-to-t from-ink-950 via-ink-950/15 to-transparent"
+            className="absolute inset-0 bg-gradient-to-t from-ink-950 via-ink-950/10 to-transparent"
           />
         </motion.div>
       </AnimatePresence>

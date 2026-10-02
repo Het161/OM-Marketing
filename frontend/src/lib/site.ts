@@ -26,14 +26,21 @@ export const site = {
   whatsapp: '919825247312',
 
   email: 'ommarketing.weighingscale1@gmail.com',
-  instagram: 'ommarketing_scales',
-  instagramUrl: 'https://instagram.com/ommarketing_scales',
+  instagram: 'hetpatel0812',
+  instagramUrl: 'https://www.instagram.com/hetpatel0812/',
+  facebookUrl: 'https://www.facebook.com/profile.php?id=61585876964104',
 
-  addressLine: 'A-104, Het Patel Building, Nikol',
-  addressRegion: 'Ahmedabad, Gujarat 382350',
-  addressFull: 'A-104, Het Patel Building, Nikol, Ahmedabad, Gujarat 382350',
-  mapsUrl:
-    'https://www.google.com/maps/search/?api=1&query=OM+Marketing+Weighing+Scales+Nikol+Ahmedabad+382350',
+  /**
+   * The shop as a customer finds it. The landmarks matter more than the
+   * building name here — people navigate to the fire station or the D-Mart,
+   * so they lead. `mapsUrl` is the owner's own Google Maps pin, not a search
+   * query, so the link always lands on the right place.
+   */
+  addressLine: 'Suhas Auram, Opp. Nikol Fire Station, Near Nikol D-Mart',
+  addressRegion: 'Nikol, Ahmedabad, Gujarat 382350',
+  addressFull:
+    'Suhas Auram, Opp. Nikol Fire Station, Near Nikol D-Mart, Nikol, Ahmedabad, Gujarat 382350',
+  mapsUrl: 'https://maps.app.goo.gl/4fpvqnKqFjkUGpJV8',
 
   certification: 'ISO 9001:2008 Certified',
   msme: 'MSME / Udyam Registered',
@@ -63,7 +70,7 @@ export const categories = [
     label: 'Weighing Scales',
     blurb:
       'Table top, platform, crane and industrial scales from 10 kg to 15 ton.',
-    image: '/images/platform-scale.jpg',
+    image: '/images/600-600mm-ss-Regular.jpg',
   },
   {
     value: 'note_counter',
@@ -72,19 +79,11 @@ export const categories = [
       'High-speed banknote counters with fake-note detection for banks and retail.',
     image: '/images/note-counter.jpg',
   },
-  {
-    value: 'mobile_accessory',
-    label: 'Mobile Accessories',
-    blurb:
-      'Chargers, cables, batteries and everyday accessories at wholesale rates.',
-    image: '/images/micro-mini-scale.jpg',
-  },
 ] as const;
 
 export const categoryLabels: Record<string, string> = {
   weighing_scale: 'Weighing Scale',
   note_counter: 'Note Counter',
-  mobile_accessory: 'Mobile Accessory',
 };
 
 export const serviceTypes = [

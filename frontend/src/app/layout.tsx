@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     template: '%s · OM Marketing',
   },
   description:
-    'ISO 9001:2008 certified supplier of weighing scales, note counters and mobile accessories in Nikol, Ahmedabad. MSME registered. Sales, calibration, repair and AMC across Gujarat.',
+    'ISO 9001:2008 certified supplier of weighing scales and note counters in Nikol, Ahmedabad. MSME registered. Sales, calibration, repair and AMC across Gujarat.',
   keywords: [
     'weighing scale Ahmedabad',
     'platform scale Gujarat',
@@ -90,16 +90,17 @@ const localBusinessSchema = {
   '@id': `${SITE_URL}/#business`,
   name: site.name,
   description:
-    'Supplier of weighing scales, note counters and mobile accessories, with calibration, repair and AMC services.',
+    'Supplier of weighing scales and note counters, with calibration, repair and AMC services.',
   url: SITE_URL,
+  hasMap: site.mapsUrl,
   logo: `${SITE_URL}/images/om-mark.png`,
   image: `${SITE_URL}/og-image.png`,
   telephone: site.phoneDial,
   email: site.email,
   address: {
     '@type': 'PostalAddress',
-    streetAddress: 'A-104, Het Patel Building, Nikol',
-    addressLocality: 'Ahmedabad',
+    streetAddress: 'Suhas Auram, Opp. Nikol Fire Station, Near Nikol D-Mart',
+    addressLocality: 'Nikol, Ahmedabad',
     addressRegion: 'Gujarat',
     postalCode: '382350',
     addressCountry: 'IN',
@@ -125,7 +126,7 @@ const localBusinessSchema = {
       closes: '23:59',
     },
   ],
-  sameAs: [site.instagramUrl],
+  sameAs: [site.instagramUrl, site.facebookUrl],
 };
 
 export default function RootLayout({
