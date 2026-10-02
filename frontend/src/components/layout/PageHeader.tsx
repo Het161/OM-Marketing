@@ -33,7 +33,11 @@ export default function PageHeader({
       : {
           initial: { opacity: 0, y: 14 },
           animate: { opacity: 1, y: 0 },
-          transition: { duration: 0.55, delay, ease: [0.16, 1, 0.3, 1] as const },
+          transition: {
+            duration: 0.55,
+            delay,
+            ease: [0.16, 1, 0.3, 1] as const,
+          },
         };
 
   return (
@@ -43,7 +47,7 @@ export default function PageHeader({
         className="grid-rule pointer-events-none absolute inset-0 text-white/70"
       />
 
-      <div className="relative mx-auto max-w-[88rem] px-4 py-16 sm:px-6 lg:px-10 lg:py-20">
+      <div className="shell relative py-16 lg:py-20">
         <motion.div {...rise(0)} className="flex items-center gap-4">
           <span className="section-index text-steel-400">{index}</span>
           <span className="label text-primary-300">{eyebrow}</span>
@@ -62,7 +66,9 @@ export default function PageHeader({
               <p className="max-w-xl text-[1.0625rem] leading-relaxed text-steel-300">
                 {lead}
               </p>
-              {actions && <div className="mt-7 flex flex-wrap gap-3">{actions}</div>}
+              {actions && (
+                <div className="mt-7 flex flex-wrap gap-3">{actions}</div>
+              )}
             </motion.div>
           )}
         </div>
@@ -78,7 +84,9 @@ export default function PageHeader({
                 className="border-b border-white/12 py-4 pr-6 sm:border-b-0 sm:border-r sm:last:border-r-0"
               >
                 <dt className="label text-steel-400">{item.k}</dt>
-                <dd className="data mt-2 text-[0.9375rem] text-white">{item.v}</dd>
+                <dd className="data mt-2 text-[0.9375rem] text-white">
+                  {item.v}
+                </dd>
               </div>
             ))}
           </motion.dl>

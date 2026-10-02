@@ -108,7 +108,7 @@ export default function HomePage() {
 
       {/* 01 — commitments, as an indexed register */}
       <section className="border-b border-line">
-        <div className="mx-auto max-w-[88rem] px-4 sm:px-6 lg:px-10">
+        <div className="shell">
           <div className="grid border-x border-line sm:grid-cols-2 lg:grid-cols-4">
             {commitments.map((item, i) => (
               <Reveal
@@ -131,7 +131,7 @@ export default function HomePage() {
 
       {/* 02 — categories */}
       <section className="border-b border-line py-20 lg:py-28">
-        <div className="mx-auto max-w-[88rem] px-4 sm:px-6 lg:px-10">
+        <div className="shell">
           <SectionHeading
             index="02"
             eyebrow="Range"
@@ -154,7 +154,10 @@ export default function HomePage() {
                       sizes="(max-width: 768px) 100vw, 33vw"
                       className="object-cover transition-transform duration-[700ms] ease-[cubic-bezier(.16,1,.3,1)] group-hover:scale-[1.04]"
                     />
-                    <span aria-hidden className="absolute inset-0 bg-ink-950/10" />
+                    <span
+                      aria-hidden
+                      className="absolute inset-0 bg-ink-950/10"
+                    />
                   </div>
                   <div className="flex flex-1 flex-col p-7">
                     <div className="flex items-start justify-between gap-4">
@@ -178,8 +181,11 @@ export default function HomePage() {
       </section>
 
       {/* 03 — products */}
-      <section id="products" className="border-b border-line bg-surface-2 py-20 lg:py-28">
-        <div className="mx-auto max-w-[88rem] px-4 sm:px-6 lg:px-10">
+      <section
+        id="products"
+        className="border-b border-line bg-surface-2 py-20 lg:py-28"
+      >
+        <div className="shell">
           <SectionHeading
             index="03"
             eyebrow="Catalogue"
@@ -206,7 +212,9 @@ export default function HomePage() {
                     <FiPhone aria-hidden /> {site.phoneDisplay}
                   </a>
                   <a
-                    href={whatsappLink('Hello, I would like to see your product range.')}
+                    href={whatsappLink(
+                      'Hello, I would like to see your product range.',
+                    )}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="btn-outline"
@@ -230,7 +238,7 @@ export default function HomePage() {
 
       {/* 04 — services */}
       <section className="border-b border-line py-20 lg:py-28">
-        <div className="mx-auto max-w-[88rem] px-4 sm:px-6 lg:px-10">
+        <div className="shell">
           <SectionHeading
             index="04"
             eyebrow="Service"
@@ -273,7 +281,7 @@ export default function HomePage() {
           aria-hidden
           className="grid-rule pointer-events-none absolute inset-0 text-white/70"
         />
-        <div className="relative mx-auto max-w-[88rem] px-4 sm:px-6 lg:px-10">
+        <div className="relative shell">
           <div className="grid items-end gap-12 border-t border-white/12 pt-12 lg:grid-cols-12">
             <div className="lg:col-span-7">
               <span className="label text-steel-400">05 / Specify</span>
@@ -311,7 +319,7 @@ export default function HomePage() {
 
       {/* 06 — FAQ */}
       <section className="border-b border-line py-20 lg:py-28">
-        <div className="mx-auto max-w-[88rem] px-4 sm:px-6 lg:px-10">
+        <div className="shell">
           <div className="grid gap-14 lg:grid-cols-12">
             <div className="lg:col-span-4">
               <SectionHeading
@@ -337,7 +345,7 @@ export default function HomePage() {
 
       {/* 07 — location */}
       <section className="py-20 lg:py-28">
-        <div className="mx-auto max-w-[88rem] px-4 sm:px-6 lg:px-10">
+        <div className="shell">
           <div className="grid gap-12 lg:grid-cols-12">
             <div className="lg:col-span-5">
               <SectionHeading
@@ -360,7 +368,9 @@ export default function HomePage() {
                       className="grid grid-cols-[7rem_1fr] gap-4 border-b border-line py-4"
                     >
                       <dt className="label pt-0.5">{k}</dt>
-                      <dd className="data text-[0.9375rem] leading-relaxed">{v}</dd>
+                      <dd className="data text-[0.9375rem] leading-relaxed">
+                        {v}
+                      </dd>
                     </div>
                   ))}
                 </dl>

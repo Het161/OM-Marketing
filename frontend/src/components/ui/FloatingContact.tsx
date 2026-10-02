@@ -18,6 +18,7 @@ import { site, whatsappLink } from '@/lib/site';
  */
 export default function FloatingContact() {
   const [isOpen, setIsOpen] = useState(false);
+  const [atFooter, setAtFooter] = useState(false);
   const pathname = usePathname();
 
   useEffect(() => setIsOpen(false), [pathname]);
@@ -28,6 +29,25 @@ export default function FloatingContact() {
     document.addEventListener('keydown', onKey);
     return () => document.removeEventListener('keydown', onKey);
   }, [isOpen]);
+
+  /* Step aside at the footer. The bar sits in the bottom-right corner, which
+     is exactly where the footer keeps the address and email — so once the
+     footer is on screen the bar would cover the very details it points to.
+     The footer already carries every one of these actions, so hiding it
+     there costs nothing. */
+  useEffect(() => {
+    const footer = document.querySelector('footer');
+    if (!footer || typeof IntersectionObserver === 'undefined') return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setAtFooter(entry.isIntersecting);
+        if (entry.isIntersecting) setIsOpen(false);
+      },
+      { rootMargin: '0px 0px -40px 0px' },
+    );
+    observer.observe(footer);
+    return () => observer.disconnect();
+  }, [pathname]);
 
   const actions = [
     {
@@ -57,7 +77,14 @@ export default function FloatingContact() {
   ];
 
   return (
-    <div className="fixed bottom-0 right-0 z-40 p-4 sm:bottom-6 sm:right-6 sm:p-0 print:hidden">
+    <div
+      inert={atFooter}
+      className={`fixed bottom-0 right-0 z-40 p-4 transition-[opacity,transform] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] sm:bottom-6 sm:right-6 sm:p-0 print:hidden ${
+        atFooter
+          ? 'pointer-events-none translate-y-3 opacity-0'
+          : 'translate-y-0 opacity-100'
+      }`}
+    >
       <AnimatePresence>
         {isOpen && (
           <motion.ul
@@ -75,9 +102,15 @@ export default function FloatingContact() {
                   rel={action.external ? 'noopener noreferrer' : undefined}
                   className="flex items-center gap-3.5 border-b border-ink-800 px-4 py-3.5 transition-colors last:border-b-0 hover:bg-ink-900"
                 >
-                  <action.icon aria-hidden size={16} className="shrink-0 text-steel-400" />
+                  <action.icon
+                    aria-hidden
+                    size={16}
+                    className="shrink-0 text-steel-400"
+                  />
                   <span className="min-w-0 flex-1">
-                    <span className="label block text-steel-500">{action.label}</span>
+                    <span className="label block text-steel-500">
+                      {action.label}
+                    </span>
                     <span className="data mt-1 block truncate text-[0.8125rem] text-steel-200">
                       {action.detail}
                     </span>

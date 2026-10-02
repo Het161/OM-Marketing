@@ -5,7 +5,12 @@
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { FiDownload, FiMessageCircle, FiPhone, FiPrinter } from 'react-icons/fi';
+import {
+  FiDownload,
+  FiMessageCircle,
+  FiPhone,
+  FiPrinter,
+} from 'react-icons/fi';
 
 import BillPreview from '@/components/admin/BillPreview';
 import { site, whatsappLink } from '@/lib/site';
@@ -56,22 +61,27 @@ export default function PublicBillPage() {
 
   if (failed || !invoice) {
     return (
-      <div className="mx-auto flex min-h-[70vh] max-w-xl items-center px-4 py-16">
+      <div className="shell mx-auto flex min-h-[70vh] max-w-xl items-center py-16">
         <div className="w-full text-center">
           <span className="mb-4 block text-6xl" aria-hidden>
             🧾
           </span>
-          <h1 className="mb-3 text-2xl font-extrabold">This bill link isn&apos;t valid</h1>
+          <h1 className="mb-3 text-2xl font-extrabold">
+            This bill link isn&apos;t valid
+          </h1>
           <p className="mx-auto mb-8 max-w-md leading-relaxed text-muted">
-            The link may be incomplete, or the bill may have been withdrawn. Please
-            check the message we sent you, or get in touch and we&apos;ll resend it.
+            The link may be incomplete, or the bill may have been withdrawn.
+            Please check the message we sent you, or get in touch and we&apos;ll
+            resend it.
           </p>
           <div className="flex flex-wrap justify-center gap-3">
             <a href={`tel:${site.phoneDial}`} className="btn-primary">
               <FiPhone aria-hidden /> Call {site.phoneDisplay}
             </a>
             <a
-              href={whatsappLink('Hello, I need help opening my bill from OM Marketing.')}
+              href={whatsappLink(
+                'Hello, I need help opening my bill from OM Marketing.',
+              )}
               target="_blank"
               rel="noopener noreferrer"
               className="btn-outline"
@@ -85,7 +95,7 @@ export default function PublicBillPage() {
   }
 
   return (
-    <div className="bg-surface-2 px-4 py-8 sm:py-12">
+    <div className="shell bg-surface-2 py-8 sm:py-12">
       <div className="mx-auto max-w-[210mm]">
         <header className="mb-6 flex flex-wrap items-center justify-between gap-4 print:hidden">
           <div>
@@ -95,7 +105,11 @@ export default function PublicBillPage() {
             </p>
           </div>
           <div className="flex flex-wrap gap-2">
-            <button type="button" onClick={() => window.print()} className="btn-outline h-11 text-sm">
+            <button
+              type="button"
+              onClick={() => window.print()}
+              className="btn-outline h-11 text-sm"
+            >
               <FiPrinter aria-hidden /> Print
             </button>
             <a href={pdfUrl} className="btn-primary h-11 text-sm" download>

@@ -15,7 +15,7 @@ const updated = 'September 2026';
 
 export default function PrivacyPage() {
   return (
-    <div className="px-4 py-14 sm:py-16">
+    <div className="shell py-14 sm:py-16">
       <article className="mx-auto max-w-3xl">
         <h1 className="mb-2 text-4xl font-extrabold">Privacy Policy</h1>
         <p className="mb-10 text-muted">Last updated: {updated}</p>
@@ -33,9 +33,9 @@ export default function PrivacyPage() {
           <section>
             <h2>What we collect</h2>
             <p>
-              We only collect information you choose to give us through a form on
-              this site — the contact form, a quote request or a service booking.
-              That is:
+              We only collect information you choose to give us through a form
+              on this site — the contact form, a quote request or a service
+              booking. That is:
             </p>
             <ul>
               <li>Your name</li>
@@ -59,18 +59,17 @@ export default function PrivacyPage() {
               <li>Arrange and follow up a service or delivery visit</li>
               <li>Keep a record of the enquiry so nothing gets lost</li>
             </ul>
-            <p>
-              We will not send you marketing emails you did not ask for.
-            </p>
+            <p>We will not send you marketing emails you did not ask for.</p>
           </section>
 
           <section>
             <h2>Where it is stored</h2>
             <p>
-              Enquiries are stored in our own database and emailed to us. Email is
-              delivered using Google&apos;s mail servers. Your browser also stores
-              your quote list locally on your own device — that list stays on your
-              device and only reaches us when you submit a quote request.
+              Enquiries are stored in our own database and emailed to us. Email
+              is delivered using Google&apos;s mail servers. Your browser also
+              stores your quote list locally on your own device — that list
+              stays on your device and only reaches us when you submit a quote
+              request.
             </p>
           </section>
 
@@ -78,8 +77,8 @@ export default function PrivacyPage() {
             <h2>How long we keep it</h2>
             <p>
               We keep enquiry records for as long as needed to serve you and to
-              meet our tax and warranty obligations, and then delete them. You can
-              ask us to delete your details sooner at any time.
+              meet our tax and warranty obligations, and then delete them. You
+              can ask us to delete your details sooner at any time.
             </p>
           </section>
 
@@ -101,9 +100,10 @@ export default function PrivacyPage() {
           <section>
             <h2>Cookies</h2>
             <p>
-              This site does not use advertising or analytics cookies. Your quote
-              list is saved in your browser&apos;s local storage purely so it
-              survives a page refresh — clearing your browser data removes it.
+              This site does not use advertising or analytics cookies. Your
+              quote list is saved in your browser&apos;s local storage purely so
+              it survives a page refresh — clearing your browser data removes
+              it.
             </p>
           </section>
 

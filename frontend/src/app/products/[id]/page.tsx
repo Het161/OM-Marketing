@@ -19,6 +19,7 @@ import {
   FiTool,
   FiTruck,
 } from 'react-icons/fi';
+import { TbScale } from 'react-icons/tb';
 
 import ProductCard, { type Product } from '@/components/products/ProductCard';
 import ProductGallery from '@/components/products/ProductGallery';
@@ -137,7 +138,7 @@ export default function ProductDetailPage() {
 
   if (loading) {
     return (
-      <div className="mx-auto max-w-7xl px-4 py-12">
+      <div className="shell py-12">
         <div className="grid gap-10 lg:grid-cols-2">
           <div className="skeleton aspect-[4/3]" />
           <div>
@@ -158,15 +159,17 @@ export default function ProductDetailPage() {
 
   if (notFound || !product) {
     return (
-      <div className="mx-auto flex min-h-[60vh] max-w-2xl items-center px-4 py-16">
+      <div className="shell mx-auto flex min-h-[60vh] max-w-2xl items-center py-16">
         <div className="w-full text-center">
-          <span className="mb-5 block text-6xl" aria-hidden>
-            ⚖️
+          <span className="mx-auto mb-6 flex h-12 w-12 items-center justify-center border border-line text-subtle">
+            <TbScale size={22} aria-hidden />
           </span>
-          <h1 className="mb-3 text-3xl font-extrabold">We couldn&apos;t find that product</h1>
+          <h1 className="mb-3 text-3xl font-extrabold">
+            We couldn&apos;t find that product
+          </h1>
           <p className="mx-auto mb-8 max-w-md leading-relaxed text-muted">
-            It may have been renamed or replaced by a newer model. Browse the full
-            range, or tell us what you were looking for.
+            It may have been renamed or replaced by a newer model. Browse the
+            full range, or tell us what you were looking for.
           </p>
           <div className="flex flex-wrap justify-center gap-3">
             <Link href="/products" className="btn-primary">
@@ -186,8 +189,8 @@ export default function ProductDetailPage() {
   const inStock = product.stock_quantity > 0;
 
   return (
-    <div className="px-4 py-8 sm:py-12">
-      <div className="mx-auto max-w-7xl">
+    <div className="shell py-8 sm:py-12">
+      <div className="w-full">
         {/* Breadcrumb */}
         <nav aria-label="Breadcrumb" className="mb-6">
           <ol className="flex flex-wrap items-center gap-2 text-sm text-muted">
@@ -198,7 +201,10 @@ export default function ProductDetailPage() {
             </li>
             <li aria-hidden>/</li>
             <li>
-              <Link href="/products" className="hover:text-primary-600 hover:underline">
+              <Link
+                href="/products"
+                className="hover:text-primary-600 hover:underline"
+              >
                 Products
               </Link>
             </li>
@@ -212,7 +218,10 @@ export default function ProductDetailPage() {
               </Link>
             </li>
             <li aria-hidden>/</li>
-            <li aria-current="page" className="max-w-[16rem] truncate font-medium text-content">
+            <li
+              aria-current="page"
+              className="max-w-[16rem] truncate font-medium text-content"
+            >
               {product.name}
             </li>
           </ol>
@@ -230,8 +239,9 @@ export default function ProductDetailPage() {
               alt={product.name}
               badge={
                 <span className="label absolute left-0 top-0 bg-ink-950 px-2.5 py-1.5 text-steel-300">
-                  {categoryLabels[product.category]?.replace(/\s+/g, '-').toUpperCase() ??
-                    product.category}
+                  {categoryLabels[product.category]
+                    ?.replace(/\s+/g, '-')
+                    .toUpperCase() ?? product.category}
                   <span className="ml-1.5 text-white">
                     ·{String(product.id).padStart(3, '0')}
                   </span>
@@ -245,8 +255,13 @@ export default function ProductDetailPage() {
                   key={item.text}
                   className="flex items-start gap-2.5 border border-line bg-surface-2 p-3"
                 >
-                  <item.icon aria-hidden className="mt-0.5 shrink-0 text-brand" />
-                  <span className="text-[13px] leading-snug text-muted">{item.text}</span>
+                  <item.icon
+                    aria-hidden
+                    className="mt-0.5 shrink-0 text-brand"
+                  />
+                  <span className="text-[13px] leading-snug text-muted">
+                    {item.text}
+                  </span>
                 </div>
               ))}
             </div>
@@ -265,10 +280,14 @@ export default function ProductDetailPage() {
             <div className="mt-4 flex flex-wrap items-center gap-3">
               <span
                 className={`pill ${
-                  inStock ? 'bg-green-100 text-green-800' : 'bg-accent-100 text-accent-800'
+                  inStock
+                    ? 'bg-green-100 text-green-800'
+                    : 'bg-accent-100 text-accent-800'
                 }`}
               >
-                {inStock ? `In stock · ${product.stock_quantity} available` : 'Made to order'}
+                {inStock
+                  ? `In stock · ${product.stock_quantity} available`
+                  : 'Made to order'}
               </span>
               <span className="pill bg-primary-50 text-primary-700">
                 {site.certification}
@@ -319,7 +338,9 @@ export default function ProductDetailPage() {
                     max={999}
                     value={quantity}
                     onChange={(e) =>
-                      setQuantity(Math.min(999, Math.max(1, Number(e.target.value) || 1)))
+                      setQuantity(
+                        Math.min(999, Math.max(1, Number(e.target.value) || 1)),
+                      )
                     }
                     className="w-14 border-0 bg-transparent text-center font-semibold tabular-nums focus:outline-none"
                   />
@@ -387,7 +408,10 @@ export default function ProductDetailPage() {
                   animate={{ opacity: 1, y: 0 }}
                   className="mt-3 text-center text-sm"
                 >
-                  <Link href="/quote" className="font-semibold text-primary-600 underline">
+                  <Link
+                    href="/quote"
+                    className="font-semibold text-primary-600 underline"
+                  >
                     View your quote list →
                   </Link>
                 </motion.p>
@@ -414,7 +438,9 @@ export default function ProductDetailPage() {
                       {specs.map(([label, value], index) => (
                         <tr
                           key={label}
-                          className={index % 2 === 0 ? 'bg-surface-2' : 'bg-surface'}
+                          className={
+                            index % 2 === 0 ? 'bg-surface-2' : 'bg-surface'
+                          }
                         >
                           <th
                             scope="row"
@@ -437,10 +463,13 @@ export default function ProductDetailPage() {
         <section className="mt-16 border-t border-line pt-14">
           <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
             <div>
-              <h2 className="text-2xl font-extrabold sm:text-3xl">You might also need</h2>
+              <h2 className="text-2xl font-extrabold sm:text-3xl">
+                You might also need
+              </h2>
               <p className="mt-1.5 text-muted">
-                Other {categoryLabels[product.category]?.toLowerCase() ?? 'products'} we
-                stock.
+                Other{' '}
+                {categoryLabels[product.category]?.toLowerCase() ?? 'products'}{' '}
+                we stock.
               </p>
             </div>
             <Link href="/products" className="btn-outline">

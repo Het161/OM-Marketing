@@ -2,7 +2,13 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { FiClock, FiInstagram, FiMail, FiMapPin, FiPhone } from 'react-icons/fi';
+import {
+  FiClock,
+  FiInstagram,
+  FiMail,
+  FiMapPin,
+  FiPhone,
+} from 'react-icons/fi';
 
 import { categories, serviceTypes, site } from '@/lib/site';
 
@@ -20,7 +26,7 @@ export default function Footer() {
 
   return (
     <footer className="border-t border-line bg-ink-950 text-steel-300">
-      <div className="mx-auto max-w-[88rem] px-4 py-16 sm:px-6 lg:px-10">
+      <div className="shell py-16">
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
           {/* Company */}
           <div>
@@ -37,8 +43,8 @@ export default function Footer() {
               </span>
             </div>
             <p className="mb-5 max-w-xs text-[0.9375rem] leading-relaxed text-steel-400">
-              {site.certification} supplier of weighing scales, note counters and
-              mobile accessories — serving businesses across Gujarat.
+              {site.certification} supplier of weighing scales, note counters
+              and mobile accessories — serving businesses across Gujarat.
             </p>
             <dl className="border-t border-white/10">
               {[
@@ -46,7 +52,10 @@ export default function Footer() {
                 ['Registered', site.msme],
                 ['Udyam', site.udyam],
               ].map(([k, v]) => (
-                <div key={k} className="flex justify-between gap-4 border-b border-white/10 py-2.5">
+                <div
+                  key={k}
+                  className="flex justify-between gap-4 border-b border-white/10 py-2.5"
+                >
                   <dt className="label text-steel-500">{k}</dt>
                   <dd className="data text-xs text-steel-300">{v}</dd>
                 </div>
@@ -119,7 +128,10 @@ export default function Footer() {
             <h2 className="label mb-5 text-steel-500">Get in Touch</h2>
             <ul className="space-y-3 text-sm">
               <li className="flex items-start gap-3">
-                <FiMapPin aria-hidden className="mt-0.5 shrink-0 text-steel-500" />
+                <FiMapPin
+                  aria-hidden
+                  className="mt-0.5 shrink-0 text-steel-500"
+                />
                 <a
                   href={site.mapsUrl}
                   target="_blank"
@@ -141,7 +153,10 @@ export default function Footer() {
                 </a>
               </li>
               <li className="flex items-start gap-3">
-                <FiMail aria-hidden className="mt-0.5 shrink-0 text-steel-500" />
+                <FiMail
+                  aria-hidden
+                  className="mt-0.5 shrink-0 text-steel-500"
+                />
                 <a
                   href={`mailto:${site.email}`}
                   className="break-all text-steel-300 transition-colors hover:text-white"
@@ -150,7 +165,10 @@ export default function Footer() {
                 </a>
               </li>
               <li className="flex items-start gap-3">
-                <FiClock aria-hidden className="mt-0.5 shrink-0 text-steel-500" />
+                <FiClock
+                  aria-hidden
+                  className="mt-0.5 shrink-0 text-steel-500"
+                />
                 <span className="text-steel-300">
                   {site.hours.map((h) => (
                     <span key={h.days} className="block">
@@ -168,7 +186,10 @@ export default function Footer() {
             © {year} {site.name}. All rights reserved.
           </p>
           <p className="flex items-center gap-4">
-            <Link href="/privacy" className="transition-colors hover:text-white">
+            <Link
+              href="/privacy"
+              className="transition-colors hover:text-white"
+            >
               Privacy Policy
             </Link>
             <Link href="/terms" className="transition-colors hover:text-white">

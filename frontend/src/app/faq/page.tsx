@@ -124,7 +124,7 @@ export default function FaqPage() {
         lead="Everything worth knowing before you buy, calibrate or service a weighing scale in Gujarat."
       />
 
-      <section className="px-4 py-14 sm:py-16">
+      <section className="shell py-14 sm:py-16">
         <div className="mx-auto max-w-3xl space-y-12">
           {groups.map((group) => (
             <div key={group.heading}>
@@ -136,15 +136,17 @@ export default function FaqPage() {
           <div className="card p-8 text-center">
             <h2 className="mb-2 text-xl font-bold">Still not sure?</h2>
             <p className="mx-auto mb-6 max-w-md leading-relaxed text-muted">
-              Describe your requirement and we&apos;ll tell you what actually fits —
-              no obligation, no sales pressure.
+              Describe your requirement and we&apos;ll tell you what actually
+              fits — no obligation, no sales pressure.
             </p>
             <div className="flex flex-wrap justify-center gap-3">
               <a href={`tel:${site.phoneDial}`} className="btn-primary">
                 <FiPhone aria-hidden /> Call {site.phoneDisplay}
               </a>
               <a
-                href={whatsappLink('Hello OM Marketing, I have a question about scales.')}
+                href={whatsappLink(
+                  'Hello OM Marketing, I have a question about scales.',
+                )}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn-outline"

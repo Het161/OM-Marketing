@@ -78,8 +78,11 @@ export default function AboutPage() {
       />
 
       {/* Stats */}
-      <section aria-label="Company at a glance" className="border-b border-line bg-surface-2 px-4 py-10">
-        <div className="mx-auto grid max-w-7xl gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      <section
+        aria-label="Company at a glance"
+        className="border-b border-line bg-surface-2 py-10"
+      >
+        <div className="shell grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {stats.map((stat) => (
             <div key={stat.label} className="flex items-center gap-4">
               <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary-500 text-white">
@@ -97,8 +100,8 @@ export default function AboutPage() {
       </section>
 
       {/* Story */}
-      <section className="px-4 py-16 sm:py-20">
-        <div className="mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-2">
+      <section className="border-b border-line py-20 lg:py-28">
+        <div className="shell grid items-center gap-12 lg:grid-cols-2">
           <div>
             <SectionHeading
               align="left"
@@ -114,11 +117,11 @@ export default function AboutPage() {
                 someone who did.
               </p>
               <p>
-                From our base in Nikol, Ahmedabad we supply the full range — 10 kg
-                counter scales for a kirana shop, 500 kg platforms for a godown,
-                15-ton crane scales for a factory floor, explosion-proof indicators
-                for chemical plants, and high-speed note counters for anyone
-                handling cash.
+                From our base in Nikol, Ahmedabad we supply the full range — 10
+                kg counter scales for a kirana shop, 500 kg platforms for a
+                godown, 15-ton crane scales for a factory floor, explosion-proof
+                indicators for chemical plants, and high-speed note counters for
+                anyone handling cash.
               </p>
               <p>
                 We are {site.certification} and registered as a micro enterprise
@@ -167,8 +170,8 @@ export default function AboutPage() {
       </section>
 
       {/* Values */}
-      <section className="bg-surface-2 px-4 py-16 sm:py-20">
-        <div className="mx-auto max-w-7xl">
+      <section className="border-b border-line bg-surface-2 py-20 lg:py-28">
+        <div className="shell">
           <SectionHeading
             eyebrow="How we work"
             title="What we stand by"
@@ -187,8 +190,8 @@ export default function AboutPage() {
       </section>
 
       {/* Industries */}
-      <section className="px-4 py-16 sm:py-20">
-        <div className="mx-auto max-w-7xl">
+      <section className="border-b border-line py-20 lg:py-28">
+        <div className="shell">
           <SectionHeading
             eyebrow="Who we work with"
             title="Industries we serve"
@@ -201,7 +204,10 @@ export default function AboutPage() {
                 key={industry}
                 className="flex items-center gap-2 rounded-full border border-line bg-surface px-4 py-2.5 text-sm font-medium"
               >
-                <FiCheckCircle aria-hidden className="shrink-0 text-primary-500" />
+                <FiCheckCircle
+                  aria-hidden
+                  className="shrink-0 text-primary-500"
+                />
                 {industry}
               </li>
             ))}
@@ -210,8 +216,8 @@ export default function AboutPage() {
       </section>
 
       {/* CTA */}
-      <section className="px-4 pb-16 sm:pb-20">
-        <div className="mx-auto max-w-7xl">
+      <section className="pb-20 lg:pb-28">
+        <div className="shell">
           <div className="relative overflow-hidden border border-line bg-ink-950 px-6 py-16 text-center sm:px-12">
             <div
               aria-hidden
@@ -222,8 +228,8 @@ export default function AboutPage() {
                 Come and see us in Nikol
               </h2>
               <p className="mx-auto mb-9 max-w-xl text-[1.0625rem] leading-relaxed text-steel-300">
-                Bring your requirement — or your faulty scale — and we&apos;ll tell
-                you honestly what it needs.
+                Bring your requirement — or your faulty scale — and we&apos;ll
+                tell you honestly what it needs.
               </p>
               <div className="flex flex-wrap justify-center gap-3">
                 <a

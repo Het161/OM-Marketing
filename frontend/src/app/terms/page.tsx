@@ -15,7 +15,7 @@ const updated = 'September 2026';
 
 export default function TermsPage() {
   return (
-    <div className="px-4 py-14 sm:py-16">
+    <div className="shell py-14 sm:py-16">
       <article className="mx-auto max-w-3xl">
         <h1 className="mb-2 text-4xl font-extrabold">Terms &amp; Conditions</h1>
         <p className="mb-10 text-muted">Last updated: {updated}</p>
@@ -23,19 +23,19 @@ export default function TermsPage() {
         <div className="space-y-8 leading-relaxed text-muted [&_h2]:mb-3 [&_h2]:text-xl [&_h2]:font-bold [&_h2]:text-content [&_li]:mb-1.5 [&_p]:mb-3 [&_ul]:list-disc [&_ul]:pl-6">
           <section>
             <p>
-              These terms apply when you use this website, request a quotation or
-              book a service from {site.name}, {site.addressFull}.
+              These terms apply when you use this website, request a quotation
+              or book a service from {site.name}, {site.addressFull}.
             </p>
           </section>
 
           <section>
             <h2>Prices shown on this site are indicative</h2>
             <p>
-              Prices displayed against products are a starting guide only. They are
-              not an offer and do not form a contract. Your final price depends on
-              quantity, configuration, current stock, applicable GST, and delivery
-              or installation charges, and is confirmed only in a written
-              quotation from us.
+              Prices displayed against products are a starting guide only. They
+              are not an offer and do not form a contract. Your final price
+              depends on quantity, configuration, current stock, applicable GST,
+              and delivery or installation charges, and is confirmed only in a
+              written quotation from us.
             </p>
           </section>
 
@@ -44,18 +44,19 @@ export default function TermsPage() {
             <p>
               Adding items to your quote list and submitting a request does not
               place an order and does not reserve stock. It is a request for
-              pricing. An order exists only once we have issued a quotation and you
-              have confirmed it in writing.
+              pricing. An order exists only once we have issued a quotation and
+              you have confirmed it in writing.
             </p>
           </section>
 
           <section>
             <h2>Product information</h2>
             <p>
-              We take care to describe specifications accurately, but manufacturers
-              change models and images are illustrative. Capacities, platform sizes
-              and accuracy classes should be confirmed with us before you order,
-              particularly where the equipment must meet a compliance requirement.
+              We take care to describe specifications accurately, but
+              manufacturers change models and images are illustrative.
+              Capacities, platform sizes and accuracy classes should be
+              confirmed with us before you order, particularly where the
+              equipment must meet a compliance requirement.
             </p>
           </section>
 
@@ -71,17 +72,20 @@ export default function TermsPage() {
               <li>Water or chemical ingress on equipment not rated for it</li>
               <li>Repairs or modifications carried out by anyone else</li>
               <li>Consumables such as batteries and printer rolls</li>
-              <li>Routine calibration, which is a service rather than a fault</li>
+              <li>
+                Routine calibration, which is a service rather than a fault
+              </li>
             </ul>
           </section>
 
           <section>
             <h2>Legal Metrology</h2>
             <p>
-              Scales used for trade in India must be verified and stamped under the
-              Legal Metrology Act, 2009. We supply verification-ready equipment and
-              will guide you through the process, but obtaining and maintaining
-              valid stamping for your premises remains your responsibility.
+              Scales used for trade in India must be verified and stamped under
+              the Legal Metrology Act, 2009. We supply verification-ready
+              equipment and will guide you through the process, but obtaining
+              and maintaining valid stamping for your premises remains your
+              responsibility.
             </p>
           </section>
 
@@ -90,8 +94,8 @@ export default function TermsPage() {
             <p>
               Service and calibration bookings are confirmed by phone. We give
               indicative response times in good faith; they are not guaranteed
-              unless set out in a signed annual maintenance contract. Charges for
-              a visit are confirmed before any work begins.
+              unless set out in a signed annual maintenance contract. Charges
+              for a visit are confirmed before any work begins.
             </p>
           </section>
 
@@ -100,19 +104,19 @@ export default function TermsPage() {
             <p>
               Delivery timelines are estimates and depend on stock and location.
               Please inspect goods on delivery and report transit damage
-              immediately. Custom-built, made-to-order and stamped equipment cannot
-              be returned once supplied unless it is faulty.
+              immediately. Custom-built, made-to-order and stamped equipment
+              cannot be returned once supplied unless it is faulty.
             </p>
           </section>
 
           <section>
             <h2>Liability</h2>
             <p>
-              Our liability in connection with any product or service is limited to
-              repairing or replacing the equipment supplied, or refunding what you
-              paid for it. We are not liable for indirect or consequential loss,
-              including lost production or lost profit. Nothing here limits
-              liability that cannot lawfully be limited.
+              Our liability in connection with any product or service is limited
+              to repairing or replacing the equipment supplied, or refunding
+              what you paid for it. We are not liable for indirect or
+              consequential loss, including lost production or lost profit.
+              Nothing here limits liability that cannot lawfully be limited.
             </p>
           </section>
 

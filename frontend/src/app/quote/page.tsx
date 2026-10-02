@@ -58,7 +58,9 @@ export default function QuotePage() {
   const [hydrated, setHydrated] = useState(false);
   const [form, setForm] = useState<FormState>(EMPTY);
   const [errors, setErrors] = useState<Errors<FormState>>({});
-  const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
+  const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>(
+    'idle',
+  );
   const [reference, setReference] = useState('');
   const [serverError, setServerError] = useState('');
 
@@ -69,7 +71,10 @@ export default function QuotePage() {
     setErrors((prev) => (prev[key] ? { ...prev, [key]: undefined } : prev));
   };
 
-  const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const subtotal = items.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0,
+  );
   const totalUnits = items.reduce((sum, item) => sum + item.quantity, 0);
 
   const handleSubmit = async (event: React.FormEvent) => {
@@ -120,7 +125,7 @@ export default function QuotePage() {
 
   if (status === 'sent') {
     return (
-      <div className="mx-auto flex min-h-[70vh] max-w-2xl items-center px-4 py-16">
+      <div className="shell mx-auto flex min-h-[70vh] max-w-2xl items-center py-16">
         <motion.div
           initial={{ opacity: 0, scale: 0.97 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -132,15 +137,17 @@ export default function QuotePage() {
           </span>
           <h1 className="mb-3 text-3xl font-extrabold">Quote request sent!</h1>
           <p className="mx-auto mb-2 max-w-md leading-relaxed text-muted">
-            We&apos;ve emailed you a confirmation with your item list, and our team
-            is preparing your pricing now.
+            We&apos;ve emailed you a confirmation with your item list, and our
+            team is preparing your pricing now.
           </p>
           <p className="mb-8 font-semibold text-primary-600">
             Your reference: {reference}
           </p>
           <div className="flex flex-wrap justify-center gap-3">
             <a
-              href={whatsappLink(`Hi, I just requested a quote (${reference}).`)}
+              href={whatsappLink(
+                `Hi, I just requested a quote (${reference}).`,
+              )}
               target="_blank"
               rel="noopener noreferrer"
               className="btn-primary"
@@ -160,22 +167,28 @@ export default function QuotePage() {
   if (!hydrated) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
-        <div className="spinner" role="status" aria-label="Loading your quote list" />
+        <div
+          className="spinner"
+          role="status"
+          aria-label="Loading your quote list"
+        />
       </div>
     );
   }
 
   if (items.length === 0) {
     return (
-      <div className="mx-auto flex min-h-[70vh] max-w-2xl items-center px-4 py-16">
+      <div className="shell mx-auto flex min-h-[70vh] max-w-2xl items-center py-16">
         <div className="w-full text-center">
           <span className="mb-6 inline-flex h-20 w-20 items-center justify-center rounded-full bg-surface-3 text-subtle">
             <FiFileText size={38} aria-hidden />
           </span>
-          <h1 className="mb-3 text-3xl font-extrabold">Your quote list is empty</h1>
+          <h1 className="mb-3 text-3xl font-extrabold">
+            Your quote list is empty
+          </h1>
           <p className="mx-auto mb-8 max-w-md leading-relaxed text-muted">
-            Add the products you&apos;re interested in and send them across in one
-            go — we&apos;ll come back with our best pricing.
+            Add the products you&apos;re interested in and send them across in
+            one go — we&apos;ll come back with our best pricing.
           </p>
           <div className="flex flex-wrap justify-center gap-3">
             <Link href="/products" className="btn-primary">
@@ -195,13 +208,15 @@ export default function QuotePage() {
   /* ------------------------------------------------------------------ view */
 
   return (
-    <div className="px-4 py-12 sm:py-16">
-      <div className="mx-auto max-w-7xl">
+    <div className="shell py-12 sm:py-16">
+      <div className="w-full">
         <header className="mb-10">
-          <h1 className="text-3xl font-extrabold sm:text-4xl">Request a quote</h1>
+          <h1 className="text-3xl font-extrabold sm:text-4xl">
+            Request a quote
+          </h1>
           <p className="mt-2 text-muted">
-            {totalUnits} item{totalUnits === 1 ? '' : 's'} ready to send. We reply
-            with firm pricing, usually the same working day.
+            {totalUnits} item{totalUnits === 1 ? '' : 's'} ready to send. We
+            reply with firm pricing, usually the same working day.
           </p>
         </header>
 
@@ -249,7 +264,9 @@ export default function QuotePage() {
                       <div className="flex items-center gap-1 rounded-lg border border-line-strong p-1">
                         <button
                           type="button"
-                          onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                          onClick={() =>
+                            updateQuantity(item.id, item.quantity - 1)
+                          }
                           aria-label={`Decrease quantity of ${item.name}`}
                           className="flex h-9 w-9 items-center justify-center rounded-md text-muted transition-colors hover:bg-surface-3 hover:text-content"
                         >
@@ -264,7 +281,9 @@ export default function QuotePage() {
                         </span>
                         <button
                           type="button"
-                          onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                          onClick={() =>
+                            updateQuantity(item.id, item.quantity + 1)
+                          }
                           aria-label={`Increase quantity of ${item.name}`}
                           className="flex h-9 w-9 items-center justify-center rounded-md text-muted transition-colors hover:bg-surface-3 hover:text-content"
                         >
@@ -274,7 +293,8 @@ export default function QuotePage() {
 
                       <div className="flex items-center gap-3">
                         <span className="font-bold text-primary-600">
-                          ₹{(item.price * item.quantity).toLocaleString('en-IN')}
+                          ₹
+                          {(item.price * item.quantity).toLocaleString('en-IN')}
                         </span>
                         <button
                           type="button"
@@ -295,7 +315,11 @@ export default function QuotePage() {
               <Link href="/products" className="btn-ghost">
                 ← Add more products
               </Link>
-              <button type="button" onClick={clear} className="btn-ghost text-red-600">
+              <button
+                type="button"
+                onClick={clear}
+                className="btn-ghost text-red-600"
+              >
                 <FiTrash2 aria-hidden /> Clear list
               </button>
             </div>
@@ -318,16 +342,17 @@ export default function QuotePage() {
                 </div>
               </dl>
               <p className="mt-4 rounded-lg bg-accent-50 p-3 text-[13px] leading-relaxed text-ink-700">
-                <strong>This is a guide price only.</strong> Your final quotation
-                depends on quantity, configuration, GST and delivery — and there is
-                usually room to negotiate.
+                <strong>This is a guide price only.</strong> Your final
+                quotation depends on quantity, configuration, GST and delivery —
+                and there is usually room to negotiate.
               </p>
             </div>
 
             <form onSubmit={handleSubmit} noValidate className="card p-6">
               <h2 className="mb-1 font-bold">Where should we send it?</h2>
               <p className="mb-5 text-sm text-muted">
-                Fields marked <span className="text-red-600">*</span> are required.
+                Fields marked <span className="text-red-600">*</span> are
+                required.
               </p>
 
               <Honeypot value={form.website} onChange={set('website')} />
@@ -343,7 +368,10 @@ export default function QuotePage() {
                     <p className="mt-0.5">{serverError}</p>
                     <p className="mt-2">
                       Your list is safe — nothing was lost. You can also{' '}
-                      <a href={`tel:${site.phoneDial}`} className="font-semibold underline">
+                      <a
+                        href={`tel:${site.phoneDial}`}
+                        className="font-semibold underline"
+                      >
                         call {site.phoneDisplay}
                       </a>
                       .
@@ -405,7 +433,11 @@ export default function QuotePage() {
                 />
               </div>
 
-              <button type="submit" disabled={sending} className="btn-primary mt-6 w-full">
+              <button
+                type="submit"
+                disabled={sending}
+                className="btn-primary mt-6 w-full"
+              >
                 {sending ? (
                   <>
                     <span

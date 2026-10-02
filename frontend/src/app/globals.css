@@ -1,6 +1,6 @@
 /* frontend/src/app/globals.css */
 
-@import "tailwindcss";
+@import 'tailwindcss';
 
 /* ==========================================================================
    OM MARKETING — DESIGN SYSTEM
@@ -37,6 +37,9 @@
   --color-steel-200: #e2e2dd;
   --color-steel-300: #cfcfc8;
   --color-steel-400: #adada4;
+  /* Referenced by the footer and the contact bar. 5.66:1 on ink-950,
+     so it clears AA on every dark surface in the system. */
+  --color-steel-500: #8a8a81;
 
   /* --- Accent: the brand teal, kept deliberately scarce ------------------ */
   --color-primary-50: #e8f2f1;
@@ -64,12 +67,14 @@
   --color-accent-900: #3d2500;
 
   /* --- Type: a grotesque for everything, a mono for data ----------------- */
-  --font-sans: "Archivo Variable", "Inter Variable", ui-sans-serif, system-ui,
-    -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-  --font-display: "Archivo Variable", "Inter Variable", ui-sans-serif, system-ui,
+  --font-sans:
+    'Archivo Variable', 'Inter Variable', ui-sans-serif, system-ui,
+    -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+  --font-display:
+    'Archivo Variable', 'Inter Variable', ui-sans-serif, system-ui,
     -apple-system, Arial, sans-serif;
-  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas,
-    monospace;
+  --font-mono:
+    'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 
   /* --- Radius: near-square. Equipment has edges. ------------------------- */
   --radius-xs: 1px;
@@ -77,6 +82,17 @@
   --radius-md: 3px;
   --radius-card: 2px;
   --radius-pill: 999px;
+
+  /* The rest of the scale is capped at the same near-square value. Tailwind
+     would otherwise fall back to its own 8–16px defaults, so a stray
+     `rounded-xl` left over from an earlier pass would quietly reintroduce
+     soft corners. Capping here keeps the system honest without having to
+     police every utility by hand. */
+  --radius-lg: 3px;
+  --radius-xl: 3px;
+  --radius-2xl: 3px;
+  --radius-3xl: 3px;
+  --radius-4xl: 3px;
 
   /* --- Motion: one curve, short durations ------------------------------- */
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
@@ -96,7 +112,10 @@
   --paper-3: #efefec;
   --text: #141412;
   --text-muted: #5a5a53;
-  --text-subtle: #7b7b73;
+  /* AA against both paper (5.14:1) and paper-2 (4.79:1). The label
+     style leans on this colour heavily, so it has to clear 4.5:1 on
+     the raised surface too, not just on white. */
+  --text-subtle: #6e6e66;
   --rule: #e2e2dd;
   --rule-strong: #cfcfc8;
   --ring: #0a6a65;
@@ -107,13 +126,14 @@
 }
 
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
+  :root:not([data-theme='light']) {
     --paper: #0b0b0a;
     --paper-2: #141412;
     --paper-3: #1f1f1c;
     --text: #f4f4f2;
     --text-muted: #a6a69e;
-    --text-subtle: #7b7b73;
+    /* AA down to paper-3 (4.75:1) — #7b7b73 fell to 3.87:1 there. */
+    --text-subtle: #8a8a81;
     --rule: #2a2a26;
     --rule-strong: #3a3a35;
     --ring: #55a19c;
@@ -124,13 +144,14 @@
   }
 }
 
-:root[data-theme="dark"] {
+:root[data-theme='dark'] {
   --paper: #0b0b0a;
   --paper-2: #141412;
   --paper-3: #1f1f1c;
   --text: #f4f4f2;
   --text-muted: #a6a69e;
-  --text-subtle: #7b7b73;
+  /* AA down to paper-3 (4.75:1) — #7b7b73 fell to 3.87:1 there. */
+  --text-subtle: #8a8a81;
   --rule: #2a2a26;
   --rule-strong: #3a3a35;
   --ring: #55a19c;
@@ -222,42 +243,74 @@ p {
    TYPOGRAPHIC UTILITIES
    ========================================================================== */
 
-/* The small uppercase mono label that runs above sections, on spec rows and
-   over data. Does a lot of the heavy lifting in this design. */
-.label {
-  font-family: var(--font-mono);
-  font-size: 0.6875rem;
-  font-weight: 500;
-  line-height: 1;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--text-subtle);
-}
-
-.label-accent {
-  color: var(--brand-ink);
-}
-
-/* Numbers, capacities, prices, references — anything measurable. */
-.data {
-  font-family: var(--font-mono);
-  font-variant-numeric: tabular-nums;
-  letter-spacing: -0.01em;
-}
-
-.display {
-  font-family: var(--font-display);
-  font-weight: 800;
-  letter-spacing: -0.04em;
-  line-height: 0.95;
-}
-
 /* ==========================================================================
    COMPONENTS
    In @layer components so Tailwind utilities can still override them.
    ========================================================================== */
 
 @layer components {
+  /* The small uppercase mono label that runs above sections, on spec rows and
+     over data. Does a lot of the heavy lifting in this design. */
+  .label {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-subtle);
+  }
+
+  .label-accent {
+    color: var(--brand-ink);
+  }
+
+  /* Numbers, capacities, prices, references — anything measurable. */
+  .data {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.01em;
+  }
+
+  .display {
+    font-family: var(--font-display);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 0.95;
+  }
+
+  /* Index number shown beside section headings. */
+  .section-index {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    color: var(--text-subtle);
+  }
+
+  /* ---------------------------------------------------------------- shell */
+  /* Every full-width band aligns its content to this one measure. The navbar,
+     the page headers and the footer use it too, so a section heading sits on
+     the same vertical rule as the logo above it and the address below it.
+     Use it instead of repeating the max-width and the responsive gutter. */
+  .shell {
+    margin-inline: auto;
+    width: 100%;
+    max-width: 88rem;
+    padding-inline: 1rem;
+  }
+
+  @media (min-width: 640px) {
+    .shell {
+      padding-inline: 1.5rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .shell {
+      padding-inline: 2.5rem;
+    }
+  }
 
   .btn,
   .btn-primary,
@@ -277,7 +330,8 @@ p {
     line-height: 1;
     cursor: pointer;
     border: 1px solid transparent;
-    transition: background-color var(--duration-fast) var(--ease-standard),
+    transition:
+      background-color var(--duration-fast) var(--ease-standard),
       color var(--duration-fast) var(--ease-standard),
       border-color var(--duration-fast) var(--ease-standard);
   }
@@ -288,8 +342,8 @@ p {
   .btn-secondary:disabled,
   .btn-outline:disabled,
   .btn-ghost:disabled,
-  [aria-disabled="true"].btn-primary,
-  [aria-disabled="true"].btn-outline {
+  [aria-disabled='true'].btn-primary,
+  [aria-disabled='true'].btn-outline {
     opacity: 0.45;
     cursor: not-allowed;
   }
@@ -398,7 +452,7 @@ p {
     cursor: not-allowed;
   }
 
-  .field[aria-invalid="true"] {
+  .field[aria-invalid='true'] {
     border-color: #c0392b;
     box-shadow: inset 0 0 0 1px #c0392b;
   }
@@ -447,7 +501,8 @@ p {
 /* The faint engineering grid that backs dark sections. Replaces the blurred
    colour blobs this design started with. */
 .grid-rule {
-  background-image: linear-gradient(
+  background-image:
+    linear-gradient(
       to right,
       color-mix(in srgb, currentColor 7%, transparent) 1px,
       transparent 1px
@@ -469,15 +524,6 @@ p {
   border-bottom: 1px solid var(--rule);
 }
 
-/* Index number shown beside section headings. */
-.section-index {
-  font-family: var(--font-mono);
-  font-size: 0.6875rem;
-  font-weight: 500;
-  letter-spacing: 0.1em;
-  color: var(--text-subtle);
-}
-
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
@@ -493,19 +539,19 @@ p {
 }
 
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .only-light {
+  :root:not([data-theme='light']) .only-light {
     display: none;
   }
-  :root:not([data-theme="light"]) .only-dark {
+  :root:not([data-theme='light']) .only-dark {
     display: block;
   }
 }
 
-:root[data-theme="dark"] .only-light {
+:root[data-theme='dark'] .only-light {
   display: none;
 }
 
-:root[data-theme="dark"] .only-dark {
+:root[data-theme='dark'] .only-dark {
   display: block;
 }
 
@@ -520,7 +566,7 @@ p {
 }
 
 .skeleton::after {
-  content: "";
+  content: '';
   position: absolute;
   inset: 0;
   transform: translateX(-100%);

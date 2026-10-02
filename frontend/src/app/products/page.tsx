@@ -66,7 +66,8 @@ function ProductsContent() {
 
   const visible = useMemo(() => {
     let result = products.filter(
-      (p) => (category === 'all' || p.category === category) && p.price <= maxPrice,
+      (p) =>
+        (category === 'all' || p.category === category) && p.price <= maxPrice,
     );
 
     switch (sortBy) {
@@ -92,11 +93,12 @@ function ProductsContent() {
     setSortBy('featured');
   };
 
-  const hasFilters = category !== 'all' || maxPrice !== PRICE_CEILING || sortBy !== 'featured';
+  const hasFilters =
+    category !== 'all' || maxPrice !== PRICE_CEILING || sortBy !== 'featured';
 
   return (
-    <div className="px-4 py-12 sm:py-14">
-      <div className="mx-auto max-w-7xl">
+    <div className="shell py-12 sm:py-14">
+      <div className="w-full">
         {/* Header */}
         <header className="mb-8">
           <h1 className="text-3xl font-extrabold sm:text-4xl">
@@ -123,7 +125,8 @@ function ProductsContent() {
           aria-controls="product-filters"
           className="btn-outline mb-5 w-full lg:hidden"
         >
-          <FiFilter aria-hidden /> {showFilters ? 'Hide filters' : 'Show filters'}
+          <FiFilter aria-hidden />{' '}
+          {showFilters ? 'Hide filters' : 'Show filters'}
           {hasFilters && (
             <span className="ml-1 rounded-full bg-primary-500 px-2 py-0.5 text-xs text-white">
               on
@@ -154,22 +157,24 @@ function ProductsContent() {
               <fieldset className="mb-6">
                 <legend className="mb-3 font-semibold">Category</legend>
                 <div className="space-y-1">
-                  {[{ value: 'all', label: 'All Products' }, ...categories].map((cat) => (
-                    <label
-                      key={cat.value}
-                      className="flex min-h-[44px] cursor-pointer items-center gap-3 rounded-lg px-2 transition-colors hover:bg-surface-2"
-                    >
-                      <input
-                        type="radio"
-                        name="category"
-                        value={cat.value}
-                        checked={category === cat.value}
-                        onChange={(e) => setCategory(e.target.value)}
-                        className="h-4 w-4 accent-[var(--color-primary-500)]"
-                      />
-                      <span className="text-sm">{cat.label}</span>
-                    </label>
-                  ))}
+                  {[{ value: 'all', label: 'All Products' }, ...categories].map(
+                    (cat) => (
+                      <label
+                        key={cat.value}
+                        className="flex min-h-[44px] cursor-pointer items-center gap-3 rounded-lg px-2 transition-colors hover:bg-surface-2"
+                      >
+                        <input
+                          type="radio"
+                          name="category"
+                          value={cat.value}
+                          checked={category === cat.value}
+                          onChange={(e) => setCategory(e.target.value)}
+                          className="h-4 w-4 accent-[var(--color-primary-500)]"
+                        />
+                        <span className="text-sm">{cat.label}</span>
+                      </label>
+                    ),
+                  )}
                 </div>
               </fieldset>
 
@@ -216,10 +221,13 @@ function ProductsContent() {
 
               <div className="mt-6 rounded-xl bg-primary-50 p-4">
                 <p className="mb-3 text-sm leading-relaxed text-primary-900">
-                  Can&apos;t decide? Answer three questions and we&apos;ll shortlist
-                  the right models.
+                  Can&apos;t decide? Answer three questions and we&apos;ll
+                  shortlist the right models.
                 </p>
-                <Link href="/scale-finder" className="btn-primary h-11 w-full text-sm">
+                <Link
+                  href="/scale-finder"
+                  className="btn-primary h-11 w-full text-sm"
+                >
                   Find my scale
                 </Link>
               </div>
@@ -241,7 +249,9 @@ function ProductsContent() {
                     <FiPhone aria-hidden /> Call {site.phoneDisplay}
                   </a>
                   <a
-                    href={whatsappLink('Hello, I would like to see your product range.')}
+                    href={whatsappLink(
+                      'Hello, I would like to see your product range.',
+                    )}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="btn-outline"
@@ -257,12 +267,16 @@ function ProductsContent() {
                 </span>
                 <h2 className="mb-2 text-xl font-bold">No products match</h2>
                 <p className="mx-auto mb-6 max-w-md text-muted">
-                  We stock far more than is listed online. Tell us what you need and
-                  we&apos;ll source it.
+                  We stock far more than is listed online. Tell us what you need
+                  and we&apos;ll source it.
                 </p>
                 <div className="flex flex-wrap justify-center gap-3">
                   {hasFilters && (
-                    <button type="button" onClick={reset} className="btn-primary">
+                    <button
+                      type="button"
+                      onClick={reset}
+                      className="btn-primary"
+                    >
                       Reset filters
                     </button>
                   )}
@@ -278,7 +292,10 @@ function ProductsContent() {
                     key={product.id}
                     initial={{ opacity: 0, y: 18 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.35, delay: Math.min(index, 5) * 0.05 }}
+                    transition={{
+                      duration: 0.35,
+                      delay: Math.min(index, 5) * 0.05,
+                    }}
                   >
                     <ProductCard {...product} />
                   </motion.div>
@@ -296,7 +313,7 @@ export default function ProductsPage() {
   return (
     <Suspense
       fallback={
-        <div className="mx-auto max-w-7xl px-4 py-12">
+        <div className="shell py-12">
           <ProductGridSkeleton count={6} />
         </div>
       }

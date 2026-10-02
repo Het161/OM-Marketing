@@ -5,7 +5,28 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
-import { FiArrowLeft, FiCheck, FiFilePlus, FiMessageCircle, FiRefreshCw } from 'react-icons/fi';
+import type { IconType } from 'react-icons';
+import {
+  FiArrowLeft,
+  FiCheck,
+  FiFilePlus,
+  FiMessageCircle,
+  FiRefreshCw,
+} from 'react-icons/fi';
+import {
+  TbAlertTriangle,
+  TbBarrel,
+  TbBuildingFactory2,
+  TbBuildingStore,
+  TbCash,
+  TbCrane,
+  TbDroplet,
+  TbFeather,
+  TbForklift,
+  TbPackage,
+  TbScale,
+  TbShoppingBag,
+} from 'react-icons/tb';
 
 import ProductCard, { type Product } from '@/components/products/ProductCard';
 import { ProductGridSkeleton } from '@/components/products/ProductCardSkeleton';
@@ -22,7 +43,7 @@ interface Choice {
   value: string;
   label: string;
   hint: string;
-  icon: string;
+  icon: IconType;
 }
 
 interface Question {
@@ -42,25 +63,25 @@ const QUESTIONS: Question[] = [
         value: 'retail',
         label: 'Shop / retail goods',
         hint: 'Grocery, kirana, sweets, vegetables',
-        icon: '🛒',
+        icon: TbShoppingBag,
       },
       {
         value: 'warehouse',
         label: 'Sacks, cartons, drums',
         hint: 'Godown, warehouse, dispatch',
-        icon: '📦',
+        icon: TbPackage,
       },
       {
         value: 'industrial',
         label: 'Heavy or suspended loads',
         hint: 'Factory, scrap, crane lifting',
-        icon: '🏗️',
+        icon: TbCrane,
       },
       {
         value: 'cash',
         label: 'Cash / banknotes',
         hint: 'Counting notes, not weighing',
-        icon: '💵',
+        icon: TbCash,
       },
     ],
   },
@@ -69,10 +90,30 @@ const QUESTIONS: Question[] = [
     title: 'How heavy does it get?',
     help: 'Pick roughly 25% above your heaviest routine load.',
     choices: [
-      { value: 'upto30', label: 'Up to 30 kg', hint: 'Counter-top loads', icon: '🪶' },
-      { value: 'upto200', label: '30 – 200 kg', hint: 'Sacks and cartons', icon: '⚖️' },
-      { value: 'upto500', label: '200 – 500 kg', hint: 'Pallets and drums', icon: '🛢️' },
-      { value: 'heavy', label: 'Over 500 kg', hint: 'Industrial and crane loads', icon: '🏭' },
+      {
+        value: 'upto30',
+        label: 'Up to 30 kg',
+        hint: 'Counter-top loads',
+        icon: TbFeather,
+      },
+      {
+        value: 'upto200',
+        label: '30 – 200 kg',
+        hint: 'Sacks and cartons',
+        icon: TbScale,
+      },
+      {
+        value: 'upto500',
+        label: '200 – 500 kg',
+        hint: 'Pallets and drums',
+        icon: TbBarrel,
+      },
+      {
+        value: 'heavy',
+        label: 'Over 500 kg',
+        hint: 'Industrial and crane loads',
+        icon: TbBuildingFactory2,
+      },
     ],
   },
   {
@@ -80,10 +121,30 @@ const QUESTIONS: Question[] = [
     title: 'Where will it live?',
     help: 'Wet, dusty and hazardous areas need different builds.',
     choices: [
-      { value: 'indoor', label: 'Clean indoor counter', hint: 'Shop or office', icon: '🏪' },
-      { value: 'rough', label: 'Warehouse floor', hint: 'Dust, knocks, forklifts', icon: '🚜' },
-      { value: 'wet', label: 'Wet or washdown area', hint: 'Food, dairy, fish, chemicals', icon: '💧' },
-      { value: 'hazard', label: 'Hazardous / explosive zone', hint: 'Chemical, paint, solvent plants', icon: '⚠️' },
+      {
+        value: 'indoor',
+        label: 'Clean indoor counter',
+        hint: 'Shop or office',
+        icon: TbBuildingStore,
+      },
+      {
+        value: 'rough',
+        label: 'Warehouse floor',
+        hint: 'Dust, knocks, forklifts',
+        icon: TbForklift,
+      },
+      {
+        value: 'wet',
+        label: 'Wet or washdown area',
+        hint: 'Food, dairy, fish, chemicals',
+        icon: TbDroplet,
+      },
+      {
+        value: 'hazard',
+        label: 'Hazardous / explosive zone',
+        hint: 'Chemical, paint, solvent plants',
+        icon: TbAlertTriangle,
+      },
     ],
   },
 ];
@@ -222,7 +283,10 @@ export default function ScaleFinderPage() {
   const matches = useMemo(() => {
     if (!recommendation) return [];
     return [...products]
-      .map((product) => ({ product, score: scoreProduct(product, recommendation) }))
+      .map((product) => ({
+        product,
+        score: scoreProduct(product, recommendation),
+      }))
       .filter((entry) => entry.score > 0)
       .sort((a, b) => b.score - a.score)
       .slice(0, 3)
@@ -239,7 +303,9 @@ export default function ScaleFinderPage() {
     setStep(0);
   };
 
-  const progress = Math.round((Math.min(step, QUESTIONS.length) / QUESTIONS.length) * 100);
+  const progress = Math.round(
+    (Math.min(step, QUESTIONS.length) / QUESTIONS.length) * 100,
+  );
   const question = QUESTIONS[step];
 
   return (
@@ -251,18 +317,20 @@ export default function ScaleFinderPage() {
         lead="Three quick questions and we'll shortlist the models that actually fit your job — no jargon."
       />
 
-      <section className="px-4 py-14 sm:py-16">
+      <section className="shell py-14 sm:py-16">
         <div className="mx-auto max-w-3xl">
           {/* Progress */}
-          <div className="mb-8">
-            <div className="mb-2 flex items-center justify-between text-sm">
-              <span className="font-semibold text-muted">
-                {isDone ? 'Done' : `Question ${step + 1} of ${QUESTIONS.length}`}
+          <div className="mb-10">
+            <div className="mb-3 flex items-baseline justify-between gap-4">
+              <span className="label">
+                {isDone
+                  ? 'Done'
+                  : `Question ${step + 1} of ${QUESTIONS.length}`}
               </span>
-              <span className="text-subtle">{progress}%</span>
+              <span className="label data">{progress}%</span>
             </div>
             <div
-              className="h-2 overflow-hidden rounded-full bg-surface-3"
+              className="h-px bg-line"
               role="progressbar"
               aria-valuenow={progress}
               aria-valuemin={0}
@@ -270,9 +338,9 @@ export default function ScaleFinderPage() {
               aria-label="Scale finder progress"
             >
               <motion.div
-                className="h-full rounded-full bg-primary-500"
+                className="h-px bg-brand"
                 animate={{ width: `${progress}%` }}
-                transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
               />
             </div>
           </div>
@@ -298,13 +366,13 @@ export default function ScaleFinderPage() {
                         key={choice.value}
                         type="button"
                         onClick={() => choose(question.id, choice.value)}
-                        className="card group flex items-start gap-4 p-5 text-left transition-transform duration-200 hover:-translate-y-1 hover:border-primary-400"
+                        className="group flex items-start gap-4 border border-line bg-surface p-5 text-left transition-colors hover:border-ink-900 hover:bg-surface-2"
                       >
-                        <span className="text-3xl" aria-hidden>
-                          {choice.icon}
+                        <span className="flex h-10 w-10 shrink-0 items-center justify-center border border-line text-brand transition-colors group-hover:border-ink-900">
+                          <choice.icon size={18} aria-hidden />
                         </span>
-                        <span>
-                          <span className="block font-bold transition-colors group-hover:text-primary-600">
+                        <span className="min-w-0">
+                          <span className="block font-bold">
                             {choice.label}
                           </span>
                           <span className="mt-0.5 block text-sm text-muted">
@@ -359,7 +427,11 @@ export default function ScaleFinderPage() {
                     >
                       <FiMessageCircle aria-hidden /> Confirm on WhatsApp
                     </a>
-                    <button type="button" onClick={restart} className="btn-outline">
+                    <button
+                      type="button"
+                      onClick={restart}
+                      className="btn-outline"
+                    >
                       <FiRefreshCw aria-hidden /> Start over
                     </button>
                   </div>
@@ -397,7 +469,10 @@ export default function ScaleFinderPage() {
                         <Link href="/contact" className="btn-primary">
                           <FiFilePlus aria-hidden /> Request a quote
                         </Link>
-                        <a href={`tel:${site.phoneDial}`} className="btn-outline">
+                        <a
+                          href={`tel:${site.phoneDial}`}
+                          className="btn-outline"
+                        >
                           Call {site.phoneDisplay}
                         </a>
                       </div>

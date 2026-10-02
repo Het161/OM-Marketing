@@ -36,7 +36,10 @@ export default function HeroSlideshow({ slides }: { slides: HeroSlide[] }) {
   const regionRef = useRef<HTMLDivElement>(null);
 
   const count = slides.length;
-  const go = useCallback((next: number) => setIndex(((next % count) + count) % count), [count]);
+  const go = useCallback(
+    (next: number) => setIndex(((next % count) + count) % count),
+    [count],
+  );
   const next = useCallback(() => go(index + 1), [go, index]);
   const prev = useCallback(() => go(index - 1), [go, index]);
 
@@ -101,7 +104,10 @@ export default function HeroSlideshow({ slides }: { slides: HeroSlide[] }) {
             className="object-cover"
           />
           {/* Unify uneven phone photography: deepen and cool each frame */}
-          <span aria-hidden className="absolute inset-0 bg-ink-950/35 mix-blend-multiply" />
+          <span
+            aria-hidden
+            className="absolute inset-0 bg-ink-950/35 mix-blend-multiply"
+          />
           <span
             aria-hidden
             className="absolute inset-0 bg-gradient-to-t from-ink-950 via-ink-950/15 to-transparent"
@@ -110,8 +116,14 @@ export default function HeroSlideshow({ slides }: { slides: HeroSlide[] }) {
       </AnimatePresence>
 
       {/* Register marks */}
-      <span aria-hidden className="absolute left-4 top-4 h-5 w-5 border-l border-t border-white/35" />
-      <span aria-hidden className="absolute right-4 top-4 h-5 w-5 border-r border-t border-white/35" />
+      <span
+        aria-hidden
+        className="absolute left-4 top-4 h-5 w-5 border-l border-t border-white/35"
+      />
+      <span
+        aria-hidden
+        className="absolute right-4 top-4 h-5 w-5 border-r border-t border-white/35"
+      />
 
       {/* Announce slide changes to screen readers without moving focus */}
       <p aria-live="polite" aria-atomic className="sr-only">
@@ -119,24 +131,32 @@ export default function HeroSlideshow({ slides }: { slides: HeroSlide[] }) {
       </p>
 
       {/* Caption + controls */}
-      <div className="absolute inset-x-0 bottom-0 p-5 pr-5 lg:pb-6">
+      {/* The fixed contact bar owns the bottom-right corner of the
+          viewport, so the caption keeps clear of that column rather than
+          letting the price and the progress rule run underneath it. */}
+      <div className="absolute inset-x-0 bottom-0 p-5 pb-20 sm:pb-24 lg:pb-6 lg:pr-44">
         <div className="flex items-end justify-between gap-4">
           <Link
             href={`/products/${slide.id}`}
             className="group min-w-0 focus-visible:outline-offset-4"
           >
             <span className="label block text-steel-400">
-              {String(index + 1).padStart(2, '0')} / {String(count).padStart(2, '0')}
+              {String(index + 1).padStart(2, '0')} /{' '}
+              {String(count).padStart(2, '0')}
             </span>
             <span className="mt-2 block truncate text-[0.9375rem] font-semibold tracking-[-0.01em] text-white transition-colors group-hover:text-primary-300">
               {slide.model}
             </span>
-            <span className="label mt-1.5 block text-steel-300">{slide.spec}</span>
+            <span className="label mt-1.5 block text-steel-300">
+              {slide.spec}
+            </span>
           </Link>
 
           <div className="shrink-0 text-right">
             <span className="label block text-steel-400">From</span>
-            <span className="data mt-1.5 block text-base text-white">{slide.price}</span>
+            <span className="data mt-1.5 block text-base text-white">
+              {slide.price}
+            </span>
           </div>
         </div>
 
@@ -158,7 +178,11 @@ export default function HeroSlideshow({ slides }: { slides: HeroSlide[] }) {
               aria-label={userPaused ? 'Resume slideshow' : 'Pause slideshow'}
               className="-ml-px flex h-8 w-8 items-center justify-center border border-white/20 text-steel-300 transition-colors hover:border-white hover:text-white"
             >
-              {userPaused ? <FiPlay size={13} aria-hidden /> : <FiPause size={13} aria-hidden />}
+              {userPaused ? (
+                <FiPlay size={13} aria-hidden />
+              ) : (
+                <FiPause size={13} aria-hidden />
+              )}
             </button>
             <button
               type="button"
@@ -187,7 +211,10 @@ export default function HeroSlideshow({ slides }: { slides: HeroSlide[] }) {
                     className="absolute inset-x-0 top-1/2 h-px origin-left -translate-y-1/2 bg-primary-300"
                     initial={{ scaleX: running ? 0 : 1 }}
                     animate={{ scaleX: 1 }}
-                    transition={{ duration: running ? INTERVAL / 1000 : 0, ease: 'linear' }}
+                    transition={{
+                      duration: running ? INTERVAL / 1000 : 0,
+                      ease: 'linear',
+                    }}
                   />
                 )}
               </button>

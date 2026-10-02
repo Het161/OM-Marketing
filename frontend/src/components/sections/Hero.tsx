@@ -7,7 +7,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { FiArrowRight, FiPhone } from 'react-icons/fi';
 
-import HeroSlideshow, { type HeroSlide } from '@/components/sections/HeroSlideshow';
+import HeroSlideshow, {
+  type HeroSlide,
+} from '@/components/sections/HeroSlideshow';
 import { site } from '@/lib/site';
 
 /* Each slide links to its catalogue entry; captions and prices come from it,
@@ -17,9 +19,9 @@ const slides: HeroSlide[] = [
     id: 6,
     src: '/images/heavy-platform-scale.jpg',
     alt: 'Mild-steel chequered-plate platform scale with pole-mounted digital indicator',
-    model: 'MS platform scale',
-    spec: '600×600 mm · 100–500 kg',
-    price: '₹8,500',
+    model: 'Platform scale — regular',
+    spec: '600×600 mm · pole display',
+    price: '₹8,900',
   },
   {
     id: 3,
@@ -78,18 +80,25 @@ export default function Hero() {
       : {
           initial: { opacity: 0, y: 16 },
           animate: { opacity: 1, y: 0 },
-          transition: { duration: 0.6, delay, ease: [0.16, 1, 0.3, 1] as const },
+          transition: {
+            duration: 0.6,
+            delay,
+            ease: [0.16, 1, 0.3, 1] as const,
+          },
         };
 
   return (
     <section className="relative bg-ink-950 text-steel-50">
       {/* Engineering grid, not a colour blob */}
-      <div aria-hidden className="pointer-events-none absolute inset-0 text-white/70">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 text-white/70"
+      >
         <div className="grid-rule absolute inset-0" />
         <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-ink-950 to-transparent" />
       </div>
 
-      <div className="relative mx-auto max-w-[88rem] px-4 sm:px-6 lg:px-10">
+      <div className="relative shell">
         <div className="grid grid-cols-1 border-x border-white/10 lg:grid-cols-12 lg:gap-x-10">
           {/* ---------------------------------------------------- copy */}
           <div className="px-4 pb-14 pt-14 sm:px-8 lg:col-span-7 lg:pb-24 lg:pt-20">
@@ -114,12 +123,15 @@ export default function Hero() {
               {...rise(0.12)}
               className="mt-7 max-w-xl text-[1.0625rem] leading-relaxed text-steel-300"
             >
-              Table-top, platform and crane scales, note counters and
-              industrial indicators — installed, calibrated and repaired by our
-              own technicians across Gujarat.
+              Table-top, platform and crane scales, note counters and industrial
+              indicators — installed, calibrated and repaired by our own
+              technicians across Gujarat.
             </motion.p>
 
-            <motion.div {...rise(0.18)} className="mt-9 flex flex-wrap items-center gap-3">
+            <motion.div
+              {...rise(0.18)}
+              className="mt-9 flex flex-wrap items-center gap-3"
+            >
               <Link
                 href="/products"
                 className="btn-secondary group h-12 px-6 text-[0.9375rem]"
@@ -183,7 +195,10 @@ export default function Hero() {
               className="flex shrink-0 items-center"
             >
               {capabilities.map((item) => (
-                <li key={item} className="flex items-center whitespace-nowrap px-6">
+                <li
+                  key={item}
+                  className="flex items-center whitespace-nowrap px-6"
+                >
                   <span className="label text-steel-400">{item}</span>
                   <span aria-hidden className="ml-6 h-1 w-1 bg-primary-400" />
                 </li>

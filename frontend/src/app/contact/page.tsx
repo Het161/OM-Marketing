@@ -70,8 +70,8 @@ export default function ContactPage() {
         ]}
       />
 
-      <section className="px-4 py-14 sm:py-16">
-        <div className="mx-auto max-w-7xl">
+      <section className="py-14 sm:py-16">
+        <div className="shell">
           {/* Contact channels */}
           <div className="mb-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {channels.map((channel) => (
@@ -133,7 +133,9 @@ export default function ContactPage() {
                 />
                 <div className="p-5">
                   <h2 className="mb-1 font-bold">{site.addressLine}</h2>
-                  <p className="mb-4 text-sm text-muted">{site.addressRegion}</p>
+                  <p className="mb-4 text-sm text-muted">
+                    {site.addressRegion}
+                  </p>
                   <a
                     href={site.mapsUrl}
                     target="_blank"
@@ -148,8 +150,8 @@ export default function ContactPage() {
               <div className="border border-line bg-surface-2 p-6">
                 <h2 className="label mb-3">Need service, not sales?</h2>
                 <p className="mb-5 text-[0.9375rem] leading-relaxed text-muted">
-                  Book a calibration, repair, AMC or installation visit and we&apos;ll
-                  call to confirm a slot.
+                  Book a calibration, repair, AMC or installation visit and
+                  we&apos;ll call to confirm a slot.
                 </p>
                 <Link href="/services" className="btn-secondary w-full">
                   Book a service
@@ -162,10 +164,18 @@ export default function ContactPage() {
                 rel="noopener noreferrer"
                 className="flex items-center gap-4 border border-line p-5 transition-colors duration-200 hover:border-ink-900"
               >
-                <FiInstagram size={18} aria-hidden className="shrink-0 text-subtle" />
+                <FiInstagram
+                  size={18}
+                  aria-hidden
+                  className="shrink-0 text-subtle"
+                />
                 <span>
-                  <span className="block text-[0.9375rem] font-semibold">See our latest stock</span>
-                  <span className="data block text-[0.8125rem] text-muted">@{site.instagram}</span>
+                  <span className="block text-[0.9375rem] font-semibold">
+                    See our latest stock
+                  </span>
+                  <span className="data block text-[0.8125rem] text-muted">
+                    @{site.instagram}
+                  </span>
                 </span>
               </a>
             </aside>

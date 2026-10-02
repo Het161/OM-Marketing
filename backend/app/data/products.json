@@ -1,27 +1,27 @@
 [
   {
-    "name": "UNIQUE Tebal Top Scale 10/20/30kg - 240x290mm",
-    "category": "weighing_scale",
-    "description": "High-precision digital tebal top weighing scale with stainless steel platform. Perfect for retail shops, kitchens, and small businesses.",
-    "price": 4000.0,
-    "stock_quantity": 25,
-    "image_url": "/images/30kg-tebal-scale.jpg",
-    "specifications": "{\"capacity\": \"10/20/30kg\", \"platform_size\": \"240x290mm\", \"accuracy\": \"\\u00b15g\", \"display\": \"LED\", \"power\": \"Rechargeable battery\", \"brand\": \"UNIQUE\"}",
     "id": 1,
-    "created_at": "2025-11-01T10:19:13.750021",
-    "updated_at": "2025-12-10T14:36:46.893522"
+    "name": "Table Top Scale 30 kg — UNIQUE",
+    "category": "weighing_scale",
+    "description": "Stainless-topped table scale for retail counters, kirana shops and kitchens. The everyday workhorse of the range.",
+    "price": 4000.0,
+    "stock_quantity": 30,
+    "image_url": "/images/30kg-tebal-scale.jpg",
+    "specifications": "{\"capacity\": \"30 kg\", \"platform_size\": \"240\\u00d7290 mm\", \"top\": \"Stainless steel\", \"brand\": \"UNIQUE (Shiva Industries)\", \"warranty\": \"1 year\"}",
+    "created_at": "2026-10-02 00:00:00",
+    "updated_at": "2026-10-02 00:00:00"
   },
   {
-    "name": "Platform Scale 400x400mm - 200kg Capacity",
-    "category": "weighing_scale",
-    "description": "Heavy-duty platform scale ideal for warehouses, industries, and heavy goods weighing. Comes with digital indicator.",
-    "price": 8500.0,
-    "stock_quantity": 10,
-    "image_url": "/images/platform-scale.jpg",
-    "specifications": "{\"capacity\": \"200kg\", \"platform_size\": \"400x400mm\", \"accuracy\": \"\\u00b120g\", \"display\": \"Digital LED display\", \"material\": \"Mild Steel platform\", \"power\": \"AC/DC\"}",
     "id": 2,
-    "created_at": "2025-11-01T10:19:13.753581",
-    "updated_at": "2025-12-18T15:20:19.868952"
+    "name": "Platform Scale 400×400 mm — Chicken Type",
+    "category": "weighing_scale",
+    "description": "400×400 mm platform with the indicator joined to the base. Double display available as an option.",
+    "price": 6500.0,
+    "stock_quantity": 18,
+    "image_url": null,
+    "specifications": "{\"capacity\": \"100 / 200 kg\", \"platform_size\": \"400\\u00d7400 mm\", \"construction\": \"Chicken type \\u2014 display at the base, joined to the platform\", \"material\": \"Stainless steel \\u2014 mild steel +\\u20b9350\", \"display\": \"Single \\u2014 double display +\\u20b9500\", \"brand\": \"UNIQUE (Shiva Industries)\"}",
+    "created_at": "2026-10-02 00:00:00",
+    "updated_at": "2026-10-02 00:00:00"
   },
   {
     "name": "OCS Crane Scale 15 Ton Industrial Grade",
@@ -36,40 +36,40 @@
     "updated_at": "2025-12-10T14:36:46.893526"
   },
   {
-    "name": "Mini Weighing Scale 10/20kg MS Series",
-    "category": "weighing_scale",
-    "description": "Compact and portable weighing scale perfect for small shops, jewelry stores, and retail counters.",
-    "price": 3500.0,
-    "stock_quantity": 50,
-    "image_url": "/images/Mini-20KG.jpeg",
-    "specifications": "{\"capacity\": \"10/20kg\", \"platform_size\": \"230x310mm\", \"accuracy\": \"\\u00b12g\", \"display\": \"LCD\", \"power\": \"Rechargeable\", \"brand\": \"UNIQUE\"}",
     "id": 4,
-    "created_at": "2025-11-01T10:19:13.756778",
-    "updated_at": "2025-12-10T14:36:46.893526"
+    "name": "Mini Weighing Scale 20 kg — MS Series",
+    "category": "weighing_scale",
+    "description": "Compact mild-steel bodied counter scale for shops, kitchens and retail counters.",
+    "price": 3500.0,
+    "stock_quantity": 40,
+    "image_url": "/images/Mini-20KG.jpeg",
+    "specifications": "{\"capacity\": \"20 kg\", \"body\": \"Mild steel\", \"brand\": \"UNIQUE (Shiva Industries)\", \"warranty\": \"1 year\"}",
+    "created_at": "2026-10-02 00:00:00",
+    "updated_at": "2026-10-02 00:00:00"
   },
   {
-    "name": "MS Chekar Platform 500x500mm - 500kg",
-    "category": "weighing_scale",
-    "description": "Heavy-duty MS Chekar platform scale with non-slip surface. Ideal for industrial weighing applications.",
-    "price": 7500.0,
-    "stock_quantity": 8,
-    "image_url": "/images/chekar-platform.jpeg",
-    "specifications": "{\"capacity\": \"500kg\", \"platform_size\": \"500x500mm\", \"accuracy\": \"\\u00b150g\", \"platform_type\": \"MS Chekar (Anti-slip)\", \"display\": \"Digital indicator\", \"power\": \"AC adapter\"}",
     "id": 5,
-    "created_at": "2025-11-01T10:19:13.758174",
-    "updated_at": "2025-12-10T14:36:46.893527"
+    "name": "Platform Scale 500×500 mm — Regular",
+    "category": "weighing_scale",
+    "description": "500×500 mm pole-display platform. Available with an MS chequered plate for warehouse floors.",
+    "price": 7800.0,
+    "stock_quantity": 14,
+    "image_url": "/images/chekar-platform.jpeg",
+    "specifications": "{\"capacity\": \"200 / 300 / 500 kg\", \"platform_size\": \"500\\u00d7500 mm\", \"construction\": \"Regular type \\u2014 pole-mounted display\", \"material\": \"Stainless steel \\u2014 mild steel +\\u20b9450\", \"brand\": \"UNIQUE (Shiva Industries)\"}",
+    "created_at": "2026-10-02 00:00:00",
+    "updated_at": "2026-10-02 00:00:00"
   },
   {
-    "name": "600x600mm Platform Scale 100/200/300/500kg",
+    "id": 6,
+    "name": "Platform Scale 600×600 mm — Regular",
     "category": "weighing_scale",
-    "description": "Versatile stainless steel platform scale available in multiple capacities. Suitable for various commercial applications.",
-    "price": 8500.0,
+    "description": "600×600 mm pole-display platform, the most common size for godowns and dispatch bays.",
+    "price": 8900.0,
     "stock_quantity": 12,
     "image_url": "/images/600-600mm-ss-Regular.jpg",
-    "specifications": "{\"capacity\": \"100/200/300/500kg\", \"platform_size\": \"600x600mm\", \"material\": \"Stainless Steel\", \"accuracy\": \"\\u00b120g\", \"display\": \"LED digital\", \"power\": \"AC/DC\"}",
-    "id": 6,
-    "created_at": "2025-11-01T10:19:13.759443",
-    "updated_at": "2025-12-10T14:36:46.893527"
+    "specifications": "{\"capacity\": \"100 / 200 / 300 / 500 kg\", \"platform_size\": \"600\\u00d7600 mm\", \"construction\": \"Regular type \\u2014 pole-mounted display\", \"material\": \"Stainless steel \\u2014 mild steel +\\u20b9550\", \"brand\": \"UNIQUE (Shiva Industries)\"}",
+    "created_at": "2026-10-02 00:00:00",
+    "updated_at": "2026-10-02 00:00:00"
   },
   {
     "name": "INFRES SuperTech-IN Banknote Counter",
@@ -84,16 +84,16 @@
     "updated_at": "2025-12-10T14:36:46.893528"
   },
   {
-    "name": "300x300mm Platform Scale 50/100kg - UNIQUE",
+    "id": 9,
+    "name": "Platform Scale 300×300 mm — Chicken Type",
     "category": "weighing_scale",
-    "description": "Specialized platform weighing scale with digital display. Ideal for industrial and commercial use. Features: Stainless steel platform, Digital LCD display, Portable design with legs, Accurate weight measurement up to 100kg.",
+    "description": "Compact platform with the indicator mounted in the base frame, so there is no pole to catch on anything. Supplied with a double display.",
     "price": 5500.0,
     "stock_quantity": 15,
     "image_url": "/images/300*300mm-Chicken-ss.jpeg",
-    "specifications": null,
-    "id": 9,
-    "created_at": "2025-12-10T15:02:46.854667",
-    "updated_at": "2025-12-10T15:09:59.370725"
+    "specifications": "{\"capacity\": \"50 / 100 kg\", \"platform_size\": \"300\\u00d7300 mm\", \"construction\": \"Chicken type \\u2014 display at the base, joined to the platform\", \"material\": \"Stainless steel \\u2014 mild steel +\\u20b9350\", \"display\": \"Double display\", \"brand\": \"UNIQUE (Shiva Industries)\"}",
+    "created_at": "2026-10-02 00:00:00",
+    "updated_at": "2026-10-02 00:00:00"
   },
   {
     "name": "Jewellery Gold Testing Scale - CALTRON SCALEX",
@@ -120,16 +120,16 @@
     "updated_at": "2025-12-10T20:19:53.497974"
   },
   {
-    "name": "ABS Mini Weighing Scale 10/20kg - UNIQUE Green Display",
-    "category": "weighing_scale",
-    "description": "Compact ABS body mini weighing scale with bright green LED display. Perfect for shops, grocery stores, and small businesses. Features dual capacity options (10kg/20kg), lightweight portable design with easy-to-clean surface. ISO 9001:2015 certified company product.",
-    "price": 3000.0,
-    "stock_quantity": 25,
-    "image_url": "/images/ABS.jpeg",
-    "specifications": "{\"capacity\": \"10kg / 20kg\", \"accuracy\": \"±2g\", \"display\": \"Green LED Digital\", \"material\": \"ABS Plastic Body\", \"platform_size\": \"230mm x 300mm\", \"power\": \"AC Adapter / Rechargeable Battery\", \"functions\": \"Tare, Zero, Unit Conversion\", \"weight\": \"2.5kg\", \"certification\": \"ISO 9001:2015\", \"warranty\": \"1 Year\"}",
     "id": 12,
-    "created_at": "2025-12-10T20:27:04.627619",
-    "updated_at": "2025-12-10T20:34:22.019616"
+    "name": "Mini Weighing Scale 20 kg — ABS Plastic Body",
+    "category": "weighing_scale",
+    "description": "Same 20 kg counter scale in a moulded ABS plastic body — lighter, and it will not rust in a damp shop.",
+    "price": 3200.0,
+    "stock_quantity": 35,
+    "image_url": "/images/ABS.jpeg",
+    "specifications": "{\"capacity\": \"20 kg\", \"body\": \"ABS plastic\", \"brand\": \"UNIQUE (Shiva Industries)\", \"warranty\": \"1 year\"}",
+    "created_at": "2026-10-02 00:00:00",
+    "updated_at": "2026-10-02 00:00:00"
   },
   {
     "name": "CONTECH Precision Jewellery Scale - Digital Balance 0.001g",
@@ -204,15 +204,111 @@
     "updated_at": "2025-12-11T06:14:00.820821"
   },
   {
-    "name": "Industrial Platform Scale 750x750mm - Heavy Duty Weighing System",
+    "id": 20,
+    "name": "Platform Scale 750×750 mm — Heavy Duty",
     "category": "weighing_scale",
-    "description": "Heavy-duty industrial platform scale with large 750mm x 750mm checkered steel platform. Features pole-mounted digital indicator with bright LED display for easy reading. Anti-slip diamond plate surface ensures safety during weighing. Ideal for weighing heavy goods, sacks, drums, and industrial materials. Built with robust MS construction for long-lasting durability in warehouse and factory environments.",
+    "description": "Heavy mild-steel platform for sacks, drums and pallets. Supplied in mild steel only.",
     "price": 12500.0,
     "stock_quantity": 8,
     "image_url": "/images/750*750mm.jpeg",
-    "specifications": "{\"platform_size\": \"750mm x 750mm\", \"capacity\": \"500kg to 1000kg\", \"accuracy\": \"±50g to ±100g\", \"platform_material\": \"MS Steel with Anti-Slip Checkered Plate\", \"indicator\": \"Pole-Mounted Digital Display\", \"display_type\": \"Bright LED Display\", \"pole_height\": \"Adjustable 800-1000mm\", \"platform_thickness\": \"5-6mm Heavy Gauge Steel\", \"load_cell\": \"4 Load Cell System\", \"tare_function\": \"Yes\", \"power\": \"AC 230V / Rechargeable Battery\", \"battery_backup\": \"40+ Hours\", \"dimensions\": \"750 x 750 x 100mm\", \"net_weight\": \"45kg\", \"max_load\": \"1 Ton\", \"certification\": \"ISO Certified\", \"warranty\": \"1 Year\", \"ideal_for\": \"Warehouses, Factories, Godowns, Loading Docks\"}",
-    "id": 20,
-    "created_at": "2025-12-11T06:18:31.233064",
-    "updated_at": "2025-12-11T06:18:31.233070"
+    "specifications": "{\"capacity\": \"500 kg / 1 ton\", \"platform_size\": \"750\\u00d7750 mm\", \"construction\": \"Regular type \\u2014 pole-mounted display\", \"material\": \"Mild steel only\", \"brand\": \"UNIQUE (Shiva Industries)\"}",
+    "created_at": "2026-10-02 00:00:00",
+    "updated_at": "2026-10-02 00:00:00"
+  },
+  {
+    "id": 30,
+    "name": "Kitchen Scale 10 kg — Economy",
+    "category": "weighing_scale",
+    "description": "Entry-level compact kitchen scale. Imported economy model supplied without warranty — the budget option where a scale is needed occasionally rather than daily.",
+    "price": 550.0,
+    "stock_quantity": 25,
+    "image_url": null,
+    "specifications": "{\"capacity\": \"10 kg\", \"type\": \"Kitchen / counter top\", \"brand\": \"Imported\", \"warranty\": \"Not covered\"}",
+    "created_at": "2026-10-02 00:00:00",
+    "updated_at": "2026-10-02 00:00:00"
+  },
+  {
+    "id": 31,
+    "name": "Kitchen Scale — UNIQUE, 1 Year Warranty",
+    "category": "weighing_scale",
+    "description": "UNIQUE kitchen and counter scale with a full one-year warranty. The model to buy where the scale is used every day and accuracy has to hold.",
+    "price": 2500.0,
+    "stock_quantity": 20,
+    "image_url": null,
+    "specifications": "{\"capacity\": \"10 kg\", \"type\": \"Kitchen / counter top\", \"brand\": \"UNIQUE (Shiva Industries)\", \"warranty\": \"1 year\"}",
+    "created_at": "2026-10-02 00:00:00",
+    "updated_at": "2026-10-02 00:00:00"
+  },
+  {
+    "id": 32,
+    "name": "Table Top Scale 30 kg — Hand-Made Heavy Body",
+    "category": "weighing_scale",
+    "description": "Hand-built heavy-gauge version of the 30 kg table scale, made for counters that take constant use.",
+    "price": 5000.0,
+    "stock_quantity": 12,
+    "image_url": null,
+    "specifications": "{\"capacity\": \"30 kg\", \"build\": \"Hand-made, heavy gauge\", \"brand\": \"UNIQUE (Shiva Industries)\", \"warranty\": \"1 year\"}",
+    "created_at": "2026-10-02 00:00:00",
+    "updated_at": "2026-10-02 00:00:00"
+  },
+  {
+    "id": 33,
+    "name": "Platform Scale 500×500 mm — Chicken Type",
+    "category": "weighing_scale",
+    "description": "500×500 mm platform, indicator in the base frame, single display.",
+    "price": 7500.0,
+    "stock_quantity": 12,
+    "image_url": "/images/500*500ms.jpeg",
+    "specifications": "{\"capacity\": \"200 / 300 kg\", \"platform_size\": \"500\\u00d7500 mm\", \"construction\": \"Chicken type \\u2014 display at the base, joined to the platform\", \"material\": \"Stainless steel \\u2014 mild steel +\\u20b9450\", \"display\": \"Single display\", \"brand\": \"UNIQUE (Shiva Industries)\"}",
+    "created_at": "2026-10-02 00:00:00",
+    "updated_at": "2026-10-02 00:00:00"
+  },
+  {
+    "id": 34,
+    "name": "Platform Scale 600×600 mm — Chicken Type",
+    "category": "weighing_scale",
+    "description": "The largest chicken-type platform, with the indicator joined to the base and a single display.",
+    "price": 8500.0,
+    "stock_quantity": 10,
+    "image_url": null,
+    "specifications": "{\"capacity\": \"100 / 200 / 300 / 500 kg\", \"platform_size\": \"600\\u00d7600 mm\", \"construction\": \"Chicken type \\u2014 display at the base, joined to the platform\", \"material\": \"Stainless steel \\u2014 mild steel +\\u20b9550\", \"display\": \"Single display\", \"brand\": \"UNIQUE (Shiva Industries)\"}",
+    "created_at": "2026-10-02 00:00:00",
+    "updated_at": "2026-10-02 00:00:00"
+  },
+  {
+    "id": 35,
+    "name": "Platform Scale 400×400 mm — Regular",
+    "category": "weighing_scale",
+    "description": "400×400 mm platform with the indicator on a pole at working height, so the reading is visible while loading.",
+    "price": 6700.0,
+    "stock_quantity": 16,
+    "image_url": "/images/platform-scale.jpg",
+    "specifications": "{\"capacity\": \"100 / 200 kg\", \"platform_size\": \"400\\u00d7400 mm\", \"construction\": \"Regular type \\u2014 pole-mounted display\", \"material\": \"Stainless steel \\u2014 mild steel +\\u20b9350\", \"brand\": \"UNIQUE (Shiva Industries)\"}",
+    "created_at": "2026-10-02 00:00:00",
+    "updated_at": "2026-10-02 00:00:00"
+  },
+  {
+    "id": 36,
+    "name": "Platform Scale 900×900 mm — Heavy Duty",
+    "category": "weighing_scale",
+    "description": "900×900 mm mild-steel platform for larger loads and pallet work.",
+    "price": 16500.0,
+    "stock_quantity": 5,
+    "image_url": null,
+    "specifications": "{\"capacity\": \"1 / 2 ton\", \"platform_size\": \"900\\u00d7900 mm\", \"construction\": \"Regular type \\u2014 pole-mounted display\", \"material\": \"Mild steel only\", \"brand\": \"UNIQUE (Shiva Industries)\"}",
+    "created_at": "2026-10-02 00:00:00",
+    "updated_at": "2026-10-02 00:00:00"
+  },
+  {
+    "id": 37,
+    "name": "Platform Scale 1200×1200 mm — Industrial",
+    "category": "weighing_scale",
+    "description": "Full pallet-size mild-steel floor platform for industrial weighing.",
+    "price": 25500.0,
+    "stock_quantity": 3,
+    "image_url": null,
+    "specifications": "{\"capacity\": \"2 / 3 ton\", \"platform_size\": \"1200\\u00d71200 mm\", \"construction\": \"Regular type \\u2014 pole-mounted display\", \"material\": \"Mild steel only\", \"brand\": \"UNIQUE (Shiva Industries)\"}",
+    "created_at": "2026-10-02 00:00:00",
+    "updated_at": "2026-10-02 00:00:00"
   }
 ]

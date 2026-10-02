@@ -78,12 +78,18 @@ export default function Navbar() {
     <>
       {/* Utility rail — contact details as data, not decoration */}
       <div className="hidden border-b border-ink-800 bg-ink-950 text-steel-300 lg:block">
-        <div className="mx-auto flex max-w-[88rem] items-center justify-between gap-6 px-4 py-2 sm:px-6 lg:px-10">
+        <div className="shell flex items-center justify-between gap-6 py-2">
           <div className="flex items-center gap-6">
-            <a href={`tel:${site.phoneDial}`} className="label transition-colors hover:text-white">
+            <a
+              href={`tel:${site.phoneDial}`}
+              className="label text-steel-300 transition-colors hover:text-white"
+            >
               T {site.phoneDisplay}
             </a>
-            <a href={`mailto:${site.email}`} className="label transition-colors hover:text-white">
+            <a
+              href={`mailto:${site.email}`}
+              className="label text-steel-300 transition-colors hover:text-white"
+            >
               E {site.email}
             </a>
           </div>
@@ -98,9 +104,13 @@ export default function Navbar() {
         className="sticky top-0 z-50 border-b border-line"
         style={{ background: 'var(--header-bg)', backdropFilter: 'blur(10px)' }}
       >
-        <nav aria-label="Main" className="mx-auto max-w-[88rem] px-4 sm:px-6 lg:px-10">
+        <nav aria-label="Main" className="shell">
           <div className="flex h-[68px] items-center justify-between gap-3 sm:gap-6">
-            <Link href="/" className="flex min-w-0 items-center gap-2.5 sm:gap-3" aria-label={`${site.name} — home`}>
+            <Link
+              href="/"
+              className="flex min-w-0 items-center gap-2.5 sm:gap-3"
+              aria-label={`${site.name} — home`}
+            >
               <Image
                 src="/images/om-mark.png"
                 alt=""
@@ -133,7 +143,9 @@ export default function Navbar() {
                     href={link.href}
                     aria-current={isActive(link.href) ? 'page' : undefined}
                     className={`relative flex h-[68px] items-center px-4 text-[0.9375rem] font-medium transition-colors ${
-                      isActive(link.href) ? 'text-content' : 'text-muted hover:text-content'
+                      isActive(link.href)
+                        ? 'text-content'
+                        : 'text-muted hover:text-content'
                     }`}
                   >
                     {link.label}
@@ -150,7 +162,11 @@ export default function Navbar() {
             </ul>
 
             <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
-              <form onSubmit={handleSearch} role="search" className="hidden md:block">
+              <form
+                onSubmit={handleSearch}
+                role="search"
+                className="hidden md:block"
+              >
                 <label htmlFor="nav-search" className="sr-only">
                   Search products
                 </label>
@@ -206,7 +222,11 @@ export default function Navbar() {
                 aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
                 className="flex h-10 w-10 items-center justify-center border border-line transition-colors hover:border-ink-900 xl:hidden"
               >
-                {isMenuOpen ? <FiX size={18} aria-hidden /> : <FiMenu size={18} aria-hidden />}
+                {isMenuOpen ? (
+                  <FiX size={18} aria-hidden />
+                ) : (
+                  <FiMenu size={18} aria-hidden />
+                )}
               </button>
             </div>
           </div>
@@ -252,7 +272,11 @@ export default function Navbar() {
                 </button>
               </div>
 
-              <form onSubmit={handleSearch} role="search" className="border-b border-line p-5">
+              <form
+                onSubmit={handleSearch}
+                role="search"
+                className="border-b border-line p-5"
+              >
                 <label htmlFor="mobile-search" className="sr-only">
                   Search products
                 </label>
@@ -295,7 +319,10 @@ export default function Navbar() {
               </ul>
 
               <div className="space-y-2 border-t border-line p-5">
-                <a href={`tel:${site.phoneDial}`} className="btn-outline w-full">
+                <a
+                  href={`tel:${site.phoneDial}`}
+                  className="btn-outline w-full"
+                >
                   {site.phoneDisplay}
                 </a>
                 <a

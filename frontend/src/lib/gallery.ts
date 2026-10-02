@@ -8,12 +8,24 @@
  */
 const GALLERY: Record<number, string[]> = {
   1: ['/images/30kg-tebal-scale.jpg', '/images/tebal-top-scale.jpg'],
-  2: ['/images/platform-scale.jpg', '/images/platform-scale-detail.jpg', '/images/platform-Scale.jpeg'],
   3: ['/images/crane-scale.jpeg', '/images/crane-scale.jpg'],
-  4: ['/images/Mini-20KG.jpeg', '/images/Mini-20KG1.jpeg', '/images/mini-scale-ms-10-20kg.jpg'],
-  6: ['/images/600-600mm-ss-Regular.jpg', '/images/ss-platform-600.jpg', '/images/heavy-platform-scale.jpg'],
+  4: [
+    '/images/Mini-20KG.jpeg',
+    '/images/Mini-20KG1.jpeg',
+    '/images/mini-scale-ms-10-20kg.jpg',
+  ],
+  6: [
+    '/images/600-600mm-ss-Regular.jpg',
+    '/images/ss-platform-600.jpg',
+    '/images/heavy-platform-scale.jpg',
+  ],
   9: ['/images/300*300mm-Chicken-ss.jpeg', '/images/platform-300x300.jpg'],
   10: ['/images/Jewellery.jpeg', '/images/Jewellery2.jpeg'],
+  35: [
+    '/images/platform-scale.jpg',
+    '/images/platform-scale-detail.jpg',
+    '/images/platform-Scale.jpeg',
+  ],
 };
 
 /** All photos for a product, main image first, never duplicated. */
