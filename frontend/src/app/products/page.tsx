@@ -5,7 +5,7 @@
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { Suspense, useEffect, useMemo, useState } from 'react';
+import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { FiFilter, FiPhone, FiSearch, FiX } from 'react-icons/fi';
 
 import ProductCard, { type Product } from '@/components/products/ProductCard';
@@ -40,6 +40,34 @@ function ProductsContent() {
   const [maxPrice, setMaxPrice] = useState(PRICE_CEILING);
   const [sortBy, setSortBy] = useState('featured');
   const [showFilters, setShowFilters] = useState(false);
+
+  /*
+   * Narrowing the catalogue makes the page shorter. The filter card is
+   * sticky, so once the document is shorter than the current scroll offset
+   * the browser clamps the position and the reader is dropped at the foot of
+   * the page with the control they just used somewhere off screen above.
+   * Bringing the results back under the heading keeps them oriented.
+   */
+  const resultsRef = useRef<HTMLDivElement>(null);
+  const showResults = useCallback(() => {
+    const el = resultsRef.current;
+    if (!el) return;
+    requestAnimationFrame(() => {
+      // Only move if the results have ended up above the fold — which is the
+      // stranded case. On a phone the panel sits above the list and the
+      // reader can already see both, so scrolling then would be meddling.
+      const rect = el.getBoundingClientRect();
+      if (rect.top >= 0) return;
+      const reduced = window.matchMedia(
+        '(prefers-reduced-motion: reduce)',
+      ).matches;
+      const top = rect.top + window.scrollY - 104; // clears the sticky header
+      window.scrollTo({
+        top: Math.max(0, top),
+        behavior: reduced ? 'auto' : 'smooth',
+      });
+    });
+  }, []);
 
   // Keep the filter in sync when the URL changes (e.g. footer category links)
   useEffect(() => setCategory(categoryParam), [categoryParam]);
@@ -105,6 +133,7 @@ function ProductsContent() {
     setCategory('all');
     setMaxPrice(PRICE_CEILING);
     setSortBy('featured');
+    showResults();
   };
 
   const hasFilters =
@@ -182,7 +211,10 @@ function ProductsContent() {
                           name="category"
                           value={cat.value}
                           checked={category === cat.value}
-                          onChange={(e) => setCategory(e.target.value)}
+                          onChange={(e) => {
+                            setCategory(e.target.value);
+                            showResults();
+                          }}
                           className="h-4 w-4 accent-[var(--color-primary-500)]"
                         />
                         <span className="text-sm">{cat.label}</span>
@@ -204,6 +236,8 @@ function ProductsContent() {
                   step={1000}
                   value={maxPrice}
                   onChange={(e) => setMaxPrice(Number(e.target.value))}
+                  onPointerUp={showResults}
+                  onKeyUp={showResults}
                   className="w-full accent-[var(--color-primary-500)]"
                 />
                 <div className="mt-2 flex justify-between text-sm text-muted">
@@ -222,7 +256,10 @@ function ProductsContent() {
                 <select
                   id="sort-by"
                   value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value)}
+                  onChange={(e) => {
+                    setSortBy(e.target.value);
+                    showResults();
+                  }}
                   className="field"
                 >
                   {sortOptions.map((option) => (
@@ -249,7 +286,7 @@ function ProductsContent() {
           </aside>
 
           {/* Grid */}
-          <div className="lg:col-span-3">
+          <div ref={resultsRef} className="scroll-mt-28 lg:col-span-3">
             {loading ? (
               <ProductGridSkeleton count={6} />
             ) : error ? (
