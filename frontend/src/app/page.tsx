@@ -14,6 +14,7 @@ import Accordion from '@/components/ui/Accordion';
 import Reveal from '@/components/ui/Reveal';
 import SectionHeading from '@/components/ui/SectionHeading';
 import { categories, serviceTypes, site, whatsappLink } from '@/lib/site';
+import ProductVideo from '@/components/products/ProductVideo';
 import { productApi } from '@/services/api';
 
 const commitments = [
@@ -242,10 +243,90 @@ export default function HomePage() {
       </section>
 
       {/* 04 — services */}
+      {/* 04 — why buy here */}
+      <section className="relative overflow-hidden border-b border-line bg-ink-950 py-20 text-steel-50 lg:py-28">
+        <div aria-hidden className="grid-rule absolute inset-0 opacity-50" />
+        <div className="shell relative">
+          <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,20rem)_minmax(0,1fr)] lg:gap-20">
+            <Reveal>
+              {/* Portrait film, so it is held to the width of a phone rather
+                  than stretched across the band. */}
+              <div className="mx-auto w-full max-w-[20rem]">
+                <ProductVideo
+                  src="/videos/why-om-marketing.mp4"
+                  poster="/videos/posters/why-om-marketing.jpg"
+                  aspect="aspect-[9/16]"
+                  label="Why buy your weighing scale from OM Marketing — a short film in Gujarati"
+                />
+                <p className="label mt-3 text-steel-500">
+                  45 seconds · Gujarati
+                </p>
+              </div>
+            </Reveal>
+
+            <Reveal index={1}>
+              <span className="section-index text-steel-400">04</span>
+              <span className="label label-accent ml-4">Why us</span>
+              <h2 className="display mt-6 text-4xl text-white sm:text-5xl">
+                The cheapest scale
+                <br />
+                is rarely the cheapest.
+              </h2>
+              <p className="mt-6 max-w-xl text-[1.0625rem] leading-relaxed text-steel-300">
+                A ₹3,000 counter scale is a ₹3,000 scale right up until the
+                board goes. Then it is a visiting charge, a part, and a day of
+                trading done by hand — and the second time it happens you have
+                paid more than the good one cost.
+              </p>
+
+              <dl className="mt-10 grid gap-px border border-ink-800 bg-ink-800 sm:grid-cols-2">
+                {[
+                  [
+                    'Rates published',
+                    'Every board, battery and visit is priced on this site before you call.',
+                  ],
+                  [
+                    'Our own technicians',
+                    'Load cells, indicators and displays repaired in-house, with spares in stock.',
+                  ],
+                  [
+                    'One year on defects',
+                    'Manufacturing defects covered, with calibration and stamping handled.',
+                  ],
+                  [
+                    'Here to come back to',
+                    'A shop in Nikol you can walk into — not a number that stops answering.',
+                  ],
+                ].map(([term, detail]) => (
+                  <div key={term} className="bg-ink-950 p-5">
+                    <dt className="label label-accent">{term}</dt>
+                    <dd className="mt-2 text-[0.9375rem] leading-relaxed text-steel-300">
+                      {detail}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+
+              <div className="mt-10 flex flex-wrap gap-3">
+                <Link href="/services#book" className="btn-primary">
+                  See what a repair costs <FiArrowRight aria-hidden />
+                </Link>
+                <Link
+                  href="/products"
+                  className="btn-outline border-white/25 text-white hover:border-white hover:bg-white hover:text-ink-950"
+                >
+                  Browse the range
+                </Link>
+              </div>
+            </Reveal>
+          </div>
+        </div>
+      </section>
+
       <section className="border-b border-line py-20 lg:py-28">
         <div className="shell">
           <SectionHeading
-            index="04"
+            index="05"
             eyebrow="Service"
             title="After the sale"
             description="A scale that drifts costs you money on every transaction. We keep yours accurate, compliant and working."
@@ -280,7 +361,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 05 — scale finder */}
+      {/* 06 — scale finder */}
       <section className="relative overflow-hidden border-b border-line bg-ink-950 py-20 text-steel-50 lg:py-28">
         <div
           aria-hidden
@@ -289,7 +370,7 @@ export default function HomePage() {
         <div className="relative shell">
           <div className="grid items-end gap-12 border-t border-white/12 pt-12 lg:grid-cols-12">
             <div className="lg:col-span-7">
-              <span className="label text-steel-400">05 / Specify</span>
+              <span className="label text-steel-400">06 / Specify</span>
               <h2 className="display mt-6 text-[clamp(2rem,4.4vw,3.5rem)] text-white">
                 Three questions.
                 <br />
@@ -328,7 +409,7 @@ export default function HomePage() {
           <div className="grid gap-14 lg:grid-cols-12">
             <div className="lg:col-span-4">
               <SectionHeading
-                index="06"
+                index="07"
                 eyebrow="Reference"
                 title="Before you buy"
                 description="The things worth checking, answered plainly."
@@ -354,7 +435,7 @@ export default function HomePage() {
           <div className="grid gap-12 lg:grid-cols-12">
             <div className="lg:col-span-5">
               <SectionHeading
-                index="07"
+                index="08"
                 eyebrow="Visit"
                 title="Nikol, Ahmedabad"
                 description="Drop in to see the equipment, or call ahead and we'll have the models you're considering ready on the counter."

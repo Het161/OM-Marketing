@@ -18,10 +18,15 @@ export default function ProductVideo({
   src,
   poster,
   label,
+  aspect,
 }: {
   src: string;
   poster?: string;
   label: string;
+  /** Tailwind aspect class, e.g. "aspect-[9/16]". Set it for a clip whose
+      shape is known, so the frame matches the film instead of leaving bars
+      down the sides. */
+  aspect?: string;
 }) {
   const [started, setStarted] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -34,7 +39,9 @@ export default function ProductVideo({
   };
 
   return (
-    <div className="relative overflow-hidden border border-line bg-ink-950">
+    <div
+      className={`relative overflow-hidden border border-line bg-ink-950 ${aspect ?? ''}`}
+    >
       <video
         ref={videoRef}
         src={src}
@@ -43,7 +50,11 @@ export default function ProductVideo({
         preload="none"
         playsInline
         aria-label={label}
-        className="mx-auto block max-h-[26rem] w-full object-contain"
+        className={
+          aspect
+            ? 'absolute inset-0 h-full w-full object-cover'
+            : 'mx-auto block max-h-[26rem] w-full object-contain'
+        }
       />
 
       {!started && (
