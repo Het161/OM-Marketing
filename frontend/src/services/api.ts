@@ -42,7 +42,15 @@ function logFallback(context: string, error: unknown) {
 // Create axios instance with default config
 const api = axios.create({
   baseURL: API_BASE_URL,
-  timeout: 10000, // 10 second timeout
+  /*
+   * The catalogue ships inside the bundle, so a slow API never has to hold a
+   * page up — the pages paint from the snapshot and swap in the live response
+   * when it lands. Ten seconds here meant that, with the backend asleep on
+   * Render's free tier, a visitor watched a spinner for the full timeout
+   * before the snapshot appeared. Four is enough for a warm instance and
+   * short enough that a cold one is not worth waiting for.
+   */
+  timeout: 4000,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -80,7 +88,35 @@ api.interceptors.response.use(
 
 // ============ PRODUCT API METHODS ============
 
+/** Apply the same filtering the API would, to the bundled snapshot. */
+function fromSnapshot(params?: {
+  skip?: number;
+  limit?: number;
+  category?: string;
+}) {
+  let items = FALLBACK_PRODUCTS;
+  if (params?.category) {
+    items = items.filter((p) => p.category === params.category);
+  }
+  const skip = params?.skip ?? 0;
+  return items.slice(skip, skip + (params?.limit ?? items.length));
+}
+
 export const productApi = {
+  /**
+   * The catalogue as it was at build time, with no network call at all.
+   *
+   * Pages render this on first paint so a customer sees the range
+   * immediately, then call `getAll` to pick up live stock counts. Prices and
+   * photographs come from the same committed file the backend is seeded
+   * from, so the snapshot is not a degraded view — it is the same catalogue.
+   */
+  getAllInstant: (params?: { skip?: number; limit?: number; category?: string }) =>
+    fromSnapshot(params),
+
+  /** A single product from the snapshot, or null if we do not have it. */
+  getByIdInstant: (id: number) => FALLBACK_PRODUCTS.find((p) => p.id === id) ?? null,
+
   /**
    * Get all products with optional filtering
    * Example: productApi.getAll({ category: 'weighing_scale', limit: 20 })
@@ -98,12 +134,7 @@ export const productApi = {
       throw new Error('empty catalogue response');
     } catch (error) {
       logFallback('products.getAll', error);
-      let items = FALLBACK_PRODUCTS;
-      if (params?.category) {
-        items = items.filter((p) => p.category === params.category);
-      }
-      const skip = params?.skip ?? 0;
-      return items.slice(skip, skip + (params?.limit ?? items.length));
+      return fromSnapshot(params);
     }
   },
 

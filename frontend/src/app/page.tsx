@@ -79,8 +79,13 @@ const faqs = [
 ];
 
 export default function HomePage() {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
+  /* Render the bundled catalogue on first paint; the API only refreshes it.
+     Waiting on a sleeping backend held this strip empty for the whole
+     request timeout. */
+  const [products, setProducts] = useState<Product[]>(
+    () => productApi.getAllInstant({ limit: 6 }) as Product[],
+  );
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -91,8 +96,8 @@ export default function HomePage() {
         if (!cancelled) setProducts(data);
       })
       .catch((err) => {
+        // The snapshot is already on screen — nothing to report.
         console.error(err);
-        if (!cancelled) setError("We couldn't load products just now.");
       })
       .finally(() => {
         if (!cancelled) setLoading(false);

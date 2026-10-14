@@ -248,8 +248,12 @@ function scoreProduct(product: Product, rec: Recommendation): number {
 export default function ScaleFinderPage() {
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<Answers>({});
-  const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
+  /* The questionnaire scores the catalogue, so it needs the list before the
+     last answer — load it from the bundle and let the API refresh it. */
+  const [products, setProducts] = useState<Product[]>(
+    () => productApi.getAllInstant({ limit: 100 }) as Product[],
+  );
+  const [loading, setLoading] = useState(false);
   const [failed, setFailed] = useState(false);
 
   const isDone = step >= QUESTIONS.length;
@@ -263,8 +267,8 @@ export default function ScaleFinderPage() {
         if (!cancelled) setProducts(data);
       })
       .catch((error) => {
+        // Recommendations are scored against the bundled snapshot already.
         console.error(error);
-        if (!cancelled) setFailed(true);
       })
       .finally(() => {
         if (!cancelled) setLoading(false);

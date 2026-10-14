@@ -27,8 +27,13 @@ function ProductsContent() {
   const searchQuery = searchParams.get('search') ?? '';
   const categoryParam = searchParams.get('category') ?? 'all';
 
-  const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
+  /* Paint from the bundled catalogue straight away. A search still has to go
+     to the API, but browsing does not: the snapshot is the same committed
+     file the backend is seeded from, so there is nothing to wait for. */
+  const [products, setProducts] = useState<Product[]>(() =>
+    searchQuery ? [] : (productApi.getAllInstant({ limit: 100 }) as Product[]),
+  );
+  const [loading, setLoading] = useState(() => Boolean(searchQuery));
   const [error, setError] = useState<string | null>(null);
 
   const [category, setCategory] = useState(categoryParam);
@@ -41,7 +46,12 @@ function ProductsContent() {
 
   useEffect(() => {
     let cancelled = false;
-    setLoading(true);
+    // Only show a spinner when there is nothing on screen yet.
+    const instant = searchQuery
+      ? []
+      : (productApi.getAllInstant({ limit: 100 }) as Product[]);
+    setProducts(instant);
+    setLoading(instant.length === 0);
     setError(null);
 
     async function load() {
@@ -52,7 +62,11 @@ function ProductsContent() {
         if (!cancelled) setProducts(data);
       } catch (err) {
         console.error(err);
-        if (!cancelled) setError("We couldn't load the catalogue just now.");
+        // Browsing already has the snapshot on screen; only a search can end
+        // up with nothing to show.
+        if (!cancelled && instant.length === 0) {
+          setError("We couldn't load the catalogue just now.");
+        }
       } finally {
         if (!cancelled) setLoading(false);
       }

@@ -83,9 +83,16 @@ export default function ProductDetailPage() {
   const params = useParams();
   const productId = Number(params.id);
 
-  const [product, setProduct] = useState<Product | null>(null);
+  /* Same snapshot as the shop page: show the product immediately and let the
+     API confirm stock behind it, rather than holding a blank page open while
+     a sleeping backend wakes. */
+  const [product, setProduct] = useState<Product | null>(
+    () => productApi.getByIdInstant(Number(params.id)) as Product | null,
+  );
   const [related, setRelated] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(
+    () => !productApi.getByIdInstant(Number(params.id)),
+  );
   const [notFound, setNotFound] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
@@ -101,7 +108,17 @@ export default function ProductDetailPage() {
     }
 
     let cancelled = false;
-    setLoading(true);
+    const instant = productApi.getByIdInstant(productId) as Product | null;
+    setProduct(instant);
+    setRelated(
+      (productApi.getAllInstant({
+        category: instant?.category,
+        limit: 8,
+      }) as Product[])
+        .filter((p) => p.id !== productId)
+        .slice(0, 3),
+    );
+    setLoading(!instant);
     setNotFound(false);
 
     async function load() {
@@ -120,7 +137,8 @@ export default function ProductDetailPage() {
         }
       } catch (error) {
         console.error(error);
-        if (!cancelled) setNotFound(true);
+        // Only a product missing from the snapshot too is genuinely unknown.
+        if (!cancelled && !instant) setNotFound(true);
       } finally {
         if (!cancelled) setLoading(false);
       }
@@ -524,14 +542,23 @@ export default function ProductDetailPage() {
             </Link>
           </div>
 
+          {/* A skeleton means "this is coming". An empty list after loading
+              means there are no siblings in this category, and leaving the
+              skeleton up would have left it pulsing on the page for good. */}
           {related.length > 0 ? (
             <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
               {related.map((item) => (
                 <ProductCard key={item.id} {...item} />
               ))}
             </div>
-          ) : (
+          ) : loading ? (
             <ProductGridSkeleton count={3} />
+          ) : (
+            <p className="text-[0.9375rem] leading-relaxed text-muted">
+              This is the only model we list in this category at the moment.
+              Browse the full range, or tell us what you need and we will source
+              it.
+            </p>
           )}
         </section>
 
