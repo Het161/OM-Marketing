@@ -54,7 +54,7 @@
     "description": "500×500 mm pole-display platform. Available with an MS chequered plate for warehouse floors.",
     "price": 7800.0,
     "stock_quantity": 14,
-    "image_url": "/images/ms-platform-500.jpg",
+    "image_url": "/images/heavy-platform-scale.jpg",
     "specifications": "{\"capacity\": \"200 / 300 / 500 kg\", \"platform_size\": \"500\\u00d7500 mm\", \"construction\": \"Regular type \\u2014 pole-mounted display\", \"material\": \"Stainless steel \\u2014 mild steel +\\u20b9450\", \"brand\": \"UNIQUE (Shiva Industries)\"}",
     "created_at": "2026-10-02 00:00:00",
     "updated_at": "2026-10-02 00:00:00"
@@ -132,13 +132,13 @@
     "updated_at": "2026-10-02 00:00:00"
   },
   {
-    "name": "CONTECH Precision Jewellery Scale - Digital Balance 0.001g",
+    "name": "CONTECH CBB-600 Precision Jewellery Balance",
     "category": "weighing_scale",
-    "description": "Premium precision weighing scale by CONTECH, specially designed for jewellery applications. Features ultra-high accuracy with 0.001g precision and bright green LED display. Perfect for gold, silver, diamonds, and precious stone weighing. Equipped with multiple function keys for tare, calibration, and unit conversion. Ideal for jewellers, gold traders, and laboratories.",
+    "description": "Bench precision balance for gold, silver and gemstone work. Round weighing pan, green LED display readable across a counter, and a spirit level with adjustable feet so it can be set true on any bench.",
     "price": 25000.0,
     "stock_quantity": 12,
-    "image_url": "",
-    "specifications": "{\"precision\": \"0.001g (1mg)\", \"max_capacity\": \"500g / 1000g\", \"display\": \"Green LED - 5 Digit\", \"platform\": \"Circular Stainless Steel\", \"functions\": \"Tare, Zero, Calibration, Unit Conversion\", \"units\": \"g, ct, oz, gn, dwt\", \"power\": \"AC Adapter / Battery\", \"response_time\": \"2 seconds\", \"calibration\": \"External Calibration\", \"application\": \"Jewellery, Gold, Diamond, Laboratory\", \"warranty\": \"1 Year\"}",
+    "image_url": "/images/contech-cbb-600.jpeg",
+    "specifications": "{\"capacity\": \"600 g\", \"readability\": \"0.01 g (10 mg)\", \"minimum_load\": \"0.2 g\", \"model\": \"CBB-600\", \"display\": \"Green LED\", \"power\": \"AC adaptor or internal battery\", \"levelling\": \"Spirit level with adjustable feet\", \"brand\": \"CONTECH\"}",
     "id": 13,
     "created_at": "2025-12-10T20:43:48.475191",
     "updated_at": "2025-12-10T20:48:30.407734"
@@ -246,7 +246,7 @@
     "description": "Hand-built heavy-gauge version of the 30 kg table scale, made for counters that take constant use.",
     "price": 5000.0,
     "stock_quantity": 12,
-    "image_url": null,
+    "image_url": "/images/30KG-Table-Top.jpg",
     "specifications": "{\"capacity\": \"30 kg\", \"build\": \"Hand-made, heavy gauge\", \"brand\": \"UNIQUE (Shiva Industries)\", \"warranty\": \"1 year\"}",
     "created_at": "2026-10-02 00:00:00",
     "updated_at": "2026-10-02 00:00:00"

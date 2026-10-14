@@ -62,8 +62,12 @@ const BLUR: Record<string, string> = {
     'data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%274%27%20height%3D%273%27%3E%3Crect%20width%3D%274%27%20height%3D%273%27%20fill%3D%27rgb%28164%2C169%2C175%29%27/%3E%3C/svg%3E',
   '/images/certificate-plate.jpg':
     'data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%274%27%20height%3D%273%27%3E%3Crect%20width%3D%274%27%20height%3D%273%27%20fill%3D%27rgb%28142%2C141%2C138%29%27/%3E%3C/svg%3E',
+  '/images/chekar-platform.jpeg':
+    'data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%274%27%20height%3D%273%27%3E%3Crect%20width%3D%274%27%20height%3D%273%27%20fill%3D%27rgb%28130%2C180%2C188%29%27/%3E%3C/svg%3E',
   '/images/company-Crane-type-100KG-1year-gurantee-warranty.jpeg':
     'data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%274%27%20height%3D%273%27%3E%3Crect%20width%3D%274%27%20height%3D%273%27%20fill%3D%27rgb%28114%2C105%2C102%29%27/%3E%3C/svg%3E',
+  '/images/contech-cbb-600.jpeg':
+    'data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%274%27%20height%3D%273%27%3E%3Crect%20width%3D%274%27%20height%3D%273%27%20fill%3D%27rgb%28122%2C124%2C120%29%27/%3E%3C/svg%3E',
   '/images/crane-scale.jpeg':
     'data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%274%27%20height%3D%273%27%3E%3Crect%20width%3D%274%27%20height%3D%273%27%20fill%3D%27rgb%28141%2C132%2C123%29%27/%3E%3C/svg%3E',
   '/images/crane-scale.jpg':

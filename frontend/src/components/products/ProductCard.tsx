@@ -56,11 +56,15 @@ function readSpecs(raw?: string): Array<[string, string]> {
 }
 
 export default function ProductCard(product: Product) {
-  const { id, name, category, price, image_url, description, stock_quantity } = product;
+  const { id, name, category, price, image_url, description, stock_quantity } =
+    product;
   const addItem = useQuoteStore((s) => s.addItem);
   const [added, setAdded] = useState(false);
 
-  const specs = useMemo(() => readSpecs(product.specifications), [product.specifications]);
+  const specs = useMemo(
+    () => readSpecs(product.specifications),
+    [product.specifications],
+  );
   const inStock = stock_quantity > 0;
 
   const handleAdd = () => {
@@ -92,8 +96,11 @@ export default function ProductCard(product: Product) {
 
         {/* Reference code, bottom-left, like a part number */}
         <span className="label absolute bottom-0 left-0 bg-ink-950 px-2.5 py-1.5 text-steel-300">
-          {categoryLabels[category]?.replace(/\s+/g, '-').toUpperCase() ?? category}
-          <span className="ml-1.5 text-white">·{String(id).padStart(3, '0')}</span>
+          {categoryLabels[category]?.replace(/\s+/g, '-').toUpperCase() ??
+            category}
+          <span className="ml-1.5 text-white">
+            ·{String(id).padStart(3, '0')}
+          </span>
         </span>
 
         {!inStock ? (
@@ -110,7 +117,10 @@ export default function ProductCard(product: Product) {
       {/* Body */}
       <div className="flex flex-1 flex-col p-5">
         <h3 className="text-[1.0625rem] font-semibold leading-snug tracking-[-0.01em]">
-          <Link href={`/products/${id}`} className="after:absolute after:inset-0">
+          <Link
+            href={`/products/${id}`}
+            className="after:absolute after:inset-0"
+          >
             {name}
           </Link>
         </h3>
@@ -121,9 +131,13 @@ export default function ProductCard(product: Product) {
             {specs.map(([key, value]) => (
               <div
                 key={key}
-                className="grid grid-cols-[minmax(0,1fr)_minmax(0,auto)] items-baseline gap-3 border-b border-line py-2"
+                /* The value track has to be the flexible one. As
+                   minmax(0,auto) it sized to max-content, so a long value such
+                   as "Stainless steel — mild steel +₹350" overflowed its track
+                   and printed straight over the label instead of truncating. */
+                className="grid grid-cols-[minmax(0,auto)_minmax(0,1fr)] items-baseline gap-3 border-b border-line py-2"
               >
-                <dt className="label">{key}</dt>
+                <dt className="label truncate">{key}</dt>
                 <dd className="data min-w-0 truncate text-right text-[0.8125rem] text-content">
                   {value}
                 </dd>
@@ -177,7 +191,6 @@ export default function ProductCard(product: Product) {
             </button>
           </div>
         </div>
-
       </div>
     </article>
   );
