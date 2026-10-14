@@ -343,7 +343,7 @@ export default function QuotePage() {
               </dl>
               <p className="mt-4 rounded-lg bg-accent-50 p-3 text-[13px] leading-relaxed text-ink-700">
                 <strong>This is a guide price only.</strong> Your final
-                quotation depends on quantity, configuration, GST and delivery —
+                quotation depends on quantity, configuration and delivery —
                 and there is usually room to negotiate.
               </p>
             </div>
@@ -426,7 +426,7 @@ export default function QuotePage() {
                 <TextArea
                   label="Anything else we should know?"
                   rows={3}
-                  placeholder="Delivery location, required capacity, GST details…"
+                  placeholder="Delivery location, required capacity, timelines…"
                   value={form.message}
                   disabled={sending}
                   onChange={(e) => set('message')(e.target.value)}

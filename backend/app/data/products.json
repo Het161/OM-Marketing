@@ -174,7 +174,7 @@
     "price": 15800.0,
     "stock_quantity": 6,
     "image_url": "/images/Multi-Currency.jpeg",
-    "specifications": "{\"counting_capacity\": \"1000-1200 notes/min\", \"hopper\": \"300 notes capacity\", \"stacker\": \"200 notes capacity\", \"detection_system\": \"UV + MG + IR Triple Detection\", \"display_type\": \"Large LCD Display with External Display\", \"batch_preset\": \"1-999 notes\", \"functions\": \"Count, Add, Batch, Self-Check\", \"error_alerts\": \"Double, Half, Chain, Jam Detection\", \"motor_type\": \"Heavy Duty DC Motor\", \"noise_level\": \"<60dB\", \"power_consumption\": \"80W\", \"video_url\": \"/videos/Multi-Currency.mp4\", \"video_demos\": [\"/videos/Note-Machine1.mp4\", \"/videos/Note-Machine2.mp4\"], \"net_weight\": \"6.5kg\", \"certification\": \"CE Certified\", \"applications\": \"Banks, Supermarkets, Hotels, Casinos\"}",
+    "specifications": "{\"counting_capacity\": \"1000-1200 notes/min\", \"hopper\": \"300 notes capacity\", \"stacker\": \"200 notes capacity\", \"detection_system\": \"UV + MG + IR Triple Detection\", \"display_type\": \"Large LCD Display with External Display\", \"batch_preset\": \"1-999 notes\", \"functions\": \"Count, Add, Batch, Self-Check\", \"error_alerts\": \"Double, Half, Chain, Jam Detection\", \"motor_type\": \"Heavy Duty DC Motor\", \"noise_level\": \"<60dB\", \"power_consumption\": \"80W\", \"video_url\": \"/videos/note-counter-multi-currency.mp4\", \"video_demos\": [\"/videos/note-counter-demo-1.mp4\", \"/videos/note-counter-demo-2.mp4\"], \"net_weight\": \"6.5kg\", \"certification\": \"CE Certified\", \"applications\": \"Banks, Supermarkets, Hotels, Casinos\"}",
     "id": 17,
     "created_at": "2025-12-10T21:07:10.353370",
     "updated_at": "2025-12-11T06:09:53.717598"
@@ -332,6 +332,42 @@
     "stock_quantity": 25,
     "image_url": "/images/small-crane-type-60KG-chinaModel.jpeg",
     "specifications": "{\"capacity\": \"50 kg\", \"graduation\": \"5 g up to 10 kg, 10 g from 10 to 50 kg\", \"model\": \"WH-A08\", \"type\": \"Portable hanging, folding handle\", \"display\": \"Backlit LCD\"}",
+    "created_at": "2026-10-02 00:00:00",
+    "updated_at": "2026-10-02 00:00:00"
+  },
+  {
+    "id": 40,
+    "name": "Plastic Packaging Sealing Machine — 8 inch",
+    "category": "packaging_machine",
+    "description": "Hand sealing machine with a 8 inch (200 mm) sealing bar, for closing polythene and laminated pouches. Press the arm, the element heats for the moment the dial is set to, and the seal cools under pressure — no warm-up time and nothing to run between jobs. Comes with a one-year guarantee and is delivered in one to two days.",
+    "price": 1300.0,
+    "stock_quantity": 20,
+    "image_url": "/images/sealing-machine-red.jpeg",
+    "specifications": "{\"seal_length\": \"8 inch (200 mm)\", \"type\": \"Hand-operated impulse sealer\", \"seals\": \"Polythene, LDPE, PP and laminated pouches\", \"sealing_control\": \"Adjustable timer dial, 1 to 8\", \"power\": \"220 V AC, single phase\", \"warranty\": \"1 year\", \"delivery\": \"Delivered in 1 to 2 days\", \"finish\": \"Powder-coated body, available in red or blue\", \"video_url\": \"/videos/sealing-machine-demo.mp4\"}",
+    "created_at": "2026-10-02 00:00:00",
+    "updated_at": "2026-10-02 00:00:00"
+  },
+  {
+    "id": 41,
+    "name": "Plastic Packaging Sealing Machine — 12 inch",
+    "category": "packaging_machine",
+    "description": "Hand sealing machine with a 12 inch (300 mm) sealing bar, for closing polythene and laminated pouches. Press the arm, the element heats for the moment the dial is set to, and the seal cools under pressure — no warm-up time and nothing to run between jobs. Comes with a one-year guarantee and is delivered in one to two days.",
+    "price": 1600.0,
+    "stock_quantity": 20,
+    "image_url": "/images/sealing-machine-blue.jpeg",
+    "specifications": "{\"seal_length\": \"12 inch (300 mm)\", \"type\": \"Hand-operated impulse sealer\", \"seals\": \"Polythene, LDPE, PP and laminated pouches\", \"sealing_control\": \"Adjustable timer dial, 1 to 8\", \"power\": \"220 V AC, single phase\", \"warranty\": \"1 year\", \"delivery\": \"Delivered in 1 to 2 days\", \"finish\": \"Powder-coated body, available in red or blue\", \"video_url\": \"/videos/sealing-machine-demo.mp4\"}",
+    "created_at": "2026-10-02 00:00:00",
+    "updated_at": "2026-10-02 00:00:00"
+  },
+  {
+    "id": 42,
+    "name": "Plastic Packaging Sealing Machine — 16 inch",
+    "category": "packaging_machine",
+    "description": "Hand sealing machine with a 16 inch (400 mm) sealing bar, for closing polythene and laminated pouches. Press the arm, the element heats for the moment the dial is set to, and the seal cools under pressure — no warm-up time and nothing to run between jobs. Comes with a one-year guarantee and is delivered in one to two days.",
+    "price": 2200.0,
+    "stock_quantity": 20,
+    "image_url": "/images/sealing-machine-red.jpeg",
+    "specifications": "{\"seal_length\": \"16 inch (400 mm)\", \"type\": \"Hand-operated impulse sealer\", \"seals\": \"Polythene, LDPE, PP and laminated pouches\", \"sealing_control\": \"Adjustable timer dial, 1 to 8\", \"power\": \"220 V AC, single phase\", \"warranty\": \"1 year\", \"delivery\": \"Delivered in 1 to 2 days\", \"finish\": \"Powder-coated body, available in red or blue\", \"video_url\": \"/videos/sealing-machine-demo.mp4\"}",
     "created_at": "2026-10-02 00:00:00",
     "updated_at": "2026-10-02 00:00:00"
   }

@@ -23,6 +23,7 @@ import { TbScale } from 'react-icons/tb';
 
 import ProductCard, { type Product } from '@/components/products/ProductCard';
 import ProductGallery from '@/components/products/ProductGallery';
+import ProductVideo from '@/components/products/ProductVideo';
 import { ProductGridSkeleton } from '@/components/products/ProductCardSkeleton';
 import { galleryFor } from '@/lib/gallery';
 import { categoryLabels, site, whatsappLink } from '@/lib/site';
@@ -35,19 +36,47 @@ const assurances = [
   { icon: FiTruck, text: 'Delivery across Gujarat' },
 ];
 
+/* Spec keys that hold media paths. They belong in a player, not in the
+   specification table, where they rendered as a bare "/videos/....mp4". */
+const MEDIA_KEYS = new Set(['video_url', 'video_demos']);
+
 /** Product specs are stored as a JSON string; parse defensively. */
 function parseSpecs(raw?: string): Array<[string, string]> {
   if (!raw) return [];
   try {
     const parsed = JSON.parse(raw);
     if (!parsed || typeof parsed !== 'object') return [];
-    return Object.entries(parsed).map(([key, value]) => [
-      key.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase()),
-      String(value),
-    ]);
+    return Object.entries(parsed)
+      .filter(([key]) => !MEDIA_KEYS.has(key))
+      .map(([key, value]) => [
+        key.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase()),
+        String(value),
+      ]);
   } catch {
     return [];
   }
+}
+
+/** Demonstration clips held in the spec blob, newest field first. */
+function parseVideos(raw?: string): string[] {
+  if (!raw) return [];
+  try {
+    const parsed = JSON.parse(raw);
+    if (!parsed || typeof parsed !== 'object') return [];
+    const out = [parsed.video_url, ...(parsed.video_demos ?? [])];
+    return Array.from(
+      new Set(out.filter((v): v is string => typeof v === 'string' && !!v)),
+    );
+  } catch {
+    return [];
+  }
+}
+
+/** Poster frames live beside the clips, same basename. */
+function posterFor(video: string): string {
+  return video
+    .replace('/videos/', '/videos/posters/')
+    .replace(/\.mp4$/, '.jpg');
 }
 
 export default function ProductDetailPage() {
@@ -104,6 +133,7 @@ export default function ProductDetailPage() {
   }, [productId]);
 
   const specs = useMemo(() => parseSpecs(product?.specifications), [product]);
+  const videos = useMemo(() => parseVideos(product?.specifications), [product]);
 
   const handleAdd = () => {
     if (!product) return;
@@ -308,7 +338,7 @@ export default function ProductDetailPage() {
                 ₹{product.price.toLocaleString('en-IN')}
               </span>
               <p className="mt-2 text-[13px] leading-relaxed text-muted">
-                Guide price excluding GST and delivery. Request a quote for firm
+                Guide price, excluding delivery. Request a quote for firm
                 pricing — there is usually room to negotiate on quantity.
               </p>
             </div>
@@ -424,6 +454,23 @@ export default function ProductDetailPage() {
                 <FiPhone aria-hidden /> Call {site.phoneDisplay}
               </a>
             </div>
+
+            {/* Demonstration clips */}
+            {videos.length > 0 && (
+              <section className="mt-9">
+                <h2 className="mb-4 text-xl font-bold">See it working</h2>
+                <div className="grid gap-4 sm:grid-cols-2">
+                  {videos.map((v, i) => (
+                    <ProductVideo
+                      key={v}
+                      src={v}
+                      poster={posterFor(v)}
+                      label={`${product.name} — demonstration ${i + 1} of ${videos.length}`}
+                    />
+                  ))}
+                </div>
+              </section>
+            )}
 
             {/* Specifications */}
             {specs.length > 0 && (

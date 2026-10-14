@@ -44,8 +44,8 @@ export default function Footer() {
               </span>
             </div>
             <p className="mb-5 max-w-xs text-[0.9375rem] leading-relaxed text-steel-400">
-              {site.certification} supplier of weighing scales and note
-              counters — serving businesses across Gujarat.
+              {site.certification} supplier of weighing scales, note counters
+              and packaging machines — serving businesses across Gujarat.
             </p>
             <dl className="border-t border-white/10">
               {[

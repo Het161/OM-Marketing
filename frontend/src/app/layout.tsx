@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     template: '%s · OM Marketing',
   },
   description:
-    'ISO 9001:2008 certified supplier of weighing scales and note counters in Nikol, Ahmedabad. MSME registered. Sales, calibration, repair and AMC across Gujarat.',
+    'ISO 9001:2008 certified supplier of weighing scales, note counters and packaging machines in Nikol, Ahmedabad. MSME registered. Sales, calibration, repair and AMC across Gujarat.',
   keywords: [
     'weighing scale Ahmedabad',
     'platform scale Gujarat',
@@ -49,7 +49,7 @@ export const metadata: Metadata = {
     siteName: site.name,
     title: 'OM Marketing — Weighing Scales & Note Counters in Ahmedabad',
     description:
-      'ISO 9001:2008 certified weighing solutions: scales from 10 kg to 15 ton, note counters, plus calibration, repair and AMC across Gujarat.',
+      'ISO 9001:2008 certified weighing solutions: scales from 10 kg to 15 ton, note counters and hand sealing machines, plus calibration, repair and AMC across Gujarat.',
     images: [
       {
         url: '/og-image.png',
@@ -90,7 +90,7 @@ const localBusinessSchema = {
   '@id': `${SITE_URL}/#business`,
   name: site.name,
   description:
-    'Supplier of weighing scales and note counters, with calibration, repair and AMC services.',
+    'Supplier of weighing scales, note counters and hand sealing machines, with calibration, repair and AMC services.',
   url: SITE_URL,
   hasMap: site.mapsUrl,
   logo: `${SITE_URL}/images/om-mark.png`,

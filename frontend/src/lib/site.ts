@@ -79,11 +79,19 @@ export const categories = [
       'High-speed banknote counters with fake-note detection for banks and retail.',
     image: '/images/note-counter.jpg',
   },
+  {
+    value: 'packaging_machine',
+    label: 'Packaging Machines',
+    blurb:
+      'Hand sealing machines for polythene and laminated pouches, 8 to 16 inch.',
+    image: '/images/sealing-machine-red.jpeg',
+  },
 ] as const;
 
 export const categoryLabels: Record<string, string> = {
   weighing_scale: 'Weighing Scale',
   note_counter: 'Note Counter',
+  packaging_machine: 'Packaging Machine',
 };
 
 export const serviceTypes = [

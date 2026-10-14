@@ -33,9 +33,11 @@ export default function TermsPage() {
             <p>
               Prices displayed against products are a starting guide only. They
               are not an offer and do not form a contract. Your final price
-              depends on quantity, configuration, current stock, applicable GST,
-              and delivery or installation charges, and is confirmed only in a
-              written quotation from us.
+              depends on quantity, configuration, current stock, and delivery or
+              installation charges, and is confirmed only in a written quotation
+              from us. {site.registeredName} is registered under MSME (Udyam)
+              and is not registered under GST, so no GST is charged on our
+              bills.
             </p>
           </section>
 

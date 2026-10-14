@@ -6,8 +6,8 @@
  *
  * next/image paints this blurred behind the real photo, so a card carries the
  * product's colour from the first paint instead of sitting as an empty plate.
- * A solid colour rather than a thumbnail keeps the whole table near 6 KB —
- * an 8-pixel JPEG costs about 1.3 KB each in header overhead alone.
+ * A solid colour rather than a thumbnail keeps the whole table small — an
+ * 8-pixel JPEG costs about 1.3 KB each in header overhead alone.
  */
 const BLUR: Record<string, string> = {
   '/images/10KG-Unique-company.jpg':
@@ -92,6 +92,10 @@ const BLUR: Record<string, string> = {
     'data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%274%27%20height%3D%273%27%3E%3Crect%20width%3D%274%27%20height%3D%273%27%20fill%3D%27rgb%28210%2C218%2C225%29%27/%3E%3C/svg%3E',
   '/images/platform-300x300.jpg':
     'data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%274%27%20height%3D%273%27%3E%3Crect%20width%3D%274%27%20height%3D%273%27%20fill%3D%27rgb%28177%2C172%2C169%29%27/%3E%3C/svg%3E',
+  '/images/sealing-machine-blue.jpeg':
+    'data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%274%27%20height%3D%273%27%3E%3Crect%20width%3D%274%27%20height%3D%273%27%20fill%3D%27rgb%2884%2C103%2C115%29%27/%3E%3C/svg%3E',
+  '/images/sealing-machine-red.jpeg':
+    'data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%274%27%20height%3D%273%27%3E%3Crect%20width%3D%274%27%20height%3D%273%27%20fill%3D%27rgb%28127%2C103%2C95%29%27/%3E%3C/svg%3E',
   '/images/small-crane-type-60KG-chinaModel.jpeg':
     'data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%274%27%20height%3D%273%27%3E%3Crect%20width%3D%274%27%20height%3D%273%27%20fill%3D%27rgb%28127%2C131%2C130%29%27/%3E%3C/svg%3E',
 };

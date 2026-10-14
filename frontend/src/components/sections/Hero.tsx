@@ -69,6 +69,7 @@ const capabilities = [
   'Crane scales 15 T',
   'Explosion-proof indicators',
   'Note counters',
+  'Hand sealing machines',
   'On-site calibration',
   'Legal Metrology stamping',
   'Load cell replacement',
@@ -136,9 +137,9 @@ export default function Hero() {
               {...rise(0.12)}
               className="mt-7 max-w-xl text-[1.0625rem] leading-relaxed text-steel-300"
             >
-              Table-top, platform and crane scales, note counters and industrial
-              indicators — installed, calibrated and repaired by our own
-              technicians across Gujarat.
+              Table-top, platform and crane scales, note counters, sealing
+              machines and industrial indicators — installed, calibrated and
+              repaired by our own technicians across Gujarat.
             </motion.p>
 
             <motion.div

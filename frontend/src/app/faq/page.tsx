@@ -91,7 +91,7 @@ const groups = [
       {
         question: 'How do I get a price?',
         answer:
-          'Add the products you are interested in to your quote list and send it across, or simply call or WhatsApp us. We reply with firm pricing, usually the same working day. Prices depend on quantity, configuration, GST and delivery.',
+          'Add the products you are interested in to your quote list and send it across, or simply call or WhatsApp us. We reply with firm pricing, usually the same working day. Prices depend on quantity, configuration and delivery.',
       },
     ],
   },
