@@ -143,6 +143,13 @@ export const serviceTypes = [
  * Transparent pricing is a real differentiator in this trade, and it is what
  * people searching "weighing scale PCB price" actually land on.
  */
+/**
+ * Published repair rates. `images` is optional and only set where we have a
+ * photograph of the actual part — the services page shows those as a strip
+ * above the rate card, so a customer can match what is in their scale before
+ * they ring. Parts without a picture stay in the price table only; there are
+ * no empty frames.
+ */
 export const spareParts = [
   {
     group: 'Boards',
@@ -162,9 +169,21 @@ export const spareParts = [
   {
     group: 'Power',
     items: [
-      { part: 'Transformer — 6 V', price: 300 },
+      {
+        part: 'Transformer — 6 V',
+        price: 300,
+        images: [
+          '/images/transformer1.jpeg',
+          '/images/transformer3.jpeg',
+          '/images/transformer2.jpeg',
+        ],
+      },
       { part: 'Transformer — 4 V', price: 200 },
-      { part: 'Mains cord', price: 150 },
+      {
+        part: 'Mains cord — 3 pin',
+        price: 150,
+        images: ['/images/mains-cord-3-pin.jpeg'],
+      },
       { part: 'Cable', price: 100 },
     ],
   },

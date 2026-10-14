@@ -84,6 +84,8 @@ const BLUR: Record<string, string> = {
     'data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%274%27%20height%3D%273%27%3E%3Crect%20width%3D%274%27%20height%3D%273%27%20fill%3D%27rgb%28145%2C142%2C143%29%27/%3E%3C/svg%3E',
   '/images/hero/400x400.jpg':
     'data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%274%27%20height%3D%273%27%3E%3Crect%20width%3D%274%27%20height%3D%273%27%20fill%3D%27rgb%28134%2C136%2C135%29%27/%3E%3C/svg%3E',
+  '/images/mains-cord-3-pin.jpeg':
+    'data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%274%27%20height%3D%273%27%3E%3Crect%20width%3D%274%27%20height%3D%273%27%20fill%3D%27rgb%28152%2C145%2C136%29%27/%3E%3C/svg%3E',
   '/images/ms-platform-500.jpg':
     'data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%274%27%20height%3D%273%27%3E%3Crect%20width%3D%274%27%20height%3D%273%27%20fill%3D%27rgb%28114%2C108%2C100%29%27/%3E%3C/svg%3E',
   '/images/note-counter.jpg':
@@ -102,6 +104,12 @@ const BLUR: Record<string, string> = {
     'data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%274%27%20height%3D%273%27%3E%3Crect%20width%3D%274%27%20height%3D%273%27%20fill%3D%27rgb%28127%2C103%2C95%29%27/%3E%3C/svg%3E',
   '/images/small-crane-type-60KG-chinaModel.jpeg':
     'data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%274%27%20height%3D%273%27%3E%3Crect%20width%3D%274%27%20height%3D%273%27%20fill%3D%27rgb%28127%2C131%2C130%29%27/%3E%3C/svg%3E',
+  '/images/transformer1.jpeg':
+    'data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%274%27%20height%3D%273%27%3E%3Crect%20width%3D%274%27%20height%3D%273%27%20fill%3D%27rgb%28143%2C135%2C124%29%27/%3E%3C/svg%3E',
+  '/images/transformer2.jpeg':
+    'data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%274%27%20height%3D%273%27%3E%3Crect%20width%3D%274%27%20height%3D%273%27%20fill%3D%27rgb%28166%2C160%2C149%29%27/%3E%3C/svg%3E',
+  '/images/transformer3.jpeg':
+    'data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%274%27%20height%3D%273%27%3E%3Crect%20width%3D%274%27%20height%3D%273%27%20fill%3D%27rgb%28148%2C141%2C130%29%27/%3E%3C/svg%3E',
 };
 
 /** Blur preview for an image path, or undefined if we have none. */

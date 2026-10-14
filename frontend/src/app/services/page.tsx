@@ -29,6 +29,7 @@ const SERVICE_ICONS = {
 
 import EnquiryForm from '@/components/forms/EnquiryForm';
 import PageHeader from '@/components/layout/PageHeader';
+import ProductGallery from '@/components/products/ProductGallery';
 import SectionHeading from '@/components/ui/SectionHeading';
 import { serviceTypes, site, spareParts } from '@/lib/site';
 
@@ -49,6 +50,18 @@ const promises = [
     body: 'Load cells, indicators, displays and batteries — repaired in-house, with spares in stock.',
   },
 ];
+
+/* Parts we can show a picture of, pulled from the same list the rate card
+   renders. Driven by the data so a new photograph appears here by adding it
+   to `spareParts` — and nothing shows an empty frame in the meantime. */
+const picturedParts = spareParts.flatMap((group) =>
+  group.items
+    .filter(
+      (item): item is typeof item & { images: readonly string[] } =>
+        'images' in item && Array.isArray(item.images) && item.images.length > 0,
+    )
+    .map((item) => ({ ...item, group: group.group })),
+);
 
 const amcIncludes = [
   'Scheduled preventive servicing visits through the year',
@@ -179,6 +192,34 @@ function ServicesContent() {
               </div>
             ))}
           </div>
+
+          {picturedParts.length > 0 && (
+            <div className="mt-12">
+              <h3 className="label mb-5">What the part looks like</h3>
+              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {picturedParts.map((item) => (
+                  <figure key={item.part} className="border border-line bg-surface p-4">
+                    <ProductGallery
+                      images={[...item.images]}
+                      alt={`${item.part} — replacement part`}
+                    />
+                    <figcaption className="mt-4 flex items-baseline justify-between gap-3 border-t border-line pt-3">
+                      <span className="text-[0.9375rem] leading-snug text-content">
+                        {item.part}
+                      </span>
+                      <span className="data shrink-0 text-[0.9375rem] font-semibold">
+                        ₹{item.price.toLocaleString('en-IN')}
+                      </span>
+                    </figcaption>
+                  </figure>
+                ))}
+              </div>
+              <p className="mt-4 max-w-2xl text-[0.9375rem] leading-relaxed text-muted">
+                Compare these against the part in your scale before you call —
+                it saves a visit when the wrong one is ordered.
+              </p>
+            </div>
+          )}
 
           <p className="mt-6 max-w-2xl text-[0.9375rem] leading-relaxed text-muted">
             Parts are fitted by our own technicians. The service charge covers
