@@ -198,12 +198,18 @@ function ServicesContent() {
               <h3 className="label mb-5">What the part looks like</h3>
               <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 {picturedParts.map((item) => (
-                  <figure key={item.part} className="border border-line bg-surface p-4">
+                  <figure
+                    key={item.part}
+                    /* Flex column with the caption pushed down, so a part that
+                       has several angles — and therefore a thumbnail rail —
+                       does not leave its row-mates with a dangling gap. */
+                    className="flex flex-col border border-line bg-surface p-4"
+                  >
                     <ProductGallery
                       images={[...item.images]}
                       alt={`${item.part} — replacement part`}
                     />
-                    <figcaption className="mt-4 flex items-baseline justify-between gap-3 border-t border-line pt-3">
+                    <figcaption className="mt-auto flex items-baseline justify-between gap-3 border-t border-line pt-4">
                       <span className="text-[0.9375rem] leading-snug text-content">
                         {item.part}
                       </span>

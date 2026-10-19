@@ -154,16 +154,28 @@ export const spareParts = [
   {
     group: 'Boards',
     items: [
-      { part: 'PCB — 6 V', price: 1250 },
+      {
+        part: 'PCB — 6 V',
+        price: 1250,
+        images: ['/images/6v-pcb.jpeg'],
+      },
       { part: 'PCB — 4 V', price: 750 },
     ],
   },
   {
     group: 'Batteries',
     items: [
-      { part: 'Battery — 6 V', price: 850 },
+      {
+        part: 'Battery — 6 V',
+        price: 850,
+        images: ['/images/6v-leadacidbattery.jpeg'],
+      },
       { part: 'Battery — 6 V lithium, 4000 cycles', price: 1250 },
-      { part: 'Battery — 4 V', price: 550 },
+      {
+        part: 'Battery — 4 V',
+        price: 550,
+        images: ['/images/4v-leadacid-battery.jpeg'],
+      },
     ],
   },
   {
@@ -178,7 +190,11 @@ export const spareParts = [
           '/images/transformer2.jpeg',
         ],
       },
-      { part: 'Transformer — 4 V', price: 200 },
+      {
+        part: 'Transformer — 4 V',
+        price: 200,
+        images: ['/images/4v-transformer.jpeg'],
+      },
       {
         part: 'Mains cord — 3 pin',
         price: 150,
@@ -190,8 +206,21 @@ export const spareParts = [
   {
     group: 'Display & labour',
     items: [
-      { part: 'Display', price: 150 },
-      { part: 'Indicator light', price: 50 },
+      {
+        part: 'Display — 6 digit',
+        price: 150,
+        images: ['/images/green-display.jpeg'],
+      },
+      {
+        part: 'Indicator light',
+        price: 50,
+        images: ['/images/LED-light.jpeg'],
+      },
+      {
+        part: 'Tare / zero switch',
+        price: 50,
+        images: ['/images/tare-zero-switch.jpeg'],
+      },
       { part: 'Service charge — per visit', price: 250 },
     ],
   },

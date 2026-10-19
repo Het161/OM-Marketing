@@ -266,7 +266,7 @@ export default function HomePage() {
 
             <Reveal index={1}>
               <span className="section-index text-steel-400">04</span>
-              <span className="label label-accent ml-4">Why us</span>
+              <span className="label ml-4 text-primary-300">Why us</span>
               <h2 className="display mt-6 text-4xl text-white sm:text-5xl">
                 The cheapest scale
                 <br />
@@ -299,7 +299,7 @@ export default function HomePage() {
                   ],
                 ].map(([term, detail]) => (
                   <div key={term} className="bg-ink-950 p-5">
-                    <dt className="label label-accent">{term}</dt>
+                    <dt className="label text-primary-300">{term}</dt>
                     <dd className="mt-2 text-[0.9375rem] leading-relaxed text-steel-300">
                       {detail}
                     </dd>

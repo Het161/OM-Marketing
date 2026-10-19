@@ -26,6 +26,10 @@ const BLUR: Record<string, string> = {
     'data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%274%27%20height%3D%273%27%3E%3Crect%20width%3D%274%27%20height%3D%273%27%20fill%3D%27rgb%28138%2C129%2C124%29%27/%3E%3C/svg%3E',
   '/images/400*400mm.jpg':
     'data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%274%27%20height%3D%273%27%3E%3Crect%20width%3D%274%27%20height%3D%273%27%20fill%3D%27rgb%28162%2C160%2C154%29%27/%3E%3C/svg%3E',
+  '/images/4v-leadacid-battery.jpeg':
+    'data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%274%27%20height%3D%273%27%3E%3Crect%20width%3D%274%27%20height%3D%273%27%20fill%3D%27rgb%2883%2C82%2C80%29%27/%3E%3C/svg%3E',
+  '/images/4v-transformer.jpeg':
+    'data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%274%27%20height%3D%273%27%3E%3Crect%20width%3D%274%27%20height%3D%273%27%20fill%3D%27rgb%28104%2C103%2C101%29%27/%3E%3C/svg%3E',
   '/images/500*500ms-chicken.jpeg':
     'data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%274%27%20height%3D%273%27%3E%3Crect%20width%3D%274%27%20height%3D%273%27%20fill%3D%27rgb%28114%2C108%2C100%29%27/%3E%3C/svg%3E',
   '/images/600*600mm-SS-chicken-top.jpeg':
@@ -34,6 +38,10 @@ const BLUR: Record<string, string> = {
     'data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%274%27%20height%3D%273%27%3E%3Crect%20width%3D%274%27%20height%3D%273%27%20fill%3D%27rgb%2894%2C92%2C87%29%27/%3E%3C/svg%3E',
   '/images/600-600mm-ss-Regular.jpg':
     'data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%274%27%20height%3D%273%27%3E%3Crect%20width%3D%274%27%20height%3D%273%27%20fill%3D%27rgb%28156%2C174%2C187%29%27/%3E%3C/svg%3E',
+  '/images/6v-leadacidbattery.jpeg':
+    'data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%274%27%20height%3D%273%27%3E%3Crect%20width%3D%274%27%20height%3D%273%27%20fill%3D%27rgb%28109%2C110%2C107%29%27/%3E%3C/svg%3E',
+  '/images/6v-pcb.jpeg':
+    'data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%274%27%20height%3D%273%27%3E%3Crect%20width%3D%274%27%20height%3D%273%27%20fill%3D%27rgb%2883%2C91%2C82%29%27/%3E%3C/svg%3E',
   '/images/750*750mm-MS.jpeg':
     'data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%274%27%20height%3D%273%27%3E%3Crect%20width%3D%274%27%20height%3D%273%27%20fill%3D%27rgb%28131%2C131%2C128%29%27/%3E%3C/svg%3E',
   '/images/900*900mm-1200*1200mm.jpeg':
@@ -50,6 +58,8 @@ const BLUR: Record<string, string> = {
     'data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%274%27%20height%3D%273%27%3E%3Crect%20width%3D%274%27%20height%3D%273%27%20fill%3D%27rgb%28115%2C116%2C112%29%27/%3E%3C/svg%3E',
   '/images/Jewellery2.jpeg':
     'data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%274%27%20height%3D%273%27%3E%3Crect%20width%3D%274%27%20height%3D%273%27%20fill%3D%27rgb%28153%2C163%2C164%29%27/%3E%3C/svg%3E',
+  '/images/LED-light.jpeg':
+    'data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%274%27%20height%3D%273%27%3E%3Crect%20width%3D%274%27%20height%3D%273%27%20fill%3D%27rgb%28110%2C103%2C101%29%27/%3E%3C/svg%3E',
   '/images/Micro-mini.jpeg':
     'data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%274%27%20height%3D%273%27%3E%3Crect%20width%3D%274%27%20height%3D%273%27%20fill%3D%27rgb%28102%2C99%2C87%29%27/%3E%3C/svg%3E',
   '/images/Mini-20KG.jpeg':
@@ -74,6 +84,8 @@ const BLUR: Record<string, string> = {
     'data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%274%27%20height%3D%273%27%3E%3Crect%20width%3D%274%27%20height%3D%273%27%20fill%3D%27rgb%28142%2C101%2C75%29%27/%3E%3C/svg%3E',
   '/images/explosion-proof.jpg':
     'data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%274%27%20height%3D%273%27%3E%3Crect%20width%3D%274%27%20height%3D%273%27%20fill%3D%27rgb%28107%2C112%2C107%29%27/%3E%3C/svg%3E',
+  '/images/green-display.jpeg':
+    'data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%274%27%20height%3D%273%27%3E%3Crect%20width%3D%274%27%20height%3D%273%27%20fill%3D%27rgb%28107%2C107%2C101%29%27/%3E%3C/svg%3E',
   '/images/heavy-platform-scale.jpg':
     'data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%274%27%20height%3D%273%27%3E%3Crect%20width%3D%274%27%20height%3D%273%27%20fill%3D%27rgb%28131%2C131%2C128%29%27/%3E%3C/svg%3E',
   '/images/hero/10kg.jpg':
@@ -104,6 +116,8 @@ const BLUR: Record<string, string> = {
     'data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%274%27%20height%3D%273%27%3E%3Crect%20width%3D%274%27%20height%3D%273%27%20fill%3D%27rgb%28127%2C103%2C95%29%27/%3E%3C/svg%3E',
   '/images/small-crane-type-60KG-chinaModel.jpeg':
     'data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%274%27%20height%3D%273%27%3E%3Crect%20width%3D%274%27%20height%3D%273%27%20fill%3D%27rgb%28127%2C131%2C130%29%27/%3E%3C/svg%3E',
+  '/images/tare-zero-switch.jpeg':
+    'data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%274%27%20height%3D%273%27%3E%3Crect%20width%3D%274%27%20height%3D%273%27%20fill%3D%27rgb%28104%2C103%2C95%29%27/%3E%3C/svg%3E',
   '/images/transformer1.jpeg':
     'data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%274%27%20height%3D%273%27%3E%3Crect%20width%3D%274%27%20height%3D%273%27%20fill%3D%27rgb%28143%2C135%2C124%29%27/%3E%3C/svg%3E',
   '/images/transformer2.jpeg':
