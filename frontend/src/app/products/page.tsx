@@ -5,12 +5,20 @@
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import {
+  Suspense,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { FiFilter, FiPhone, FiSearch, FiX } from 'react-icons/fi';
 
 import ProductCard, { type Product } from '@/components/products/ProductCard';
 import { ProductGridSkeleton } from '@/components/products/ProductCardSkeleton';
 import { categories, site, whatsappLink } from '@/lib/site';
+import { capacitiesOf, formatKg } from '@/lib/capacity';
 import { productApi } from '@/services/api';
 
 const PRICE_CEILING = 100000;
@@ -39,6 +47,8 @@ function ProductsContent() {
   const [category, setCategory] = useState(categoryParam);
   const [maxPrice, setMaxPrice] = useState(PRICE_CEILING);
   const [sortBy, setSortBy] = useState('featured');
+  /** Selected capacity in kilograms, or null for any. */
+  const [capacity, setCapacity] = useState<number | null>(null);
   const [showFilters, setShowFilters] = useState(false);
 
   /*
@@ -106,10 +116,31 @@ function ProductsContent() {
     };
   }, [searchQuery]);
 
+  /* Every capacity the catalogue actually sells, with a count. Derived from
+     the products rather than written down, so a new line appears here on its
+     own and no weight is offered that nothing matches. */
+  const capacityOptions = useMemo(() => {
+    const counts = new Map<number, number>();
+    for (const p of products) {
+      if (p.category !== 'weighing_scale') continue;
+      for (const kg of capacitiesOf(p.specifications)) {
+        counts.set(kg, (counts.get(kg) ?? 0) + 1);
+      }
+    }
+    return [...counts.entries()]
+      .sort((a, b) => a[0] - b[0])
+      .map(([kg, count]) => ({ kg, count }));
+  }, [products]);
+
   const visible = useMemo(() => {
     let result = products.filter(
       (p) =>
-        (category === 'all' || p.category === category) && p.price <= maxPrice,
+        (category === 'all' || p.category === category) &&
+        p.price <= maxPrice &&
+        // Each figure in "100 / 200 / 300 kg" is a variant you can order, so
+        // that scale belongs under every one of those weights.
+        (capacity === null ||
+          capacitiesOf(p.specifications).includes(capacity)),
     );
 
     switch (sortBy) {
@@ -127,17 +158,29 @@ function ProductsContent() {
     }
 
     return result;
-  }, [products, category, maxPrice, sortBy]);
+  }, [products, category, maxPrice, sortBy, capacity]);
 
   const reset = () => {
     setCategory('all');
     setMaxPrice(PRICE_CEILING);
     setSortBy('featured');
+    setCapacity(null);
     showResults();
   };
 
   const hasFilters =
-    category !== 'all' || maxPrice !== PRICE_CEILING || sortBy !== 'featured';
+    category !== 'all' ||
+    maxPrice !== PRICE_CEILING ||
+    sortBy !== 'featured' ||
+    capacity !== null;
+
+  /* Weight means nothing for a note counter or a sealing machine, so the
+     control only appears where it applies — and a capacity already chosen is
+     dropped when the reader moves to a category that has none, rather than
+     silently emptying the shelf. */
+  const showCapacity =
+    capacityOptions.length > 0 &&
+    (category === 'all' || category === 'weighing_scale');
 
   return (
     <div className="shell py-12 sm:py-14">
@@ -212,7 +255,11 @@ function ProductsContent() {
                           value={cat.value}
                           checked={category === cat.value}
                           onChange={(e) => {
-                            setCategory(e.target.value);
+                            const next = e.target.value;
+                            setCategory(next);
+                            if (next !== 'all' && next !== 'weighing_scale') {
+                              setCapacity(null);
+                            }
                             showResults();
                           }}
                           className="h-4 w-4 accent-[var(--color-primary-500)]"
@@ -223,6 +270,52 @@ function ProductsContent() {
                   )}
                 </div>
               </fieldset>
+
+              {showCapacity && (
+                <fieldset className="mb-6">
+                  <legend className="mb-3 font-semibold">Capacity</legend>
+                  <div className="flex flex-wrap gap-2">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setCapacity(null);
+                        showResults();
+                      }}
+                      aria-pressed={capacity === null}
+                      className={`data flex min-h-[44px] items-center border px-3 text-[0.8125rem] transition-colors ${
+                        capacity === null
+                          ? 'border-ink-900 bg-ink-950 text-white'
+                          : 'border-line hover:border-ink-900'
+                      }`}
+                    >
+                      Any
+                    </button>
+                    {capacityOptions.map(({ kg, count }) => (
+                      <button
+                        key={kg}
+                        type="button"
+                        onClick={() => {
+                          setCapacity(capacity === kg ? null : kg);
+                          showResults();
+                        }}
+                        aria-pressed={capacity === kg}
+                        title={`${count} model${count === 1 ? '' : 's'}`}
+                        className={`data flex min-h-[44px] items-center border px-3 text-[0.8125rem] transition-colors ${
+                          capacity === kg
+                            ? 'border-ink-900 bg-ink-950 text-white'
+                            : 'border-line hover:border-ink-900'
+                        }`}
+                      >
+                        {formatKg(kg)}
+                      </button>
+                    ))}
+                  </div>
+                  <p className="mt-3 text-[0.8125rem] leading-relaxed text-muted">
+                    Platform scales are sold in several capacities, so one model
+                    can appear under more than one weight.
+                  </p>
+                </fieldset>
+              )}
 
               <div className="mb-6">
                 <label htmlFor="max-price" className="mb-3 block font-semibold">
