@@ -176,6 +176,11 @@ export const spareParts = [
         price: 550,
         images: ['/images/4v-leadacid-battery.jpeg'],
       },
+      {
+        part: 'Battery — 4 V lithium',
+        price: 500,
+        images: ['/images/4v-lithiumbattery.jpeg'],
+      },
     ],
   },
   {
