@@ -15,7 +15,10 @@ const GALLERY: Record<number, string[]> = {
   ],
   3: ['/images/crane-scale.jpeg', '/images/crane-scale.jpg'],
   4: ['/images/Mini-20KG.jpeg', '/images/Mini-20KG1.jpeg'],
-  5: ['/images/heavy-platform-scale.jpg'],
+  5: [
+    '/images/500*500mm-structure-ss.jpeg',
+    '/images/500*500mm-structure-ms.jpeg',
+  ],
   6: [
     '/images/600-600mm-ss-Regular.jpg',
     '/images/600*600mm-SS.jpg',

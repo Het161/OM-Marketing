@@ -54,7 +54,7 @@
     "description": "500×500 mm pole-display platform. Available with an MS chequered plate for warehouse floors.",
     "price": 7800.0,
     "stock_quantity": 14,
-    "image_url": "/images/heavy-platform-scale.jpg",
+    "image_url": "/images/500*500mm-structure-ss.jpeg",
     "specifications": "{\"capacity\": \"200 / 300 / 500 kg\", \"platform_size\": \"500\\u00d7500 mm\", \"construction\": \"Regular type \\u2014 pole-mounted display\", \"material\": \"Stainless steel \\u2014 mild steel +\\u20b9450\", \"brand\": \"UNIQUE (Shiva Industries)\"}",
     "created_at": "2026-10-02 00:00:00",
     "updated_at": "2026-10-02 00:00:00"
@@ -75,7 +75,7 @@
     "name": "INFRES SuperTech-IN Banknote Counter",
     "category": "note_counter",
     "description": "High-speed automatic currency note counting machine with counterfeit detection. Perfect for banks, retail stores, and cash-heavy businesses.",
-    "price": 8500.0,
+    "price": 27000.0,
     "stock_quantity": 15,
     "image_url": "/images/note-counter.jpg",
     "specifications": "{\"speed\": \"1000 notes/minute\", \"display\": \"LED display\", \"features\": \"UV detection, Magnetic detection, Auto start/stop\", \"hopper_capacity\": \"200 notes\", \"brand\": \"INFRES SuperTech-IN\"}",
@@ -171,7 +171,7 @@
     "name": "Heavy Duty Note Counting Machine - Multi-Currency with UV+MG Detection",
     "category": "note_counter",
     "description": "Professional-grade currency counting machine designed for heavy-duty commercial use. Features advanced counterfeit detection with UV, MG, and IR sensors. Large LCD display with intuitive controls. Supports batch counting, add mode, and self-diagnostic functions. Built-in thermal protection and jam detection for reliable operation.",
-    "price": 15800.0,
+    "price": 35000.0,
     "stock_quantity": 6,
     "image_url": "/images/Multi-Currency.jpeg",
     "specifications": "{\"counting_capacity\": \"1000-1200 notes/min\", \"hopper\": \"300 notes capacity\", \"stacker\": \"200 notes capacity\", \"detection_system\": \"UV + MG + IR Triple Detection\", \"display_type\": \"Large LCD Display with External Display\", \"batch_preset\": \"1-999 notes\", \"functions\": \"Count, Add, Batch, Self-Check\", \"error_alerts\": \"Double, Half, Chain, Jam Detection\", \"motor_type\": \"Heavy Duty DC Motor\", \"noise_level\": \"<60dB\", \"power_consumption\": \"80W\", \"video_url\": \"/videos/note-counter-multi-currency.mp4\", \"video_demos\": [\"/videos/note-counter-demo-1.mp4\", \"/videos/note-counter-demo-2.mp4\"], \"net_weight\": \"6.5kg\", \"certification\": \"CE Certified\", \"applications\": \"Banks, Supermarkets, Hotels, Casinos\"}",
@@ -368,6 +368,18 @@
     "stock_quantity": 20,
     "image_url": "/images/sealing-machine-red.jpeg",
     "specifications": "{\"seal_length\": \"16 inch (400 mm)\", \"type\": \"Hand-operated impulse sealer\", \"seals\": \"Polythene, LDPE, PP and laminated pouches\", \"sealing_control\": \"Adjustable timer dial, 1 to 8\", \"power\": \"220 V AC, single phase\", \"warranty\": \"1 year\", \"delivery\": \"Delivered in 1 to 2 days\", \"finish\": \"Powder-coated body, available in red or blue\", \"video_url\": \"/videos/sealing-machine-demo.mp4\"}",
+    "created_at": "2026-10-02 00:00:00",
+    "updated_at": "2026-10-02 00:00:00"
+  },
+  {
+    "id": 43,
+    "name": "Mixed Denomination Value Counter — MDC with Fake Note Detection",
+    "category": "note_counter",
+    "description": "Counts a mixed bundle and totals its value, rather than just the number of notes — feed in a stack of fifties, hundreds and five hundreds and it reports the amount. Colour display, counterfeit detection on every note, and batch, add and report functions for cashing up.",
+    "price": 35500.0,
+    "stock_quantity": 5,
+    "image_url": "/images/value-counter-mdc.jpeg",
+    "specifications": "{\"counting_mode\": \"Mixed denomination value counting (MDC)\", \"detection\": \"Counterfeit detection on every note (CFD)\", \"display\": \"Colour TFT\", \"currency\": \"INR, with multi-currency selection\", \"functions\": \"Count, add, batch, report, print\", \"reject_pocket\": \"Yes — suspect notes separated\"}",
     "created_at": "2026-10-02 00:00:00",
     "updated_at": "2026-10-02 00:00:00"
   }

@@ -32,6 +32,10 @@ const BLUR: Record<string, string> = {
     'data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%274%27%20height%3D%273%27%3E%3Crect%20width%3D%274%27%20height%3D%273%27%20fill%3D%27rgb%28112%2C106%2C106%29%27/%3E%3C/svg%3E',
   '/images/4v-transformer.jpeg':
     'data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%274%27%20height%3D%273%27%3E%3Crect%20width%3D%274%27%20height%3D%273%27%20fill%3D%27rgb%28104%2C103%2C101%29%27/%3E%3C/svg%3E',
+  '/images/500*500mm-structure-ms.jpeg':
+    'data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%274%27%20height%3D%273%27%3E%3Crect%20width%3D%274%27%20height%3D%273%27%20fill%3D%27rgb%28128%2C128%2C127%29%27/%3E%3C/svg%3E',
+  '/images/500*500mm-structure-ss.jpeg':
+    'data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%274%27%20height%3D%273%27%3E%3Crect%20width%3D%274%27%20height%3D%273%27%20fill%3D%27rgb%28126%2C128%2C128%29%27/%3E%3C/svg%3E',
   '/images/500*500ms-chicken.jpeg':
     'data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%274%27%20height%3D%273%27%3E%3Crect%20width%3D%274%27%20height%3D%273%27%20fill%3D%27rgb%28114%2C108%2C100%29%27/%3E%3C/svg%3E',
   '/images/600*600mm-SS-chicken-top.jpeg':
@@ -126,6 +130,8 @@ const BLUR: Record<string, string> = {
     'data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%274%27%20height%3D%273%27%3E%3Crect%20width%3D%274%27%20height%3D%273%27%20fill%3D%27rgb%28166%2C160%2C149%29%27/%3E%3C/svg%3E',
   '/images/transformer3.jpeg':
     'data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%274%27%20height%3D%273%27%3E%3Crect%20width%3D%274%27%20height%3D%273%27%20fill%3D%27rgb%28148%2C141%2C130%29%27/%3E%3C/svg%3E',
+  '/images/value-counter-mdc.jpeg':
+    'data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%274%27%20height%3D%273%27%3E%3Crect%20width%3D%274%27%20height%3D%273%27%20fill%3D%27rgb%28100%2C93%2C94%29%27/%3E%3C/svg%3E',
 };
 
 /** Blur preview for an image path, or undefined if we have none. */

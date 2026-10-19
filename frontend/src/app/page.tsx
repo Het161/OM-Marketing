@@ -14,7 +14,7 @@ import Accordion from '@/components/ui/Accordion';
 import Reveal from '@/components/ui/Reveal';
 import SectionHeading from '@/components/ui/SectionHeading';
 import { categories, serviceTypes, site, whatsappLink } from '@/lib/site';
-import ProductVideo from '@/components/products/ProductVideo';
+import StoryFilms from '@/components/sections/StoryFilms';
 import { productApi } from '@/services/api';
 
 const commitments = [
@@ -251,17 +251,26 @@ export default function HomePage() {
             <Reveal>
               {/* Portrait film, so it is held to the width of a phone rather
                   than stretched across the band. */}
-              <div className="mx-auto w-full max-w-[20rem]">
-                <ProductVideo
-                  src="/videos/why-om-marketing.mp4"
-                  poster="/videos/posters/why-om-marketing.jpg"
-                  aspect="aspect-[9/16]"
-                  label="Why buy your weighing scale from OM Marketing — a short film in Gujarati"
-                />
-                <p className="label mt-3 text-steel-500">
-                  45 seconds · Gujarati
-                </p>
-              </div>
+              <StoryFilms
+                films={[
+                  {
+                    src: '/videos/why-om-marketing.mp4',
+                    poster: '/videos/posters/why-om-marketing.jpg',
+                    language: 'Gujarati',
+                    duration: '45 seconds',
+                    label:
+                      'Why buy your weighing scale from OM Marketing — a short film in Gujarati',
+                  },
+                  {
+                    src: '/videos/why-not-cheap-scale.mp4',
+                    poster: '/videos/posters/why-not-cheap-scale.jpg',
+                    language: 'Hindi',
+                    duration: '1 min 27',
+                    label:
+                      'What a cheap weighing scale really costs — a short film in Hindi, with subtitles',
+                  },
+                ]}
+              />
             </Reveal>
 
             <Reveal index={1}>
