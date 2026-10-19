@@ -246,7 +246,7 @@
     "description": "Hand-built heavy-gauge version of the 30 kg table scale, made for counters that take constant use.",
     "price": 5000.0,
     "stock_quantity": 12,
-    "image_url": "/images/30KG-Table-Top.jpg",
+    "image_url": "/images/30kg-handmade.jpeg",
     "specifications": "{\"capacity\": \"30 kg\", \"build\": \"Hand-made, heavy gauge\", \"brand\": \"UNIQUE (Shiva Industries)\", \"warranty\": \"1 year\"}",
     "created_at": "2026-10-02 00:00:00",
     "updated_at": "2026-10-02 00:00:00"
